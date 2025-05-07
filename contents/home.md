@@ -1,6 +1,6 @@
 
 
-I am currently pursuing a Bachelor's Degree in Computer Science, at College of Liberal Arts, University of Minnesota (Twin Cities), United States. I have studied Microeconomics and Macroeconomics and achieved strong academic performance. I led the development of a stock prediction software based on statistical modeling methods, which obtained China's Software Copyright Registration. Additionally, I have a strong interest in computational social sciences.
+I am currently pursuing a Bachelor's Degree in Computer Science, at College of Liberal Arts, University of Minnesota (Twin Cities), United States. I have studied **Microeconomics** and **Macroeconomics** and achieved strong academic performance. I led the development of a stock prediction software based on statistical modeling methods, which obtained China's Software Copyright Registration. Additionally, I have a strong interest in **computational social sciences**.
 
 #### Email
 gong0226@umn.edu
