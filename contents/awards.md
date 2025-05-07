@@ -1,13 +1,5 @@
-- National Scholarship of Graduate Student, 2024.
+- Second Prize of National Olympiad in Informatics (Shandong Region),2021.
+- Second Prize in National Non-Professional Level Software Competency Certification (CSP-S),2021.
+- First-Class Academic Scholarship (0.14%) , 2024
+- 15 provincial and national awards in algorithmic programming competitions, 2024-2025.
 
-- First-prize Scholarship of CUMT, 2024.
-
-- First-prize Scholarship of CUMT, 2023.
-
-- Freshman Scholarship of CUMT, 2022.
-
-- Excellent Graduation Project of Jiangsu Province, 2022.
-
-- First-prize Enterprise Scholarship of CUMT, 2020.
-
-- First-prize Scholarship of CUMT, 2019.
