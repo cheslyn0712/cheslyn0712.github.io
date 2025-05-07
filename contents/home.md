@@ -9,7 +9,7 @@ gong0226@umn.edu
 
 📍 **University of Minnesota Twin Cities** (expected graduate year:2026)
 
-🎓 **B.A. in Computer Science**
+🎓 **B.A. Computer Science**
 
 ------
 
