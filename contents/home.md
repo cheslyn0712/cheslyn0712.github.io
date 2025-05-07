@@ -7,13 +7,13 @@ gong0226@umn.edu
 
 #### Education
 
-📍 **University of Minnesota Twin Cities** expected graduate year:2026
+📍 **University of Minnesota Twin Cities** (expected graduate year:2026)
 
 🎓 **B.A. in Computer Science **
 
 ------
 
-📍 **Shandong Experimental High School** graduate year:2023
+📍 **Shandong Experimental High School** (graduated year:2023)
 
 🎓**high school diploma**
 
@@ -29,7 +29,7 @@ Research direction: time series forecast, phase space reconstruction.
 
 Funded by [Shandong Electric Power Engineering Consulting Institute Corp., Ltd.](https://www.sdepci.com:8443/col/col922/index.html), member
 
-Research direction: NLP, RAG, Word2Vec, AI-Driven Knowledge Map.
+Research direction: NLP, RAG, Word2Vec, AI-Driven Knowledge Map. 
 
 #### Research Interests
 Deep Learning, AI4Science(PDE, Economics, Cognitive Science), Computer Vision.
