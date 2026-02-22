@@ -17,42 +17,174 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. Suspendisse condimentum, libero vel tempus mattis, risus risus vulputate libero, elementum fermentum mi neque vel nisl. Maecenas facilisis maximus dignissim. Curabitur mattis vulputate dui, tincidunt varius libero luctus eu. Mauris mauris nulla, scelerisque eget massa id, tincidunt congue felis. Sed convallis tempor ipsum rhoncus viverra. Pellentesque nulla orci, accumsan volutpat fringilla vitae, maximus sit amet tortor. Aliquam ultricies odio ut volutpat scelerisque. Donec nisl nisl, porttitor vitae pharetra quis, fringilla sed mi. Fusce pretium dolor ut aliquam consequat. Cras volutpat, tellus accumsan mattis molestie, nisl lacus tempus massa, nec malesuada tortor leo vel quam. Aliquam vel ex consectetur, vehicula leo nec, efficitur eros. Donec convallis non urna quis feugiat.
+Hi, my name is **Chunlin Gong (巩春林)**. I am currently a third-year undergraduate (senior) at the **University of Minnesota**, in the **Department of Computer Science and Engineering**, majoring in **Computer Science**, advised by Prof. Mattia Fazzini.
 
-My research interest includes neural machine translation and computer vision. I have published more than 100 papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>).
+My primary research interests are **Trustworthy Machine Learning** and **AI Safety**. I study the security of **internal routing mechanisms in large language models** from a **neuron-level perspective**, and I explore alignment methods—including **fine-tuning** and **RLHF**—to better align models with safety principles.
 
+I also had the privilege of interning at the **Institute of Automation, Chinese Academy of Sciences (CASIA)** and **Shanghai AI Lab**. I am deeply grateful for the guidance and support from Prof. Shu Wu, Dr. Xingcheng Xu, and Dr. Zhao Tong.
+
+<span class='anchor' id='news'></span>
 
 # 🔥 News
-- *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
 
-# 📝 Publications 
+- *2025.12*: &nbsp;🎉I joined the Shanghai AI Lab to conduct research on safety alignment strategies in collaboration with CASIA.
+- *2025.08*: &nbsp;🎉I joined the software engineering research group at the University of Minnesota, to study safetyissues related to logs.
+- *2025.05*: &nbsp;🎉 I joined the Institute of Automation, Chinese Academy of Sciences (CASIA), to research content Safety in social media.
+- 2024.9: 🏠Thanks to Dr. Yin Wang, School of Control Science and Engineering, Shandong University. Our project has been approved by the Shandong Provincial Natural Science Foundation! This will be the starting point for my research.
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2016</div><img src='images/500x300.png' alt="sym" width="100%"></div></div>
-<div class='paper-box-text' markdown="1">
+<span class='anchor' id='publications'></span>
+# 📝 Publications (* Equal Contribution)
 
-[Deep Residual Learning for Image Recognition](https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf)
+<div class="paper-box">
+  <div class="paper-box-image">
+    <div class="badge">Preprint</div>
+    <img src="./images/CoT.png" alt="sym" style="width:500px;height:200px;object-fit:cover;">
+  </div>
 
-**Kaiming He**, Xiangyu Zhang, Shaoqing Ren, Jian Sun
+  <div class="paper-box-text">
+    <p><a href="https://arxiv.org/pdf/2602.04856">
+      <strong>CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation</strong>
+    </a></p>
 
-[**Project**](https://scholar.google.com/citations?view_op=view_citation&hl=zh-CN&user=DhtAFkwAAAAJ&citation_for_view=DhtAFkwAAAAJ:ALROH1vI_8AC) <strong><span class='show_paper_citations' data='DhtAFkwAAAAJ:ALROH1vI_8AC'></span></strong>
-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+
+    <p>Zhao Tong*,<strong>Chunlin Gong*</strong>, Yiping Zhang, Haichao Shi, Qiang Liu, Xingcheng Xu, Shu Wu, Xiao-Yu Zhang</p>
+    
+    <ul>
+      <li>Our paper shows that in fake-news generation, reasoning LLMs can still produce unsafe, deceptive content inside their chain-of-thought even when the final answer is a refusal, and proposes a layer/head-level Jacobian spectral analysis to localize the safety-critical routing mechanisms driving that divergence.</li>
+    </ul>
+  </div>
 </div>
+
+
+
+<div class="paper-box">
+  <div class="paper-box-image">
+    <div class="badge">Preprint</div>
+    <img src="./images/AdComment.png" alt="sym" width="500" height="300">
+  </div>
+
+  <div class="paper-box-text">
+    <p><a href="https://arxiv.org/pdf/2510.09712?">
+      <strong>Group-Adaptive Adversarial Learning for Robust Fake News Detection Against Malicious Comments</strong>
+    </a></p>
+
+
+    <p>Zhao Tong*, <strong>Chunlin Gong*</strong>, Yimeng Gu, Qiang Liu, Shu Wu, Haichao Shi, Xiao-Yu Zhang</p>
+    
+    <ul>
+      <li>This paper demonstrates that fake-news detectors are highly vulnerable to psychological-based malicious adversarial comments and proposes group-adaptive adversarial training to substantially improve robustness.</li>
+    </ul>
+  </div>
 </div>
 
-- [Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet](https://github.com), A, B, C, **CVPR 2020**
 
+
+<div class="paper-box">
+  <div class="paper-box-image">
+    <div class="badge">Preprint</div>
+    <img src="./images/OptFormer.png" alt="sym" width="500" height="300">
+  </div>
+
+  <div class="paper-box-text">
+    <p>
+      <a href="https://arxiv.org/pdf/2601.06078">
+        <strong>OptFormer: Optical Flow-Guided Attention and Phase Space Reconstruction for SST Forecasting</strong>
+      </a>
+    </p>
+
+    <p>Yin Wang*, <strong>Chunlin Gong*</strong>, Zhuozhen Xu, Lehan Zhang</p>
+    
+    <ul>
+      <li>This paper combines phase-space reconstruction with optical-flow–guided attention to better track dynamic regions.</li>
+    </ul>
+  </div>
+</div>
+
+
+
+<span class='anchor' id='honors-and-awards'></span>
 # 🎖 Honors and Awards
-- *2021.10* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2021.09* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+- *2025* University of Minnesota UROP Scholarship💴
+- *2024* Shandong Provincial Natural Science Foundation💴, Funded (Sole student member).
+- *2023* National Bronze Medal🥉, The International Collegiate Programming Contest (ACM-ICPC).
 
+- *2022* Second Prize🥈, Shandong Division, National Olympiad in Informatics(NOIP).
+
+<span class='anchor' id='educations'></span>
 # 📖 Educations
-- *2019.06 - 2022.04 (now)*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2015.09 - 2019.06*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+- 2023-2026, University of Minnesota, Twin Cities.
+- 2020-2023, Shandong Experimental High School.
 
-# 💬 Invited Talks
-- *2021.06*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2021.03*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  \| [\[video\]](https://github.com/)
+<span class='anchor' id='research-experience'></span>
 
-# 💻 Internships
-- *2019.05 - 2020.02*, [Lorem](https://github.com/), China.
+# 💻 Research Experience
+
+<div class="paper-box-mini" style="display:flex; gap:12px; align-items:flex-start;">
+  <div class="left" style="flex:0 0 auto;">
+    <img src="./images/AI_LAB.png" style="width:50px;height:30px;display:block;">
+  </div>
+  <div class="right" style="display:flex; flex-direction:column; gap:6px;">
+    <div class="title" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-weight:600;">
+      <span>LLM Research Intern · Shanghai AI Lab</span>
+    </div>
+
+
+
+    <p class="meta" style="margin:0; color:#555; font-size:13px; line-height:1.4;">
+      December 2025 – May 2026 · Shanghai, China · Mentors: Dr. Xingcheng Xu.
+    </p>
+    
+    <ul class="bullets" style="margin:0; padding-left:18px; line-height:1.5;">
+      <li>Collaborate with CASIA to analyze and develop defense strategies for multimodal large-scale safety issues.</li>
+    </ul>
+  </div>
+</div>
+
+<br>
+
+<div class="paper-box-mini" style="display:flex; gap:12px; align-items:flex-start;">
+  <div class="left" style="flex:0 0 auto;">
+    <img src="./images/UMN.jpeg" style="width:50px;height:30px;display:block;">
+  </div>
+  <div class="right" style="display:flex; flex-direction:column; gap:6px;">
+    <div class="title" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-weight:600;">
+      <span>Research Assistant · University of Minnesota</span>
+    </div>
+
+
+
+    <p class="meta" style="margin:0; color:#555; font-size:13px; line-height:1.4;">
+      August 2025 – May 2026 · Minneapolis, United States · Mentors: Prof. Mattia Fazzini
+    </p>
+    
+    <ul class="bullets" style="margin:0; padding-left:18px; line-height:1.5;">
+      <li>Research on software engineering security focuses on anomaly detection in log files.</li>
+    </ul>
+
+  </div>
+</div>
+
+<br>
+
+<div class="paper-box-mini" style="display:flex; gap:12px; align-items:flex-start;">
+  <div class="left" style="flex:0 0 auto;">
+    <img src="./images/CAS.jpg" style="width:50px;height:50px;display:block;">
+  </div>
+  <div class="right" style="display:flex; flex-direction:column; gap:6px;">
+    <div class="title" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-weight:600;">
+      <span>Algorithm Intern · Institution of Automation, Chinese academy of science</span>
+    </div>
+
+
+
+    <p class="meta" style="margin:0; color:#555; font-size:13px; line-height:1.4;">
+      May 2025 – May 2026 · Beijing, China · Mentors: Prof. Shu Wu and Dr. Zhao Tong
+    </p>
+    
+    <ul class="bullets" style="margin:0; padding-left:18px; line-height:1.5;">
+      <li>Content Safety in social media and LLM safety</li>
+    </ul>
+
+  </div>
+</div>
+

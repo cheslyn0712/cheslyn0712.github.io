@@ -1,22 +1,22 @@
-# main links links
+# main links - 与 about.md 中的章节对应
 main:
   - title: "About Me"
     url: "/#about-me"
 
   - title: "News"
-    url: "/#-news"
+    url: "/#news"
 
   - title: "Publications"
-    url: "/#-publications"
+    url: "/#publications"
 
   - title: "Honors and Awards"
-    url: "/#-honors-and-awards"
+    url: "/#honors-and-awards"
 
   - title: "Educations"
-    url: "/#-educations"
+    url: "/#educations"
 
-  - title: "Invited Talks"
-    url: "/#-invited-talks"
+  - title: "Research Experience"
+    url: "/#research-experience"
 
-  - title: "Internships"
-    url: "/#-internships"
+  - title: "CV"
+    url: "/cv/"

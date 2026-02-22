@@ -107,3 +107,16 @@ h1:before, .anchor:before {
     background-color: #00369f;
     font-size: .8em;
 }
+
+/* CV 页面 - 与主站相同布局结构，无左侧栏，内容区全宽 */
+#main.no-sidebar .page {
+  @include breakpoint($large) {
+    @include span(12 of 12);
+  }
+}
+.cv-embed {
+  width: 100%;
+  min-height: 1200px;
+  border: none;
+  display: block;
+}

@@ -14,8 +14,8 @@ layout: compress
     {% include browser-upgrade.html %}
     {% include masthead.html %}
 
-    <div id="main" role="main">
-      {% include sidebar.html %}
+    <div id="main" role="main"{% if page.url == '/cv/' or page.url == '/cv' %} class="no-sidebar"{% endif %}>
+      {% unless page.url == '/cv/' or page.url == '/cv' %}{% include sidebar.html %}{% endunless %}
     
       <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
         {% if page.title %}<meta itemprop="headline" content="{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
