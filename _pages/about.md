@@ -17,11 +17,11 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Hi, my name is **Chunlin Gong (巩春林)**. I am currently a third-year undergraduate (senior) at the **University of Minnesota**, in the **Department of Computer Science and Engineering**, majoring in **Computer Science**, advised by Prof. Mattia Fazzini.
+Hi, my name is **Chunlin Gong (巩春林)**. I am currently a PhD student at the **University of Minnesota**, in the **Department of Computer Science and Engineering**, advised by [Prof. Mattia Fazzini](https://www-users.cse.umn.edu/~mfazzini/) and [Prof. Caiwen Ding](https://caiwending.github.io/).
 
-My primary research interests are **Trustworthy Machine Learning** and **AI Safety**. I study the security of **internal routing mechanisms in large language models** from a **neuron-level perspective**, and I explore alignment methods—including **fine-tuning** and **RLHF**—to better align models with safety principles.
+My primary research interests lie in **trustworthy agentic systems**—building AI agents that are safe, reliable, and aligned with human values. I study how to ensure the security and robustness of LLM-based agents in open-ended environments, and explore alignment methods to make these systems more trustworthy in real-world deployment.
 
-I also had the privilege of interning at the **Institute of Automation, Chinese Academy of Sciences (CASIA)** and **Shanghai AI Lab**. I am deeply grateful for the guidance and support from Prof. Shu Wu, Dr. Xingcheng Xu, and Dr. Zhao Tong.
+I also had the privilege of interning at the **Institute of Automation, Chinese Academy of Sciences (CASIA)** and **Shanghai AI Lab**. I am deeply grateful for the guidance and support from [Prof. Shu Wu](http://shuwu.name/), [Prof. Xingcheng Xu](https://xingchengxu.github.io/), and Prof. Zhao Tong.
 
 <span class='anchor' id='news'></span>
 
@@ -37,7 +37,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 
 <div class="paper-box">
   <div class="paper-box-image">
-    <div class="badge">Preprint</div>
+    <div class="badge" style="background-color: #e74c3c;">ICML 2026</div>
     <img src="./images/CoT.png" alt="sym" style="width:500px;height:200px;object-fit:cover;">
   </div>
 
@@ -59,7 +59,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 
 <div class="paper-box">
   <div class="paper-box-image">
-    <div class="badge">Preprint</div>
+    <div class="badge">EMNLP 2026 Main</div>
     <img src="./images/AdComment.png" alt="sym" width="500" height="300">
   </div>
 
@@ -78,30 +78,6 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 </div>
 
 
-
-<div class="paper-box">
-  <div class="paper-box-image">
-    <div class="badge">Preprint</div>
-    <img src="./images/OptFormer.png" alt="sym" width="500" height="300">
-  </div>
-
-  <div class="paper-box-text">
-    <p>
-      <a href="https://arxiv.org/pdf/2601.06078">
-        <strong>OptFormer: Optical Flow-Guided Attention and Phase Space Reconstruction for SST Forecasting</strong>
-      </a>
-    </p>
-
-    <p>Yin Wang*, <strong>Chunlin Gong*</strong>, Zhuozhen Xu, Lehan Zhang</p>
-    
-    <ul>
-      <li>This paper combines phase-space reconstruction with optical-flow–guided attention to better track dynamic regions.</li>
-    </ul>
-  </div>
-</div>
-
-
-
 <span class='anchor' id='honors-and-awards'></span>
 # 🎖 Honors and Awards
 - *2025* University of Minnesota UROP Scholarship💴
@@ -112,8 +88,9 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 
 <span class='anchor' id='educations'></span>
 # 📖 Educations
-- 2023-2026, University of Minnesota, Twin Cities.
-- 2020-2023, Shandong Experimental High School.
+- 2026–Present, Ph.D. in Computer Science, University of Minnesota, Twin Cities.
+- 2023–2026, B.A. in Computer Science, University of Minnesota, Twin Cities.
+- 2020–2023, Shandong Experimental High School.
 
 <span class='anchor' id='research-experience'></span>
 
@@ -131,7 +108,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 
 
     <p class="meta" style="margin:0; color:#555; font-size:13px; line-height:1.4;">
-      December 2025 – May 2026 · Shanghai, China · Mentors: Dr. Xingcheng Xu.
+      December 2025 – May 2026 · Shanghai, China · Mentors: Prof. Xingcheng Xu.
     </p>
     
     <ul class="bullets" style="margin:0; padding-left:18px; line-height:1.5;">
@@ -178,7 +155,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 
 
     <p class="meta" style="margin:0; color:#555; font-size:13px; line-height:1.4;">
-      May 2025 – May 2026 · Beijing, China · Mentors: Prof. Shu Wu and Dr. Zhao Tong
+      May 2025 – May 2026 · Beijing, China · Mentors: Prof. Shu Wu and Prof. Zhao Tong
     </p>
     
     <ul class="bullets" style="margin:0; padding-left:18px; line-height:1.5;">
