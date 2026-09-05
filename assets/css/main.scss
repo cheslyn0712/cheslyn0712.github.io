@@ -43,54 +43,40 @@
 .paper-box {
     display: flex;
     justify-content: left;
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
     flex-wrap: wrap;
     border-bottom: 1px #efefef solid;
     padding: 2em 0 2em 0;
-    gap: 1em;
+    
 
     .paper-box-image{
-        position: relative;
         justify-content: center;
         display: flex;
         width: 100%;
         order: 2;
         img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
+            max-width: 400px;
             box-shadow: 3px 3px 6px #888;
             object-fit: cover;
         }
     }
     
     .paper-box-text{
-        width: 100%;
         max-width: 100%;
         order: 1;
-        min-width: 0;
-        word-wrap: break-word;
-        overflow-wrap: anywhere;
     }
     
     @include breakpoint($medium) {
-        flex-direction: row;
-        align-items: center;
-
         .paper-box-image{
             justify-content: left;
-            flex: 0 1 40%;
             min-width: 200px;
             max-width: 40%;
             order: 1;
-            img {
-                max-width: 400px;
-            }
         }
         
         .paper-box-text{
-            flex: 1 1 55%;
+            justify-content: left;
             padding-left: 2em;
             max-width: 60%;
             order: 2;
@@ -98,61 +84,15 @@
 
     }
 
-
-}
-
-.paper-box-mini {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-
-    .left {
-        flex: 0 0 auto;
-
-        img {
-            width: 50px;
+    @media (max-width: 767px) {
+        .paper-box-image img {
             max-width: 100%;
-            height: auto;
-            display: block;
+            width: 100% !important;
+            height: auto !important;
         }
     }
 
-    .right {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        flex: 1 1 200px;
-        min-width: 0;
-    }
 
-    .title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        font-weight: 600;
-    }
-
-    .meta {
-        margin: 0;
-        color: #555;
-        font-size: 13px;
-        line-height: 1.4;
-    }
-
-    .bullets {
-        margin: 0;
-        padding-left: 18px;
-        line-height: 1.5;
-    }
-}
-
-.page__content {
-    img {
-        max-width: 100%;
-        height: auto;
-    }
 }
 
 $scroll_offset : 2em;
