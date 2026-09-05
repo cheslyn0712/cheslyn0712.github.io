@@ -30,7 +30,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 - *2025.12*: &nbsp;🎉I joined the Shanghai AI Lab to conduct research on safety alignment strategies in collaboration with CASIA.
 - *2025.08*: &nbsp;🎉I joined the software engineering research group at the University of Minnesota, to study safetyissues related to logs.
 - *2025.05*: &nbsp;🎉 I joined the Institute of Automation, Chinese Academy of Sciences (CASIA), to research content Safety in social media.
-- 2024.9: 🏠Thanks to Dr. Yin Wang, School of Control Science and Engineering, Shandong University. Our project has been approved by the Shandong Provincial Natural Science Foundation! This will be the starting point for my research.
+- 2024.9: 🏠Thanks to Prof. Wang. Our project has been approved by the Shandong Provincial Natural Science Foundation! This will be the starting point for my research.
 
 <span class='anchor' id='publications'></span>
 # 📝 Publications (* Equal Contribution)
