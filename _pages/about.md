@@ -30,7 +30,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 - *2025.12*: &nbsp;🎉I joined the Shanghai AI Lab to conduct research on safety alignment strategies in collaboration with CASIA.
 - *2025.08*: &nbsp;🎉I joined the software engineering research group at the University of Minnesota, to study safetyissues related to logs.
 - *2025.05*: &nbsp;🎉 I joined the Institute of Automation, Chinese Academy of Sciences (CASIA), to research content Safety in social media.
-- 2024.9: 🏠Thanks to Prof. Wang. Our project has been approved by the Shandong Provincial Natural Science Foundation! This will be the starting point for my research.
+- 2024.9: 🏠Thanks to Prof. Wang, School of Control Science and Engineering, Shandong University. Our project has been approved by the Shandong Provincial Natural Science Foundation! This will be the starting point for my research.
 
 <span class='anchor' id='publications'></span>
 # 📝 Publications (* Equal Contribution)
@@ -38,7 +38,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 <div class="paper-box">
   <div class="paper-box-image">
     <div class="badge" style="background-color: #e74c3c;">ICML 2026</div>
-    <img src="./images/CoT.png" alt="sym" style="width:500px;height:200px;object-fit:cover;">
+    <img src="./images/CoT.png" alt="CoT paper figure">
   </div>
 
   <div class="paper-box-text">
@@ -60,7 +60,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 <div class="paper-box">
   <div class="paper-box-image">
     <div class="badge">EMNLP 2026 Main</div>
-    <img src="./images/AdComment.png" alt="sym" width="500" height="300">
+    <img src="./images/AdComment.png" alt="AdComment paper figure">
   </div>
 
   <div class="paper-box-text">
@@ -96,22 +96,22 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 
 # 💻 Research Experience
 
-<div class="paper-box-mini" style="display:flex; gap:12px; align-items:flex-start;">
-  <div class="left" style="flex:0 0 auto;">
-    <img src="./images/AI_LAB.png" style="width:50px;height:30px;display:block;">
+<div class="paper-box-mini">
+  <div class="left">
+    <img src="./images/AI_LAB.png" alt="Shanghai AI Lab">
   </div>
-  <div class="right" style="display:flex; flex-direction:column; gap:6px;">
-    <div class="title" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-weight:600;">
+  <div class="right">
+    <div class="title">
       <span>LLM Research Intern · Shanghai AI Lab</span>
     </div>
 
 
 
-    <p class="meta" style="margin:0; color:#555; font-size:13px; line-height:1.4;">
+    <p class="meta">
       December 2025 – May 2026 · Shanghai, China · Mentors: Prof. Xingcheng Xu.
     </p>
     
-    <ul class="bullets" style="margin:0; padding-left:18px; line-height:1.5;">
+    <ul class="bullets">
       <li>Collaborate with CASIA to analyze and develop defense strategies for multimodal large-scale safety issues.</li>
     </ul>
   </div>
@@ -119,22 +119,22 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 
 <br>
 
-<div class="paper-box-mini" style="display:flex; gap:12px; align-items:flex-start;">
-  <div class="left" style="flex:0 0 auto;">
-    <img src="./images/UMN.jpeg" style="width:50px;height:30px;display:block;">
+<div class="paper-box-mini">
+  <div class="left">
+    <img src="./images/UMN.jpeg" alt="University of Minnesota">
   </div>
-  <div class="right" style="display:flex; flex-direction:column; gap:6px;">
-    <div class="title" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-weight:600;">
+  <div class="right">
+    <div class="title">
       <span>Research Assistant · University of Minnesota</span>
     </div>
 
 
 
-    <p class="meta" style="margin:0; color:#555; font-size:13px; line-height:1.4;">
+    <p class="meta">
       August 2025 – May 2026 · Minneapolis, United States · Mentors: Prof. Mattia Fazzini
     </p>
     
-    <ul class="bullets" style="margin:0; padding-left:18px; line-height:1.5;">
+    <ul class="bullets">
       <li>Research on software engineering security focuses on anomaly detection in log files.</li>
     </ul>
 
@@ -143,22 +143,22 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 
 <br>
 
-<div class="paper-box-mini" style="display:flex; gap:12px; align-items:flex-start;">
-  <div class="left" style="flex:0 0 auto;">
-    <img src="./images/CAS.jpg" style="width:50px;height:50px;display:block;">
+<div class="paper-box-mini">
+  <div class="left">
+    <img src="./images/CAS.jpg" alt="CASIA">
   </div>
-  <div class="right" style="display:flex; flex-direction:column; gap:6px;">
-    <div class="title" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-weight:600;">
+  <div class="right">
+    <div class="title">
       <span>Algorithm Intern · Institution of Automation, Chinese academy of science</span>
     </div>
 
 
 
-    <p class="meta" style="margin:0; color:#555; font-size:13px; line-height:1.4;">
+    <p class="meta">
       May 2025 – May 2026 · Beijing, China · Mentors: Prof. Shu Wu and Prof. Zhao Tong
     </p>
     
-    <ul class="bullets" style="margin:0; padding-left:18px; line-height:1.5;">
+    <ul class="bullets">
       <li>Content Safety in social media and LLM safety</li>
     </ul>
 
