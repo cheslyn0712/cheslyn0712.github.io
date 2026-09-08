@@ -34,11 +34,13 @@ VENUE_LOGOS = {
     "icml": {
         "file": "icml-logo.svg",
         "alt": "ICML — International Conference on Machine Learning",
+        "label": "ICML",
         "css": "venue-badge-icml",
     },
     "emnlp": {
         "file": "emnlp-logo.svg",
         "alt": "EMNLP — Empirical Methods in Natural Language Processing",
+        "label": "EMNLP",
         "css": "venue-badge-emnlp",
     },
 }
@@ -67,8 +69,9 @@ def venue_badge_html(p: dict, asset_root: str) -> str:
     if venue_id(p) in VENUE_LOGOS:
         cfg = VENUE_LOGOS[venue_id(p)]
         logo = venue_logo(p, asset_root)
+        label = f'<span class="venue-label">{esc(cfg["label"])}</span>'
         year = esc(p.get("year", ""))
-        inner = f'{logo}<span class="venue-year">{year}</span>'
+        inner = f'{logo}{label}<span class="venue-year">{year}</span>'
         if link:
             return (
                 f'<a class="venue-badge {cfg["css"]}" href="{esc(link)}" '
@@ -82,15 +85,17 @@ def hub_venue_line(p: dict, asset_root: str) -> str:
     link = venue_link(p.get("links", {}))
     year = esc(p["year"])
     if venue_id(p) in VENUE_LOGOS:
+        cfg = VENUE_LOGOS[venue_id(p)]
         logo = venue_logo(p, asset_root, "hub-logo-official")
-        inner = f'{logo}<span class="hub-venue-sep">·</span><span class="hub-venue-year">{year}</span>'
+        label = f'<span class="hub-venue-label">{esc(cfg["label"])}</span>'
+        tail = f'<span class="hub-venue-sep">·</span>{label}<span class="hub-venue-sep">·</span><span class="hub-venue-year">{year}</span>'
         if link:
             return (
                 f'<p class="hub-venue">'
                 f'<a class="hub-venue-logo" href="{esc(link)}" target="_blank" rel="noopener noreferrer">{logo}</a>'
-                f'<span class="hub-venue-sep">·</span><span class="hub-venue-year">{year}</span></p>'
+                f'{tail}</p>'
             )
-        return f'<p class="hub-venue">{inner}</p>'
+        return f'<p class="hub-venue">{logo}{tail}</p>'
     return f'<p class="hub-venue"><span>{esc(p["venue"])}</span><span class="hub-venue-sep">·</span><span>{year}</span></p>'
 
 

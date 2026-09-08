@@ -137,6 +137,16 @@ span.venue-badge.venue-badge-emnlp:hover {
   letter-spacing: 0.04em;
 }
 
+.venue-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.venue-badge-emnlp .venue-label {
+  color: #ffb4b8;
+}
+
 a.venue-badge:hover {
   background: rgba(78, 166, 238, 0.22);
   border-color: rgba(78, 166, 238, 0.55);
@@ -614,6 +624,12 @@ a.venue-badge:hover {
 .hub-venue-year {
   font-weight: 600;
   color: #475569;
+}
+
+.hub-venue-label {
+  font-weight: 700;
+  color: #334155;
+  letter-spacing: 0.03em;
 }
 
 .hub-venue-sep {
