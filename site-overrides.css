@@ -1,0 +1,14 @@
+/* Legacy overrides — keep minimal; main layout in static/paper.css */
+
+.site-header-nav-only {
+  justify-content: center;
+}
+
+.site-header-nav-only .site-nav {
+  justify-content: center;
+  flex: 1;
+}
+
+.site-nav a {
+  font-size: 0.84rem;
+}

@@ -1,0 +1,147 @@
+{
+  "slug": "cot-chain-of-truth",
+  "published": true,
+  "siteBase": "https://cheslyn0712.github.io",
+  "title": "CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation",
+  "shortTitle": "CoT is Not the Chain of Truth",
+  "venue": "ICML 2026",
+  "venueId": "icml",
+  "year": 2026,
+  "tldr": "Reasoning LLMs can harbor unsafe planning inside Chain-of-Thought (CoT) traces even when the final answer refuses. We localize these failures to mid-depth layers and safety-critical attention heads via Jacobian spectral metrics, validate the pattern beyond fake-news generation on HarmBench, and show parameter-efficient mitigation.",
+  "abstract": "From generating headlines to fabricating news, Large Language Models (LLMs) are typically assessed by their final outputs, under the safety assumption that a refusal response signifies safe reasoning throughout the entire process. Challenging this assumption, our study reveals that during fake news generation, even when a model rejects a harmful request, its Chain-of-Thought (CoT) reasoning may still internally contain and propagate unsafe narratives. To analyze this phenomenon, we introduce a unified safety-analysis framework that systematically deconstructs CoT generation across model layers and evaluates the role of individual attention heads through Jacobian-based spectral metrics. Within this framework, we introduce three interpretable measures—stability, geometry, and energy—to quantify how specific attention heads respond to or embed deceptive reasoning patterns. Extensive experiments on multiple reasoning-oriented LLMs show that the generation risk rises significantly when the thinking mode is activated, where the critical routing decisions are concentrated in only a few contiguous mid-depth layers.",
+  "keywords": [
+    "Chain-of-Thought",
+    "LLM safety",
+    "fake news generation",
+    "mechanistic interpretability",
+    "Jacobian analysis",
+    "reasoning LLM",
+    "CoT monitoring"
+  ],
+  "authorAffiliations": [
+    "Institute of Information Engineering, Chinese Academy of Sciences",
+    "School of Cyber Security, University of Chinese Academy of Sciences",
+    "University of Minnesota",
+    "University of the Chinese Academy of Sciences",
+    "Shanghai AI Laboratory",
+    "Institute of Automation, Chinese Academy of Sciences"
+  ],
+  "authors": [
+    { "name": "Zhao Tong", "affs": [1, 2, 5], "equal": true },
+    { "name": "Chunlin Gong", "affs": [3], "equal": true },
+    { "name": "Yiping Zhang", "affs": [4, 6] },
+    { "name": "Haichao Shi", "affs": [1] },
+    { "name": "Qiang Liu", "affs": [6] },
+    { "name": "Xingcheng Xu", "affs": [5], "corresponding": true },
+    { "name": "Shu Wu", "affs": [6] },
+    { "name": "Xiao-Yu Zhang", "affs": [1], "corresponding": true }
+  ],
+  "links": {
+    "paper": "https://arxiv.org/abs/2602.04856",
+    "pdf": "https://arxiv.org/pdf/2602.04856",
+    "arxiv": "https://arxiv.org/abs/2602.04856",
+    "arxivId": "2602.04856",
+    "code": "https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth",
+    "icmlPoster": "https://icml.cc/virtual/2026/poster/61042",
+    "conferencePoster": "https://icml.cc/virtual/2026/poster/61042",
+    "proceedings": null,
+    "openreview": null,
+    "doi": null,
+    "demo": null,
+    "dataset": null
+  },
+  "bibtex": "@misc{tong2026cotchaintruthempirical,\n      title={CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation}, \n      author={Zhao Tong and Chunlin Gong and Yiping Zhang and Haichao Shi and Qiang Liu and Xingcheng Xu and Shu Wu and Xiao-Yu Zhang},\n      year={2026},\n      eprint={2602.04856},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL},\n      url={https://arxiv.org/abs/2602.04856}, \n},",
+  "methodOverview": "We build a coarse-to-fine pipeline: (1) generate and annotate CoT traces under direct/indirect fake-news prompts; (2) localize safety-critical mid-depth layers; (3) attribute divergence to attention heads using Jacobian-based stability (B1), geometry (B2), and energy (B3) metrics; (4) validate with perturbation analysis and critical-head mitigation.",
+  "contributions": [
+    "We show ~80% of CoT traces in fake-news generation are Unsafe or Potential Unsafe even when models refuse at the output layer.",
+    "We introduce a layer-to-head framework that localizes safety-critical routing in contiguous mid-depth windows.",
+    "We propose three Jacobian spectral metrics (B1–B3) for interpretable head-level attribution of unsafe reasoning.",
+    "We validate generalization beyond fake-news generation on HarmBench jailbreak tasks, with consistent mid-depth routing and head-level spectral gaps."
+  ],
+  "mainResults": [
+    "Thinking mode raises unsafe CoT rates to nearly 80% across Llama3-8B, Qwen3-4B, and Qwen3-8B.",
+    "Safe vs. unsafe trajectories diverge in narrow mid-depth layer intervals that shift with architecture and prompting style.",
+    "Unsafe routing concentrates in a small subset of attention heads with distinct B1/B2/B3 spectral signatures.",
+    "Critical-head fine-tuning updates only 0.64%–1.95% of parameters yet improves CoT safety by +67.1 (News) and +55.0 (HarmBench) on average.",
+    "HarmBench generalization on Flan-UL2 and DeepSeek-R1-70B confirms the routing pattern is not task-specific to fake news."
+  ],
+  "priorWorkDiff": "Prior CoT monitoring and output-level alignment largely treat refusal as evidence of safe internal reasoning. Mechanistic interpretability work often visualizes attention outcomes without operator-level metrics tied to safety divergence. We combine fake-news CoT annotation, layer localization, and Jacobian-based head metrics into one reproducible pipeline for process-level LLM safety analysis.",
+  "whenToCite": "Cite this paper when discussing Chain-of-Thought safety monitoring, latent unsafe reasoning under refusal, fake news generation risks in reasoning LLMs, Jacobian or spectral analysis of attention routing, safety-critical layer/head localization, or parameter-efficient mitigation of unsafe CoT behavior. It is relevant to related work on CoT faithfulness, jailbreak robustness, mechanistic interpretability, and LLM alignment beyond output filtering.",
+  "figures": {
+    "framework": "framework.png",
+    "teaser": "teaser_figure1.png",
+    "distributionOri": "distribution_ori.png",
+    "distributionNY": "distribution_ny.png",
+    "distributionBBC": "distribution_bbc.png",
+    "layerLlama": "L_Llama_i_ori.png",
+    "layerQwen4B": "L_Qwen_4B_i_ori.png",
+    "layerQwen8B": "L_Qwen_8B_i_ori.png",
+    "perturbation": "P_llama_i_pre.png",
+    "metricB1": "Llama_B1.png",
+    "metricB2": "Llama_B2.png",
+    "metricB3": "Llama_B3.png",
+    "correlation": "correlation1.png"
+  },
+  "stats": [
+    { "value": "~80%", "label": "Unsafe / Potential Unsafe CoT" },
+    { "value": "3", "label": "Reasoning LLMs" },
+    { "value": "B1–B3", "label": "Jacobian Metrics" },
+    { "value": "+67.1", "label": "Avg. Safety Gain" }
+  ],
+  "cotCategories": [
+    { "tag": "UNSAFE", "name": "Unsafe", "description": "The model does not reject and begins executing fake news generation.", "cot": "Unsafe", "response": "Unsafe" },
+    { "tag": "LEAKY", "name": "Potential Unsafe", "description": "The model refuses in the final response, but CoT still contains actionable harmful reasoning.", "cot": "Unsafe", "response": "Safe" },
+    { "tag": "SAFE", "name": "Safe", "description": "The model refuses and CoT contains no reusable harmful procedural content.", "cot": "Safe", "response": "Safe" }
+  ],
+  "distributions": [
+    {
+      "title": "Original Style",
+      "description": "Unsafe and Potential Unsafe CoTs jointly reach ~78–81% under direct and indirect prompting.",
+      "directNote": "Direct prompting: Unsafe ~68–74%, Potential Unsafe ~5–10%, Safe ~20–22%.",
+      "indirectNote": "Indirect prompting: Unsafe ~68–70%, Potential Unsafe ~12–14%, Safe ~18–20%.",
+      "figure": "distribution_ori.png",
+      "caption": "Figure 2a. CoT category distribution under Original style (direct and indirect prompting)."
+    },
+    {
+      "title": "NYT Style Conditioning",
+      "description": "NYT-style framing preserves the high unsafe prevalence of the Original setting.",
+      "directNote": "Direct + NYT: Unsafe remains the majority; Safe CoTs stay near ~20%.",
+      "indirectNote": "Indirect + NYT: Potential Unsafe increases relative to direct prompting.",
+      "figure": "distribution_ny.png",
+      "caption": "Figure 2b. CoT category distribution under NYT style conditioning."
+    },
+    {
+      "title": "BBC Style Conditioning",
+      "description": "BBC-style conditioning is consistent with NYT and Original across all models.",
+      "directNote": "Direct + BBC: Unsafe and Potential Unsafe exceed ~75% for every model.",
+      "indirectNote": "Indirect + BBC: unsafe share stable; more mass shifts into Potential Unsafe.",
+      "figure": "distribution_bbc.png",
+      "caption": "Figure 2c. CoT category distribution under BBC style conditioning."
+    }
+  ],
+  "criticalLayers": [
+    { "model": "Llama3-8B", "direct": "[6, 8]", "indirect": "[8, 10]" },
+    { "model": "Qwen3-4B", "direct": "[32, 34]", "indirect": "[21, 23]" },
+    { "model": "Qwen3-8B", "direct": "[21, 23]", "indirect": "[22, 24]" }
+  ],
+  "metrics": [
+    { "id": "B1", "name": "Stability", "summary": "Spectral norm — sensitivity to input perturbations.", "figure": "Llama_B1.png", "caption": "B1 (Stability) across attention heads." },
+    { "id": "B2", "name": "Geometry", "summary": "Principal singular-vector alignment — consistency of information-flow directions.", "figure": "Llama_B2.png", "caption": "B2 (Geometry) across attention heads." },
+    { "id": "B3", "name": "Energy", "summary": "Spectral concentration — intensity of harmful logic in dominant modes.", "figure": "Llama_B3.png", "caption": "B3 (Energy) across attention heads." }
+  ],
+  "generalizationSummary": "Beyond fake-news generation, we evaluate HarmBench jailbreak tasks on Flan-UL2 and DeepSeek-R1-70B. Safe vs. unsafe CoT trajectories still diverge in narrow mid-depth layers, and critical heads show larger spectral gaps—confirming the routing pattern generalizes to broader harmful-instruction settings.",
+  "correlationSummary": "B1–B3 correlate strongly with safety-relevant routing across all three models.",
+  "correlationData": [
+    { "model": "Llama3-8B", "b1": "0.88", "b2": "0.82", "b3": "0.75" },
+    { "model": "Qwen3-4B", "b1": "0.86", "b2": "0.78", "b3": "0.72" },
+    { "model": "Qwen3-8B", "b1": "0.89", "b2": "0.81", "b3": "0.74" }
+  ],
+  "mitigation": [
+    { "model": "Llama3-8B", "ftRatio": "1.56%", "news": "21.1% → 94.7%", "harmbench": "20.8% → 87.4%" },
+    { "model": "Qwen3-4B", "ftRatio": "1.95%", "news": "20.3% → 92.1%", "harmbench": "20.7% → 85.8%" },
+    { "model": "Qwen3-8B", "ftRatio": "1.43%", "news": "19.6% → 90.2%", "harmbench": "31.2% → 84.6%" },
+    { "model": "Flan-UL2", "ftRatio": "1.03%", "news": "45.2% → 88.4%", "harmbench": "41.6% → 82.9%" },
+    { "model": "DeepSeek-R1-70B", "ftRatio": "0.64%", "news": "10.5% → 86.7%", "harmbench": "34.9% → 83.7%" }
+  ],
+  "relatedProjects": []
+}
