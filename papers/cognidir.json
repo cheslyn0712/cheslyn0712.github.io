@@ -52,7 +52,7 @@
     "demo": null,
     "dataset": null
   },
-  "bibtex": "@misc{tong2026cognidircombatingcognitive,\n      title={CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection}, \n      author={Zhao Tong and Chunlin Gong and Yimeng Gu and Haichao Shi and Qiang Liu and Shu Wu and Xingcheng Xu and Xiao-Yu Zhang},\n      year={2026},\n      eprint={2510.09712},\n      archivePrefix={arXiv},\n      primaryClass={cs.LG},\n      url={https://arxiv.org/abs/2510.09712}, \n},",
+  "bibtex": "@misc{tong2026cognidircombatingcognitivemalicious,\n      title={CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection}, \n      author={Zhao Tong and Chunlin Gong and Yimeng Gu and Haichao Shi and Qiang Liu and Shu Wu and Xingcheng Xu and Xiao-Yu Zhang},\n      year={2026},\n      eprint={2510.09712},\n      archivePrefix={arXiv},\n      primaryClass={cs.LG},\n      url={https://arxiv.org/abs/2510.09712}, \n},",
   "methodOverview": "CogniDir operates in three stages: (1) cognitive-grounded malicious comment synthesis with multiple LLMs across fact distortion, logical confusion, and emotional manipulation; (2) InfoDirichlet Resampling (IDR) that maps group-wise vulnerability scores to adaptive training proportions after each epoch; (3) robust evaluation under mixed adversarial comment settings on Weibo16, Weibo20, and RumourEval-19.",
   "contributions": [
     "We introduce a cognitive-grounded adversarial synthesis pipeline that generates mechanism-labeled malicious comments, improving training diversity and fidelity.",
