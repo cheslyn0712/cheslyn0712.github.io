@@ -132,16 +132,44 @@
   margin: 0;
 }
 
-.research-site .venue-pill {
-  display: inline-block;
+.research-site .venue-mark {
   margin: 0 0 16px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background: #f1f5f9;
+}
+
+.research-site .venue-mark a,
+.research-site .project-kicker > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   color: #334155;
-  font-size: 13px;
+  text-decoration: none;
+}
+
+.research-site .venue-mark-logo {
+  display: block;
+  height: 46px;
+  width: auto;
+}
+
+.research-site .project-venue-logo {
+  display: block;
+  height: 32px;
+  width: auto;
+}
+
+.research-site .venue-track {
+  color: #334155;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.research-site .project-kicker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
 }
 
 .research-site--paper h1 {
@@ -722,5 +750,13 @@
   .research-site .citation-head {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .research-site .venue-mark-logo {
+    height: 36px;
+  }
+
+  .research-site .project-venue-logo {
+    height: 28px;
   }
 }

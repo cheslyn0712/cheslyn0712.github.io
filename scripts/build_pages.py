@@ -38,9 +38,9 @@ VENUE_LOGOS = {
         "css": "venue-badge-icml",
     },
     "emnlp": {
-        "file": "emnlp-logo.svg",
-        "alt": "EMNLP — Empirical Methods in Natural Language Processing",
-        "label": "EMNLP",
+        "file": "emnlp-2026-main.png",
+        "alt": "EMNLP 2026 Main Conference, Budapest",
+        "label": "Main conference",
         "css": "venue-badge-emnlp",
     },
 }
@@ -58,10 +58,27 @@ def venue_id(p: dict) -> str:
     return p.get("venueId") or "icml"
 
 
-def venue_logo(p: dict, asset_root: str, css_class: str = "venue-logo-official") -> str:
+def venue_logo(p: dict, asset_root: str, css_class: str = "venue-logo-official", loading: str = "lazy") -> str:
     cfg = VENUE_LOGOS.get(venue_id(p), VENUE_LOGOS["icml"])
     src = f'{asset_root.rstrip("/")}/static/{cfg["file"]}'
-    return f'<img class="{css_class}" src="{esc(src)}" alt="{esc(cfg["alt"])}" loading="lazy">'
+    lazy = ' loading="lazy"' if loading == "lazy" else ""
+    return f'<img class="{css_class}" src="{esc(src)}" alt="{esc(cfg["alt"])}"{lazy}>'
+
+
+def venue_mark(p: dict, asset_root: str, css_class: str) -> str:
+    cfg = VENUE_LOGOS.get(venue_id(p), VENUE_LOGOS["icml"])
+    logo = venue_logo(p, asset_root, css_class, loading="eager")
+    if venue_id(p) == "emnlp":
+        note = cfg["label"]
+    else:
+        note = str(p.get("year", ""))
+    inner = f'{logo}<span class="venue-track">{esc(note)}</span>'
+    link = venue_link(p.get("links", {}))
+    if link:
+        return (
+            f'<a href="{esc(link)}" target="_blank" rel="noopener noreferrer">{inner}</a>'
+        )
+    return inner
 
 
 def venue_badge_html(p: dict, asset_root: str) -> str:
@@ -221,8 +238,8 @@ def render_head(p: dict, canonical: str) -> str:
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/styles.css">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026e">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/research-layout.css?v=20261026e">"""
+  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026f">
+  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/research-layout.css?v=20261026f">"""
 
 
 def figure_src(p: dict, filename: str) -> str:
@@ -291,7 +308,7 @@ def build_action_buttons(links: dict) -> list[str]:
     return buttons
 
 
-LAYOUT_CSS = "research-layout.css?v=20261026e"
+LAYOUT_CSS = "research-layout.css?v=20261026f"
 FONT_CSS = (
     "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&"
     "family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
@@ -362,7 +379,7 @@ def render_paper_hero(p: dict) -> str:
         )
     secondary_html = f'<p class="hero-actions-secondary">{"".join(secondary)}</p>' if secondary else ""
     return f"""<header class="paper-hero">
-        <p class="venue-pill">{esc(p["venue"])}</p>
+        <p class="venue-mark">{venue_mark(p, p["_assetRoot"], "venue-mark-logo")}</p>
         {split_title(p)}
         <p class="paper-authors">{render_authors(p["authors"])}</p>
         <p class="equal-note"><sup>*</sup> Equal contribution: {esc(equal_names)}</p>
@@ -851,7 +868,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
             f"""<article class="project-row">
   <a class="project-thumb" href="{esc(url)}"><img src="{esc(image)}" alt="{esc(p["shortTitle"])}"></a>
   <div class="project-copy">
-    <p class="project-kicker">{esc(p["venue"])} · {esc(p.get("researchTheme", ""))}</p>
+    <p class="project-kicker">{venue_mark(p, asset_root, "project-venue-logo")}<span class="project-theme">· {esc(p.get("researchTheme", ""))}</span></p>
     <h2><a href="{esc(url)}">{esc(p["shortTitle"])}</a></h2>
     <p class="project-summary">{esc(p.get("cardSummary") or p["tldr"])}</p>
     <p class="project-actions">
@@ -902,7 +919,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
   <link href="{FONT_CSS}" rel="stylesheet">
   <link rel="stylesheet" href="{esc(asset_root)}/styles.css">
   <link rel="stylesheet" href="{esc(asset_root)}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026e">
+  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026f">
   <link rel="stylesheet" href="{esc(asset_root)}/static/{LAYOUT_CSS}">
 </head>
 <body class="research-site research-site--projects">
@@ -974,7 +991,7 @@ sitemap: true
   <link href="{FONT_CSS}" rel="stylesheet">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../site-overrides.css">
-  <link rel="stylesheet" href="../../static/paper.css?v=20261026e">
+  <link rel="stylesheet" href="../../static/paper.css?v=20261026f">
   <link rel="stylesheet" href="../../static/{LAYOUT_CSS}">
 </head>
 <body class="research-site research-site--note">
