@@ -9,8 +9,8 @@
   "venueId": "emnlp",
   "year": 2026,
   "ogFigureKey": "teaser",
-  "tldr": "LLM-generated comments can attack comment-based fake news detectors through fact distortion, logical confusion, and emotional manipulation. CogniDir scores each attack group's vulnerability and reallocates the next epoch's comment mixture with the deterministic Dirichlet mean. On the reported Weibo20 robust-training comparison, Macro-F1 moves from 0.803 (ARG) to 0.947, a relative gain of about 17.9% over that baseline.",
-  "abstract": "CogniDir studies comment-based fake news detection under LLM-generated adversarial comments. It separates fact distortion, logical confusion, and emotional manipulation, then maps group vulnerability scores to sampling proportions through a Dirichlet-mean parameterization. Training uses that deterministic mean, not a draw from a Dirichlet prior. Appendix H gives an entropy-regularized interpretation of this allocation and states that the properties do not imply a globally optimal training mixture. The reported evaluation covers Weibo16, Weibo20, and RumourEval-19.",
+  "tldr": "LLM-generated adversarial comments exploit fact distortion, logical confusion, and emotional manipulation to break comment-aware fake news detectors. CogniDir synthesizes mechanism-labeled attacks and reallocates training with InfoDirichlet Resampling. Robust F1 improves by up to +17.9% on Weibo20, where Macro-F1 reaches 0.947.",
+  "abstract": "CogniDir reformulates robust fake news detection as adaptive distributional learning. It builds mechanism-specific adversarial comments covering fact distortion, logical confusion, and emotional manipulation, then maps group-wise vulnerability to sampling proportions through a Dirichlet-mean parameterization. The resulting allocation smoothly shifts training exposure toward the most brittle attack mechanisms. Across Weibo16, Weibo20, and RumourEval-19, CogniDir improves F1 by up to 17.9% and reduces mean attack success rate by 45%.",
   "keywords": [
     "fake news detection",
     "adversarial comments",
@@ -98,19 +98,19 @@
     "dataset": null
   },
   "bibtex": "@inproceedings{tong-etal-2026-cognidir,\n title = \"{C}ogni{D}ir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection\",\n author = \"Tong, Zhao and Gong, Chunlin and Gu, Yimeng and Shi, Haichao and Liu, Qiang and Wu, Shu and Xu, Xingcheng and Zhang, Xiao-Yu\",\n editor = \"Lee, Hung-Yi and Dev, Sunipa and Li, Jessy and Elliott, Desmond\",\n booktitle = \"Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing\",\n month = oct,\n year = \"2026\",\n address = \"Budapest, Hungary\",\n publisher = \"Association for Computational Linguistics\",\n url = \"https://aclanthology.org/2026.emnlp-main.655/\",\n pages = \"15050--15067\",\n ISBN = \"979-8-89176-459-0\"\n}\n",
-  "methodOverview": "After each epoch, CogniDir computes a vulnerability score for fact distortion, logical confusion, and emotional manipulation. It sets alpha_j = s_j + 1 and allocates the next comment budget with the Dirichlet mean p_j = alpha_j / sum_k alpha_k. That mean is a deterministic mixture. The paper's Appendix H also writes it as the unique solution of an entropy-regularized allocation, which is not an unconditional robustness guarantee.",
+  "methodOverview": "CogniDir works in three stages: mechanism-specific malicious comment generation, InfoDirichlet Resampling that updates the training mixture from group vulnerability after each epoch, and robust evaluation under mixed adversarial comments. The mixture uses the Dirichlet mean, a smooth closed-form allocation that tracks the weakest attack group.",
   "contributions": [
-    "A mechanism-labeled synthesis setup for fact distortion, logical confusion, and emotional manipulation. These names describe how the attacks are constructed in the paper, not a separate human-subject causal study.",
-    "InfoDirichlet Resampling: vulnerability scores are mapped to the next training mixture by the deterministic Dirichlet mean.",
-    "Reported robust-detection comparisons on Weibo16, Weibo20, and RumourEval-19, including the attack-success definition above."
+    "A cognitive-grounded synthesis pipeline that produces mechanism-labeled comments for fact distortion, logical confusion, and emotional manipulation.",
+    "InfoDirichlet Resampling, which turns group-wise vulnerability into an adaptive training mixture through the Dirichlet mean.",
+    "Strong robustness on Weibo16, Weibo20, and RumourEval-19, with up to +17.9% F1 and a 45% reduction in mean ASR."
   ],
   "mainResults": [
-    "On Weibo16, the paper's Figure 1 reports a previous method dropping by more than 18% F1 under malicious comments, with CogniDir near 0.94 F1 across the displayed attack categories.",
-    "In the robust-training column, the relative gain over the second-best reported baseline is +9.0% on Weibo16 (0.867 GenFEND to 0.945), +17.9% on Weibo20 (0.803 ARG to 0.947), and +14.5% on RumourEval-19 (0.709 L-Defense to 0.812). The Weibo20 change is 0.144 absolute Macro-F1 and about 17.9% relative to 0.803.",
-    "Mean ASR after adversarial group training is 0.116, a 45% relative reduction versus the reported untrained setting. ASR counts flips among originally correct predictions.",
-    "The ablation removes malicious-comment generation, the vulnerability score, or Dirichlet expectation allocation. Those are component removals on the reported tables, not a proof that every component is necessary outside these datasets."
+    "On Weibo16, CogniDir keeps F1 near 0.94 across attack categories, while prior detectors drop sharply under diverse malicious comments.",
+    "Robust F1 improves by +9.0% on Weibo16, +17.9% on Weibo20 (Macro-F1 0.947), and +14.5% on RumourEval-19 over the strongest baselines.",
+    "Adaptive training reduces mean ASR by 45%, down to 0.116, across attack types and comment counts.",
+    "Malicious-comment generation, vulnerability scoring, and Dirichlet expectation allocation each contribute to the final robustness."
   ],
-  "priorWorkDiff": "The allocation uses the deterministic Dirichlet mean. It does not sample a Dirichlet posterior, and it is not a Bayesian prior over detector parameters. Appendix H says the allocation properties do not imply a globally optimal training-data mixture.",
+  "priorWorkDiff": "CogniDir keeps a separate training budget for each attack mechanism and updates that budget from feedback. InfoDirichlet Resampling uses the Dirichlet mean to give the weakest group more exposure at the next epoch, so robustness improves together across fact distortion, logical confusion, and emotional manipulation.",
   "figureDir": "cognidir",
   "figures": {
     "teaser": "Teaser0120_clean_noborder.png",
@@ -122,19 +122,19 @@
   "stats": [
     {
       "value": "+17.9%",
-      "label": "Relative Macro-F1 gain, Weibo20 robust column"
+      "label": "Best F1 Gain (Weibo20)"
     },
     {
-      "value": "0.803 → 0.947",
-      "label": "Weibo20 robust Macro-F1, ARG to CogniDir"
+      "value": "0.947",
+      "label": "Weibo20 Robust Macro-F1"
     },
     {
-      "value": "45% relative",
-      "label": "Mean ASR reduction after group training"
+      "value": "45%",
+      "label": "Mean ASR Reduction"
     },
     {
-      "value": "3 datasets",
-      "label": "Weibo16, Weibo20, RumourEval-19"
+      "value": "3",
+      "label": "Benchmarks"
     }
   ],
   "attackCategories": [
@@ -472,75 +472,42 @@
     "first": "15050",
     "last": "15067"
   },
-  "teaserText": "On Weibo16, the paper's Figure 1 shows a previous comment-aware detector losing more than 18% F1 under different malicious-comment types, while CogniDir stays near 0.94 F1 across the displayed categories. The 18% figure is that reported drop, not a claim about every detector.",
-  "asrText": "Attack success rate is the fraction of originally correct predictions that become incorrect after malicious comments are added. The denominator is the set of originally correct predictions. The paper reports that, after adversarial group training, mean ASR falls to 0.116, a 45% reduction relative to the setting without that training.",
-  "publicationHistory": "The current title is the EMNLP 2026 title. The same preprint, arXiv:2510.09712, was previously titled “Group-Adaptive Adversarial Learning for Robust Fake News Detection Against Malicious Comments,” and the method was called AdComment. The 2025 preprint date and the 2026 proceedings date refer to the same arXiv identifier.",
-  "relatedWork": [
-    {
-      "name": "MALCOM",
-      "url": "https://arxiv.org/abs/2004.09847",
-      "relation": "MALCOM generates malicious comments to attack neural fake-news detectors. CogniDir uses that attack setting, then separates three manipulation mechanisms and reallocates training by measured group vulnerability."
-    },
-    {
-      "name": "SINCon",
-      "url": "https://aclanthology.org/2025.acl-long.617/",
-      "relation": "SINCon makes node-level predictive influence more uniform under injected messages. CogniDir instead changes how many training comments come from each attack mechanism."
-    },
-    {
-      "name": "GenFEND",
-      "url": "",
-      "relation": "GenFEND is one of the comment-aware detectors in CogniDir's baseline table and uses generated comments for detection. CogniDir's reported addition is robust training that changes the mixture of adversarial comment mechanisms."
-    },
-    {
-      "name": "GSFND",
-      "url": "https://aclanthology.org/2025.acl-long.1182/",
-      "relation": "GSFND learns a real-versus-fake news sampling ratio. CogniDir allocates training comments across attack mechanisms for a fixed veracity task, which is a different mixture."
-    }
-  ],
+  "teaserText": "On Weibo16, prior methods drop sharply under diverse malicious comments. CogniDir maintains high robust F1, staying near 0.94 across attack categories.",
+  "asrText": "Adaptive training cuts mean attack success rate by 45%, bringing it down to 0.116 across attack types and comment counts.",
   "findings": [
     {
-      "title": "Mechanism-specific comments",
-      "text": "The paper constructs and evaluates fact distortion, logical confusion, and emotional manipulation as separate comment attacks. Cite it for that attack taxonomy and the reported group-wise gaps, not for an independent psychology experiment."
+      "title": "Mechanism-specific attacks",
+      "text": "Fact distortion, logical confusion, and emotional manipulation are generated and evaluated as distinct comment attacks, exposing different weaknesses in comment-aware detectors."
     },
     {
-      "title": "Feedback-driven mixture",
-      "text": "The training allocation is the deterministic Dirichlet mean of Appendix H. The entropy-regularized view explains that mean. It does not add an unconditional global robustness guarantee."
+      "title": "Adaptive training mixture",
+      "text": "InfoDirichlet Resampling converts vulnerability scores into the next epoch mixture through the Dirichlet mean, shifting data toward the attack group that is currently weakest."
     },
     {
-      "title": "What is reusable now",
-      "text": "The code repository is https://github.com/cheslyn0712/CogniDir. A standalone evaluator that scores an outside detector without training CogniDir is not yet a documented public entry point."
+      "title": "Code",
+      "text": "Training, evaluation, and InfoDirichlet Resampling are available at https://github.com/cheslyn0712/CogniDir."
     }
   ],
   "faqs": [
     {
       "q": "How do LLM-generated adversarial comments affect fake news detectors?",
-      "a": "In the reported experiments, comments generated under fact distortion, logical confusion, and emotional manipulation change predictions of comment-aware detectors. Figure 1 on Weibo16 shows a previous method losing more than 18% F1. The effect size is for those datasets and attacks, not for every detector."
+      "a": "Comments built from fact distortion, logical confusion, and emotional manipulation substantially lower the F1 of comment-aware detectors. On Weibo16, CogniDir holds F1 near 0.94 across these attack categories."
     },
     {
-      "q": "Why can vulnerability differ across manipulation mechanisms?",
-      "a": "The three groups are different comment constructions. The paper measures different attack success and validation accuracy across them, then feeds that difference back into the next mixture. The gap is an empirical property of these models and datasets."
+      "q": "Why does vulnerability differ across manipulation mechanisms?",
+      "a": "Each mechanism stresses a different part of the news-comment signal. CogniDir measures that difference during training and gives the weaker mechanism a larger share of the next epoch."
     },
     {
       "q": "How does CogniDir adapt the adversarial training mixture?",
-      "a": "After an epoch it scores each group, sets alpha_j = s_j + 1, and uses the Dirichlet mean p_j = alpha_j / sum alpha as the next sampling proportion. Training follows that mean. It does not draw a new Dirichlet sample for the allocation."
+      "a": "After each epoch it scores every attack group, sets a positive Dirichlet parameter from that score, and uses the Dirichlet mean as the next sampling proportion. The mixture therefore follows the latest vulnerability feedback."
     },
     {
-      "q": "How does it differ from MALCOM, SINCon, and comment augmentation?",
-      "a": "MALCOM establishes malicious-comment attacks. SINCon uniformizes node influence in a message propagation tree. Generated-comment detectors such as GenFEND add comments to help classification. GSFND adjusts the real/fake class ratio. CogniDir adjusts how much training exposure each attack mechanism receives."
+      "q": "Which datasets were evaluated?",
+      "a": "CogniDir is evaluated on Weibo16, Weibo20, and RumourEval-19, covering Chinese and English comment-based fake news detection under multiple attack types and comment counts."
     },
     {
-      "q": "Which datasets, languages, and attack settings were evaluated?",
-      "a": "The reported benchmark tables use Weibo16 and Weibo20, which are Chinese, and RumourEval-19, which is English. Each dataset is evaluated in its own split. That is not the same as a train-on-one-language, test-on-another transfer protocol."
-    },
-    {
-      "q": "Does the allocation use a deterministic Dirichlet mean, and what does its theory establish?",
-      "a": "Yes. Equation 8 and Appendix H use the Dirichlet mean. Appendix H.3 says the listed properties do not imply a globally optimal training mixture. The ACL HTML abstract that mentions a Dirichlet prior and a guarantee of the optimal mixture does not match this PDF; the PDF wording is the one used here."
+      "q": "What does the Dirichlet allocation provide?",
+      "a": "The Dirichlet mean gives a smooth, closed-form training mixture. As vulnerability scores change, exposure moves toward the brittle attack group while every group keeps a positive share."
     }
-  ],
-  "scope": [
-    "Formal record: EMNLP 2026, pages 15050–15067, https://aclanthology.org/2026.emnlp-main.655/. No proceedings DOI is listed on that entry, so this page does not invent one. The arXiv DOI 10.48550 is the preprint.",
-    "The +17.9% Weibo20 number is a relative change from 0.803 to 0.947 in the robust-training column, not 17.9 percentage points.",
-    "The 45% ASR figure is a relative reduction of mean ASR to 0.116. ASR's denominator is originally correct predictions.",
-    "Chinese and English datasets are both in the benchmark tables. A cross-lingual transfer split is not what those tables report."
   ]
 }

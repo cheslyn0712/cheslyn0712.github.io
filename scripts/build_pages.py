@@ -755,7 +755,7 @@ def render_cot_paper_page(p: dict) -> str:
             <thead><tr><th>Model</th><th>FT Ratio</th><th>News Before / After</th><th>HarmBench Before / After</th></tr></thead>
             <tbody>
               {mitigation_rows}
-              <tr><td colspan="2"><strong>Average change (percentage points)</strong></td><td><strong>+67.1</strong></td><td><strong>+55.0</strong></td></tr>
+              <tr><td colspan="2"><strong>Average improvement</strong></td><td><strong>+67.1</strong></td><td><strong>+55.0</strong></td></tr>
             </tbody>
           </table>
         </div>
