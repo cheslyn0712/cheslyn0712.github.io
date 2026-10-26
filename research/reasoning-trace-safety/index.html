@@ -1,0 +1,72 @@
+---
+layout: null
+sitemap: true
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention | Chunlin Gong</title>
+  <meta name="description" content="A research overview of reasoning-trace safety, refusal behavior, internal analysis, and targeted safety intervention.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://chunlingong.me/research/reasoning-trace-safety/">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention",
+  "description": "A research overview of reasoning-trace safety, refusal behavior, internal analysis, and targeted safety intervention.",
+  "author": {
+    "@type": "Person",
+    "name": "Chunlin Gong"
+  },
+  "dateModified": "2026-10-26",
+  "url": "https://chunlingong.me/research/reasoning-trace-safety/",
+  "mainEntityOfPage": "https://chunlingong.me/research/reasoning-trace-safety/",
+  "about": {
+    "@type": "ScholarlyArticle",
+    "name": "CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation",
+    "url": "https://proceedings.mlr.press/v306/tong26e.html"
+  },
+  "citation": [
+    "https://proceedings.mlr.press/v306/tong26e.html",
+    "https://aclanthology.org/2025.findings-acl.1197/",
+    "https://arxiv.org/abs/2507.03167",
+    "https://arxiv.org/abs/2510.26418"
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../site-overrides.css">
+  <link rel="stylesheet" href="../../static/paper.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header site-header-nav-only">
+      <nav class="site-nav">
+        <a href="/projects/">Projects</a>
+        <a href="/projects/cot-chain-of-truth/">Project</a>
+        <a href="https://proceedings.mlr.press/v306/tong26e.html" target="_blank" rel="noopener noreferrer">Paper</a>
+        <a href="https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth" target="_blank" rel="noopener noreferrer">Code</a>
+      </nav>
+    </header>
+    <main class="paper-page">
+      <header class="paper-hero">
+        <h1>Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention</h1>
+        <p>Research note by Chunlin Gong · Updated October 26, 2026</p>
+        <p class="lead-text">Generated reasoning traces provide a detailed record for studying language-model safety. They support questions about the content produced during reasoning, the internal components associated with that content, and interventions that improve safety. These questions connect evaluation, mechanistic interpretability, and model control.</p>
+      </header>
+      <section class="paper-section" id="evaluation"><h2>Evaluating reasoning traces</h2><p class="section-text">A process-level evaluation records the prompt, the generated reasoning trace, and the final answer. Trace annotations characterize the content produced during reasoning, while final-answer labels capture the model&#x27;s response to the request. Studying these observations together reveals how safety behavior develops through generation.</p><p class="section-text">CoT is Not the Chain of Truth examines this relationship in fake-news generation, including traces containing unsafe content whose final answers are refusals. Its analysis combines trace annotation with measurements of internal model behavior. The paper also reports evaluation on HarmBench jailbreak tasks.</p></section><section class="paper-section" id="mechanisms"><h2>Localizing safety-related computation</h2><p class="section-text">Internal analysis connects observed generation behavior with model components. Layer-level measurements identify relevant depth intervals, and attention-head analysis examines components within those intervals. Jacobian-based measurements characterize sensitivity, geometry, and spectral energy.</p><p class="section-text">This workflow gives researchers a route from an annotated trace to a concrete set of components for further study. Perturbation experiments and targeted updates connect these measurements with observed changes in model behavior.</p></section><section class="paper-section" id="research-connections"><h2>Connecting evaluation, refusal, and intervention</h2><p class="section-text">SafeChain studies the safety of long-reasoning models through evaluation, decoding strategies, and CoT-style safety training. Where Do Reasoning Models Refuse? examines refusal decisions within reasoning traces and internal representations. Chain-of-Thought Hijacking investigates extended reasoning, refusal robustness, and internal safety signals.</p><p class="section-text">These research directions motivate complementary questions about trace content, refusal decisions, model mechanisms, and safety interventions. CoT is Not the Chain of Truth contributes a layer-to-head analysis workflow using Jacobian spectral measurements and evaluates targeted interventions in the reported experimental settings.</p></section><section class="paper-section" id="resources"><h2>Working with the analysis workflow</h2><p class="section-text">The public repository organizes the workflow into generation, annotation, and layer/head analysis. Researchers can start with the prompt and data-format documentation, inspect the annotation entry points, and follow the analysis scripts to understand the reported measurements.</p><p class="section-text">The project page collects the framework, experiments, figures, and official ICML 2026 citation. Its resource links connect each part of the workflow to the corresponding repository directory.</p></section>
+      <section class="paper-section" id="references">
+        <h2>References</h2>
+        <ul class="section-list"><li><a href="https://proceedings.mlr.press/v306/tong26e.html">CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation</a></li><li><a href="https://aclanthology.org/2025.findings-acl.1197/">SafeChain: Safety of Language Models with Long Chain-of-Thought Reasoning Capabilities</a></li><li><a href="https://arxiv.org/abs/2507.03167">Where Do Reasoning Models Refuse?</a></li><li><a href="https://arxiv.org/abs/2510.26418">Chain-of-Thought Hijacking</a></li></ul>
+      </section>
+      <section class="paper-section" id="project">
+        <h2>Related project</h2>
+        <p class="section-text"><a href="/projects/cot-chain-of-truth/">CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation</a></p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -175,6 +175,9 @@ def render_head(p: dict, canonical: str) -> str:
         }
     if links.get("pdf"):
         json_ld["encoding"] = {"@type": "MediaObject", "contentUrl": links["pdf"]}
+    former_titles = [title for title in (p.get("formerTitles") or []) if title]
+    if former_titles:
+        json_ld["alternateName"] = former_titles
 
     doi_meta = ""
     if links.get("doi"):
@@ -287,13 +290,27 @@ def build_action_buttons(links: dict) -> list[str]:
     return buttons
 
 
+def render_research_context(p: dict) -> str:
+    paragraphs = [
+        f'<p class="section-text">{esc(text)}</p>' for text in (p.get("researchContext") or [])
+    ]
+    note = p.get("researchNote") or {}
+    if note.get("title") and note.get("url"):
+        paragraphs.append(
+            '<p class="section-text">Research note: '
+            f'<a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
+        )
+    if not paragraphs:
+        return ""
+    return (
+        '<section class="paper-section" id="research-context"><h2>Research context</h2>'
+        + "".join(paragraphs)
+        + "</section>"
+    )
+
+
 def render_extra_sections(p: dict) -> str:
     parts: list[str] = []
-    if p.get("publicationHistory"):
-        parts.append(
-            f'<section class="paper-section" id="history"><h2>Publication history</h2>'
-            f'<p class="section-text">{esc(p["publicationHistory"])}</p></section>'
-        )
     rows = p.get("relatedWork") or []
     if rows:
         body = []
@@ -305,9 +322,9 @@ def render_extra_sections(p: dict) -> str:
                 )
             body.append(f'<tr><td>{name}</td><td>{esc(row["relation"])}</td></tr>')
         parts.append(
-            '<section class="paper-section" id="related"><h2>Relation to nearby work</h2>'
+            '<section class="paper-section" id="related"><h2>Related research</h2>'
             '<div class="table-wrap full-width-table scroll-x"><table class="data-table compact">'
-            '<thead><tr><th>Work</th><th>Relation</th></tr></thead>'
+            '<thead><tr><th>Work</th><th>Connection</th></tr></thead>'
             f'<tbody>{"".join(body)}</tbody></table></div></section>'
         )
     findings = p.get("findings") or []
@@ -316,7 +333,18 @@ def render_extra_sections(p: dict) -> str:
             f'<li><strong>{esc(item["title"])}.</strong> {esc(item["text"])}</li>' for item in findings
         )
         parts.append(
-            '<section class="paper-section" id="findings"><h2>Research findings and resources</h2>'
+            '<section class="paper-section" id="findings"><h2>Research findings</h2>'
+            f'<ul class="section-list">{items}</ul></section>'
+        )
+    resources = p.get("resources") or []
+    if resources:
+        items = "".join(
+            f'<li><a href="{esc(item["url"])}" target="_blank" rel="noopener noreferrer">{esc(item["name"])}</a>'
+            f' — {esc(item["description"])}</li>'
+            for item in resources
+        )
+        parts.append(
+            '<section class="paper-section" id="resources"><h2>Code and resources</h2>'
             f'<ul class="section-list">{items}</ul></section>'
         )
     faqs = p.get("faqs") or []
@@ -325,12 +353,16 @@ def render_extra_sections(p: dict) -> str:
             f'<h3>{esc(item["q"])}</h3><p class="section-text">{esc(item["a"])}</p>' for item in faqs
         )
         parts.append(f'<section class="paper-section" id="faq"><h2>Questions</h2>{blocks}</section>')
-    scope = p.get("scope") or []
-    if scope:
-        items = "".join(f"<li>{esc(item)}</li>" for item in scope)
+    if p.get("publicationHistory"):
+        history_link = ""
+        if p.get("slug") == "cognidir":
+            history_link = (
+                '<p class="section-text"><a href="https://arxiv.org/abs/2510.09712">'
+                "arXiv version history</a></p>"
+            )
         parts.append(
-            '<section class="paper-section" id="scope"><h2>Scope and version</h2>'
-            f'<ul class="section-list">{items}</ul></section>'
+            '<section class="paper-section" id="history"><h2>Publication history</h2>'
+            f'<p class="section-text">{esc(p["publicationHistory"])}</p>{history_link}</section>'
         )
     return "".join(parts)
 
@@ -503,6 +535,8 @@ def render_cognidir_paper_page(p: dict) -> str:
         <h2>TL;DR</h2>
         <p class="lead-text">{esc(p["tldr"])}</p>
       </section>
+
+      {render_research_context(p)}
 
       <section class="paper-section" id="teaser">
         <h2>Cognitive Attacks Break Static Defenses</h2>
@@ -689,6 +723,8 @@ def render_cot_paper_page(p: dict) -> str:
         <p class="lead-text">{esc(p["tldr"])}</p>
       </section>
 
+      {render_research_context(p)}
+
       <section class="paper-section" id="framework">
         <h2>Framework</h2>
         <p class="section-text">{esc(p["methodOverview"])}</p>
@@ -783,27 +819,39 @@ def render_cot_paper_page(p: dict) -> str:
 
 
 def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, canonical: str) -> str:
+    description = (
+        "Research on reasoning-model safety and robust misinformation detection, "
+        "with methods, empirical findings, and code."
+    )
     cards = []
+    notes = []
     for p in papers:
         url = f'{paper_href_prefix}{p["slug"]}/'
+        links = p["links"]
+        note = p.get("researchNote") or {}
+        note_link = ""
+        if note.get("title") and note.get("url"):
+            note_link = f'<p><a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
+            notes.append(
+                f'<p><a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
+                f'<p class="section-text">{esc(note.get("description", ""))}</p>'
+            )
         cards.append(
             f"""<article class="hub-card">
   <h2><a href="{esc(url)}">{esc(p["shortTitle"])}</a></h2>
   {hub_venue_line(p, asset_root)}
+  <p>Research area: {esc(p.get("researchTheme", ""))}</p>
+  <p>{esc(p.get("researchQuestion", ""))}</p>
   <p>{esc(p["tldr"])}</p>
-  <p class="hub-links"><a href="{esc(url)}">Project page →</a><span>·</span><a href="{esc(p["links"].get("paper") or p["links"]["arxiv"])}" target="_blank" rel="noopener noreferrer">Paper</a><span>·</span><a href="{esc(p["links"]["arxiv"])}" target="_blank" rel="noopener noreferrer">Preprint</a><span>·</span><a href="{esc(p["links"]["pdf"])}" target="_blank" rel="noopener noreferrer">PDF</a></p>
+  <p class="hub-links"><a href="{esc(url)}">Project</a><span>·</span><a href="{esc(links.get("paper") or links["arxiv"])}" target="_blank" rel="noopener noreferrer">Paper</a><span>·</span><a href="{esc(links["arxiv"])}" target="_blank" rel="noopener noreferrer">Preprint</a><span>·</span><a href="{esc(links["pdf"])}" target="_blank" rel="noopener noreferrer">PDF</a><span>·</span><a href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer">Code</a></p>
+  {note_link}
 </article>"""
         )
 
-    titles = ", ".join(p["shortTitle"] for p in papers[:3])
-    description = (
-        f"Research project pages for {titles}. "
-        "Includes paper summaries, figures, BibTeX, and links to code and PDFs for search indexing."
-    )
     item_list = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": "Research Project Pages",
+        "name": "Research projects",
         "itemListElement": [
             {
                 "@type": "ListItem",
@@ -820,7 +868,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Research Project Pages</title>
+  <title>Research Projects | Chunlin Gong</title>
   <meta name="description" content="{esc(description)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="{esc(canonical)}">
@@ -833,12 +881,101 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
 </head>
 <body>
   <main class="hub-page">
-    <h1>Research Project Pages</h1>
-    <p class="hub-intro">Indexed project pages for published papers — summaries, figures, BibTeX, and outbound links for discovery.</p>
+    <h1>Research projects</h1>
+    <p class="hub-intro">{esc(description)}</p>
     <div class="hub-grid">{''.join(cards)}</div>
+    <section class="paper-section" id="research-notes">
+      <h2>Research notes</h2>
+      <p class="section-text">Research perspectives on reasoning-trace safety and robust fake news detection.</p>
+      {''.join(notes)}
+    </section>
   </main>
 </body>
 </html>"""
+
+
+def render_research_note(p: dict) -> str:
+    note = p["researchNote"]
+    canonical = f'{p["siteBase"]}{note["url"]}'
+    links = p["links"]
+    sections = []
+    for section in note["sections"]:
+        paragraphs = "".join(
+            f'<p class="section-text">{esc(paragraph)}</p>' for paragraph in section["paragraphs"]
+        )
+        sections.append(
+            f'<section class="paper-section" id="{esc(section["id"])}">'
+            f'<h2>{esc(section["title"])}</h2>{paragraphs}</section>'
+        )
+    references = "".join(
+        f'<li><a href="{esc(item["url"])}">{esc(item["name"])}</a></li>' for item in note["references"]
+    )
+    article = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": note["title"],
+        "description": note["description"],
+        "author": {"@type": "Person", "name": note["author"]},
+        "dateModified": note["updated"],
+        "url": canonical,
+        "mainEntityOfPage": canonical,
+        "about": {
+            "@type": "ScholarlyArticle",
+            "name": p["title"],
+            "url": links["paper"],
+        },
+        "citation": [item["url"] for item in note["references"]],
+    }
+    return f"""---
+layout: null
+sitemap: true
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{esc(note["title"])} | Chunlin Gong</title>
+  <meta name="description" content="{esc(note["description"])}">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="{esc(canonical)}">
+  <script type="application/ld+json">
+{json.dumps(article, indent=2)}
+  </script>
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../site-overrides.css">
+  <link rel="stylesheet" href="../../static/paper.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header site-header-nav-only">
+      <nav class="site-nav">
+        <a href="/projects/">Projects</a>
+        <a href="/projects/{esc(p["slug"])}/">Project</a>
+        <a href="{esc(links["paper"])}" target="_blank" rel="noopener noreferrer">Paper</a>
+        <a href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer">Code</a>
+      </nav>
+    </header>
+    <main class="paper-page">
+      <header class="paper-hero">
+        <h1>{esc(note["title"])}</h1>
+        <p>Research note by Chunlin Gong · Updated October 26, 2026</p>
+        <p class="lead-text">{esc(note["lead"])}</p>
+      </header>
+      {''.join(sections)}
+      <section class="paper-section" id="references">
+        <h2>References</h2>
+        <ul class="section-list">{references}</ul>
+      </section>
+      <section class="paper-section" id="project">
+        <h2>Related project</h2>
+        <p class="section-text"><a href="/projects/{esc(p["slug"])}/">{esc(p["title"])}</a></p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+"""
 
 
 def render_root_redirect(site_base: str) -> str:
@@ -874,6 +1011,13 @@ def build() -> None:
         page_html = render_paper_page(data)
         (out_dir / "index.html").write_text(page_html, encoding="utf-8")
         (out_dir / "paper.bib").write_text(data["bibtex"], encoding="utf-8")
+        note = data.get("researchNote") or {}
+        if note.get("slug"):
+            note_dir = ROOT / "research" / note["slug"]
+            note_dir.mkdir(parents=True, exist_ok=True)
+            note_html = render_research_note(data)
+            (note_dir / "index.html").write_text(note_html, encoding="utf-8")
+            print(f"Built {note_dir / 'index.html'}")
         papers.append(data)
         print(f"Built {out_dir / 'index.html'}")
 

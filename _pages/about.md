@@ -38,7 +38,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 <div class="paper-box">
   <div class="paper-box-image">
     <div class="badge" style="background-color: #e74c3c;">ICML 2026</div>
-    <img src="./images/CoT.png" alt="sym" style="width:500px;height:200px;object-fit:cover;">
+    <img src="./images/CoT.png" alt="CoT is Not the Chain of Truth project figure" style="width:500px;height:200px;object-fit:cover;">
   </div>
 
   <div class="paper-box-text">
@@ -50,8 +50,9 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
     <p>Zhao Tong*,<strong>Chunlin Gong*</strong>, Yiping Zhang, Haichao Shi, Qiang Liu, Xingcheng Xu, Shu Wu, Xiao-Yu Zhang</p>
     
     <ul>
-      <li>Our paper shows that in fake-news generation, reasoning LLMs can still produce unsafe, deceptive content inside their chain-of-thought even when the final answer is a refusal, and proposes a layer/head-level Jacobian spectral analysis to localize the safety-critical routing mechanisms driving that divergence.</li>
+      <li>We study reasoning-trace safety in language models through trace annotation, Jacobian-based layer and attention-head analysis, and targeted safety intervention. The experiments examine fake-news generation and HarmBench tasks.</li>
       <li><a href="https://proceedings.mlr.press/v306/tong26e.html">Paper</a> · <a href="https://arxiv.org/abs/2602.04856">Preprint</a> · <a href="https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth">Code</a> · <a href="/projects/cot-chain-of-truth/">Project</a></li>
+      <li>Research perspective: <a href="/research/reasoning-trace-safety/">Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention</a></li>
     </ul>
   </div>
 </div>
@@ -61,7 +62,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
 <div class="paper-box">
   <div class="paper-box-image">
     <div class="badge">EMNLP 2026 Main</div>
-    <img src="./images/AdComment.png" alt="sym" width="500" height="300">
+    <img src="./images/AdComment.png" alt="CogniDir project figure" width="500" height="300">
   </div>
 
   <div class="paper-box-text">
@@ -70,11 +71,12 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
     </a></p>
 
 
-    <p>Zhao Tong*, <strong>Chunlin Gong*</strong>, Yimeng Gu, Qiang Liu, Shu Wu, Haichao Shi, Xiao-Yu Zhang</p>
+    <p>Zhao Tong*, <strong>Chunlin Gong*</strong>, Yimeng Gu, Haichao Shi, Qiang Liu, Shu Wu, Xingcheng Xu, Xiao-Yu Zhang</p>
     
     <ul>
-      <li>This paper demonstrates that fake-news detectors are highly vulnerable to psychological-based malicious adversarial comments and proposes group-adaptive adversarial training to substantially improve robustness.</li>
+      <li>CogniDir strengthens comment-aware fake news detection with mechanism-specific malicious comments and adaptive adversarial training mixtures. InfoDirichlet Resampling updates exposure across attack groups using vulnerability feedback.</li>
       <li><a href="https://aclanthology.org/2026.emnlp-main.655/">Paper</a> · <a href="https://arxiv.org/abs/2510.09712">Preprint</a> · <a href="https://github.com/cheslyn0712/CogniDir">Code</a> · <a href="/projects/cognidir/">Project</a></li>
+      <li>Research perspective: <a href="/research/robust-fake-news-detection/">Robust Fake News Detection under Adversarial Social Context</a></li>
     </ul>
   </div>
 </div>

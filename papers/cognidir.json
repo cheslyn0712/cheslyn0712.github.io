@@ -9,16 +9,17 @@
   "venueId": "emnlp",
   "year": 2026,
   "ogFigureKey": "teaser",
-  "tldr": "LLM-generated adversarial comments exploit fact distortion, logical confusion, and emotional manipulation to break comment-aware fake news detectors. CogniDir synthesizes mechanism-labeled attacks and reallocates training with InfoDirichlet Resampling. Robust F1 improves by up to +17.9% on Weibo20, where Macro-F1 reaches 0.947.",
+  "tldr": "CogniDir strengthens comment-aware fake news detection through mechanism-specific malicious comment generation and feedback-driven training mixtures. InfoDirichlet Resampling adapts exposure across attack groups on Weibo16, Weibo20, and RumourEval-19.",
   "abstract": "CogniDir reformulates robust fake news detection as adaptive distributional learning. It builds mechanism-specific adversarial comments covering fact distortion, logical confusion, and emotional manipulation, then maps group-wise vulnerability to sampling proportions through a Dirichlet-mean parameterization. The resulting allocation smoothly shifts training exposure toward the most brittle attack mechanisms. Across Weibo16, Weibo20, and RumourEval-19, CogniDir improves F1 by up to 17.9% and reduces mean attack success rate by 45%.",
   "keywords": [
-    "fake news detection",
-    "adversarial comments",
+    "robust fake news detection",
+    "comment-aware misinformation detection",
+    "LLM-generated malicious comments",
+    "adversarial social context",
     "cognitive manipulation",
-    "distributional learning",
-    "InfoDirichlet Resampling",
-    "LLM-generated attacks",
-    "robustness"
+    "adaptive adversarial training",
+    "data mixture allocation",
+    "InfoDirichlet Resampling"
   ],
   "authorAffiliations": [
     "Institute of Information Engineering, Chinese Academy of Sciences",
@@ -110,7 +111,7 @@
     "Adaptive training reduces mean ASR by 45%, down to 0.116, across attack types and comment counts.",
     "Malicious-comment generation, vulnerability scoring, and Dirichlet expectation allocation each contribute to the final robustness."
   ],
-  "priorWorkDiff": "CogniDir keeps a separate training budget for each attack mechanism and updates that budget from feedback. InfoDirichlet Resampling uses the Dirichlet mean to give the weakest group more exposure at the next epoch, so robustness improves together across fact distortion, logical confusion, and emotional manipulation.",
+  "priorWorkDiff": "CogniDir assigns training exposure to distinct attack mechanisms and updates the mixture from group-wise vulnerability feedback. InfoDirichlet Resampling maps the scores to positive Dirichlet parameters and uses the normalized mean as the next training mixture.",
   "figureDir": "cognidir",
   "figures": {
     "teaser": "Teaser0120_clean_noborder.png",
@@ -477,37 +478,147 @@
   "findings": [
     {
       "title": "Mechanism-specific attacks",
-      "text": "Fact distortion, logical confusion, and emotional manipulation are generated and evaluated as distinct comment attacks, exposing different weaknesses in comment-aware detectors."
+      "text": "Fact distortion, logical confusion, and emotional manipulation define distinct adversarial comment groups."
     },
     {
-      "title": "Adaptive training mixture",
-      "text": "InfoDirichlet Resampling converts vulnerability scores into the next epoch mixture through the Dirichlet mean, shifting data toward the attack group that is currently weakest."
+      "title": "Feedback-driven training",
+      "text": "Group-wise vulnerability scores guide the next training mixture through InfoDirichlet Resampling."
     },
     {
-      "title": "Code",
-      "text": "Training, evaluation, and InfoDirichlet Resampling are available at https://github.com/cheslyn0712/CogniDir."
+      "title": "Robustness evaluation",
+      "text": "Experiments on Weibo16, Weibo20, and RumourEval-19 measure detection performance and attack success across the reported settings."
     }
   ],
   "faqs": [
     {
-      "q": "How do LLM-generated adversarial comments affect fake news detectors?",
-      "a": "Comments built from fact distortion, logical confusion, and emotional manipulation substantially lower the F1 of comment-aware detectors. On Weibo16, CogniDir holds F1 near 0.94 across these attack categories."
+      "q": "How do social comments affect fake news detection?",
+      "a": "Comment-aware detectors use social responses together with news content. Manipulated comments can alter this evidence and affect the detector's predictions. CogniDir evaluates this behavior under LLM-generated cognitive malicious comments."
     },
     {
-      "q": "Why does vulnerability differ across manipulation mechanisms?",
-      "a": "Each mechanism stresses a different part of the news-comment signal. CogniDir measures that difference during training and gives the weaker mechanism a larger share of the next epoch."
+      "q": "Which cognitive attack mechanisms are studied?",
+      "a": "The study evaluates fact distortion, logical confusion, and emotional manipulation as separate comment attack groups. Group-wise results characterize detector vulnerability across these mechanisms."
     },
     {
-      "q": "How does CogniDir adapt the adversarial training mixture?",
-      "a": "After each epoch it scores every attack group, sets a positive Dirichlet parameter from that score, and uses the Dirichlet mean as the next sampling proportion. The mixture therefore follows the latest vulnerability feedback."
+      "q": "How does CogniDir adapt adversarial training?",
+      "a": "After each epoch, the framework scores attack-group vulnerability using accuracy and probabilistic confidence. InfoDirichlet Resampling converts these scores into Dirichlet parameters and uses the Dirichlet mean to set the next training mixture."
     },
     {
-      "q": "Which datasets were evaluated?",
-      "a": "CogniDir is evaluated on Weibo16, Weibo20, and RumourEval-19, covering Chinese and English comment-based fake news detection under multiple attack types and comment counts."
+      "q": "How does group-wise evaluation guide training exposure?",
+      "a": "Group-wise measurements track how the detector responds to each attack mechanism. The allocation gives vulnerable groups additional exposure and updates the mixture as the detector learns."
     },
     {
-      "q": "What does the Dirichlet allocation provide?",
-      "a": "The Dirichlet mean gives a smooth, closed-form training mixture. As vulnerability scores change, exposure moves toward the brittle attack group while every group keeps a positive share."
+      "q": "Which datasets and languages are evaluated?",
+      "a": "The experiments use Weibo16, Weibo20, and RumourEval-19, covering Chinese and English comment-based fake news detection. The evaluation reports detection performance across attack mechanisms and comment settings."
+    },
+    {
+      "q": "Which components are available in the repository?",
+      "a": "The repository provides training and evaluation entry points, model and sampling modules, and data-format documentation. The project resources link to the training script, evaluation script, and setup instructions."
     }
-  ]
+  ],
+  "researchTheme": "Robust misinformation detection",
+  "researchQuestion": "How can fake news detectors adapt to different mechanisms of LLM-generated malicious comments?",
+  "researchContext": [
+    "Comment-aware fake news detectors combine news content with social responses. LLM-generated malicious comments can manipulate this context through fact distortion, logical confusion, and emotional manipulation. CogniDir studies these mechanisms as distinct sources of detector vulnerability.",
+    "The framework connects adversarial social-context evaluation with adaptive training-data allocation. It scores vulnerability across attack groups and uses a Dirichlet-mean allocation to update training exposure. Experiments on Weibo16, Weibo20, and RumourEval-19 evaluate robustness across attack mechanisms and comment settings."
+  ],
+  "relatedWork": [
+    {
+      "name": "SINCon: Mitigate LLM-Generated Malicious Message Injection Attack for Rumor Detection",
+      "url": "https://aclanthology.org/2025.acl-long.617/",
+      "relation": "SINCon uses contrastive learning to make predictive influence more uniform across nodes in message propagation trees. CogniDir adapts training exposure across mechanism-specific malicious comment groups."
+    },
+    {
+      "name": "Generate First, Then Sample: Enhancing Fake News Detection with LLM-Augmented Reinforced Sampling",
+      "url": "https://aclanthology.org/2025.acl-long.1182/",
+      "relation": "This work generates fake news and uses reinforcement learning to sample real and fake training examples. CogniDir constructs cognitive malicious comments and updates the training mixture across attack mechanisms."
+    }
+  ],
+  "resources": [
+    {
+      "name": "Training",
+      "description": "Run the detector training entry point.",
+      "url": "https://github.com/cheslyn0712/CogniDir/blob/main/Src/scripts/train.py"
+    },
+    {
+      "name": "Evaluation",
+      "description": "Run model evaluation, including group-wise evaluation.",
+      "url": "https://github.com/cheslyn0712/CogniDir/blob/main/Src/scripts/test.py"
+    },
+    {
+      "name": "Data format",
+      "description": "Read the data preparation and format documentation.",
+      "url": "https://github.com/cheslyn0712/CogniDir/blob/main/Data/README.md"
+    },
+    {
+      "name": "BERT setup",
+      "description": "Read the pretrained BERT model setup instructions.",
+      "url": "https://github.com/cheslyn0712/CogniDir/blob/main/BERT/README.md"
+    },
+    {
+      "name": "Generation model setup",
+      "description": "Read the comment-generation model setup instructions.",
+      "url": "https://github.com/cheslyn0712/CogniDir/blob/main/LLM/README.md"
+    }
+  ],
+  "formerTitles": [
+    "Group-Adaptive Adversarial Learning for Robust Fake News Detection Against Malicious Comments"
+  ],
+  "publicationHistory": "Earlier arXiv versions of this work were titled \"Group-Adaptive Adversarial Learning for Robust Fake News Detection Against Malicious Comments.\" The published EMNLP 2026 version is titled \"CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection\" (arXiv:2510.09712).",
+  "researchNote": {
+    "slug": "robust-fake-news-detection",
+    "url": "/research/robust-fake-news-detection/",
+    "title": "Robust Fake News Detection under Adversarial Social Context",
+    "description": "A research overview of malicious comment attacks, cognitive manipulation, and adaptive training mixtures for robust fake news detection.",
+    "author": "Chunlin Gong",
+    "updated": "2026-10-26",
+    "lead": "Social responses are an important input for comment-aware fake news detection. They also create an attack surface: malicious comments can manipulate the context used by a detector. Research on this problem connects adversarial text generation, mechanism-specific evaluation, and adaptive robust training.",
+    "sections": [
+      {
+        "id": "social-context",
+        "title": "Studying adversarial social context",
+        "paragraphs": [
+          "A social-context evaluation records the news item, the comments supplied to the detector, and the resulting prediction. LLMs make it possible to generate comments with different rhetorical and cognitive mechanisms, creating structured tests of detector robustness.",
+          "CogniDir studies fact distortion, logical confusion, and emotional manipulation as distinct attack groups. This organization connects the design of malicious comments with group-wise vulnerability measurements."
+        ]
+      },
+      {
+        "id": "evaluation",
+        "title": "Measuring vulnerability across mechanisms",
+        "paragraphs": [
+          "Aggregate detection performance summarizes the overall result, while group-wise measurements reveal how the detector responds to different attacks. Evaluating several comment settings makes this view useful for studying the effect of both attack mechanism and context composition.",
+          "The CogniDir experiments use Weibo16, Weibo20, and RumourEval-19. The project page presents detection results, attack success rates, and ablations of malicious comment generation, vulnerability scoring, and allocation."
+        ]
+      },
+      {
+        "id": "training-mixtures",
+        "title": "Adapting the training mixture",
+        "paragraphs": [
+          "Adaptive training allocates exposure according to the detector's current vulnerabilities. In CogniDir, group-wise accuracy and probabilistic confidence inform vulnerability scores. InfoDirichlet Resampling maps these scores to Dirichlet parameters and uses the mean to set the next training mixture.",
+          "This feedback connects evaluation with training: the detector is assessed across attack mechanisms, the allocation is updated, and subsequent training responds to the measured weaknesses."
+        ]
+      },
+      {
+        "id": "research-connections",
+        "title": "Connecting generation, sampling, and defense",
+        "paragraphs": [
+          "Generate First, Then Sample studies LLM-generated fake news and reinforcement-learning-based sampling of real and fake training examples. SINCon studies malicious message injection in rumor detection and uses contrastive learning to make node influence more uniform in message propagation trees.",
+          "CogniDir contributes mechanism-specific malicious comments and feedback-driven allocation across attack groups. These methods provide useful reference points for researchers studying generated training data, adversarial social context, and adaptive robustness. The linked project page and repository collect the experiments, training entry points, and official EMNLP 2026 citation."
+        ]
+      }
+    ],
+    "references": [
+      {
+        "name": "CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection",
+        "url": "https://aclanthology.org/2026.emnlp-main.655/"
+      },
+      {
+        "name": "SINCon: Mitigate LLM-Generated Malicious Message Injection Attack for Rumor Detection",
+        "url": "https://aclanthology.org/2025.acl-long.617/"
+      },
+      {
+        "name": "Generate First, Then Sample: Enhancing Fake News Detection with LLM-Augmented Reinforced Sampling",
+        "url": "https://aclanthology.org/2025.acl-long.1182/"
+      }
+    ]
+  }
 }
