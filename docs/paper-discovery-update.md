@@ -6,9 +6,9 @@ Date: 2026-10-26
 
 | Role | Repository | Start commit | Completion commit |
 |---|---|---|---|
-| SITE | cheslyn0712/cheslyn0712.github.io | 0de49d671604942b4ee82929f1ffe9f6202f7143 | recorded after the site commit |
-| COT | cheslyn0712/CoT_is_Not_the_Chain_of_Truth | 43ef607c612c73aef628500b3e4d7e5f374940c1 | recorded after the code commit |
-| COG | cheslyn0712/CogniDir | c8bd54cd7d49dc57c35b08851d15dd24bd765d8a | recorded after the code commit |
+| SITE | cheslyn0712/cheslyn0712.github.io | 0de49d671604942b4ee82929f1ffe9f6202f7143 | 214faa84e42d7eebd318449069a4e50f54071279 |
+| COT | cheslyn0712/CoT_is_Not_the_Chain_of_Truth | 43ef607c612c73aef628500b3e4d7e5f374940c1 | a30b7acfaac04e09dc9e9811f3b3afb353203bd0 |
+| COG | cheslyn0712/CogniDir | c8bd54cd7d49dc57c35b08851d15dd24bd765d8a | 10f2d787ac6de0fffbc7fce4031bb034f29954ac |
 
 No repository contains an AGENTS.md. All three were on `main`. The recorded start commits match the plan. COT had unrelated local code edits; this update commits only `README.md` there.
 
@@ -80,9 +80,17 @@ The research-note source files include Jekyll front matter so GitHub Pages can p
 
 ## Release and indexing
 
-Status after the local checks: pending push and live confirmation.
+Published on 2026-10-26 from `main`.
 
-Search Console and Bing Webmaster Tools: pending_access. No site-verification credentials are configured in `_config.yml`. URLs to submit after publication:
+Live check, status verified:
+
+- `https://chunlingong.me/projects/` canonical `https://chunlingong.me/projects/`.
+- `https://chunlingong.me/projects/cot-chain-of-truth/` canonical `https://chunlingong.me/projects/cot-chain-of-truth/`. BibTeX key `pmlr-v306-tong26e`.
+- `https://chunlingong.me/projects/cognidir/` canonical `https://chunlingong.me/projects/cognidir/`. The page includes Research context, publication history, and BibTeX key `tong-etal-2026-cognidir`.
+- `https://chunlingong.me/research/reasoning-trace-safety/` and `https://chunlingong.me/research/robust-fake-news-detection/` are published without the Jekyll front matter. Their canonicals use the corresponding `/research/` paths.
+- `https://chunlingong.me/sitemap.xml` contains all four content URLs. Checked on 2026-10-26. No separate crawl date is visible from this environment.
+
+Search Console and Bing Webmaster Tools: pending_access. No site-verification credentials are configured in `_config.yml`. URLs to submit:
 
 - `https://chunlingong.me/projects/cot-chain-of-truth/`
 - `https://chunlingong.me/projects/cognidir/`
