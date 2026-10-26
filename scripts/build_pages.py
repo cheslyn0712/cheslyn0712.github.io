@@ -225,7 +225,7 @@ def render_head(p: dict, canonical: str) -> str:
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/styles.css">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026j">"""
+  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026l">"""
 
 
 def figure_src(p: dict, filename: str) -> str:
@@ -895,7 +895,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
   </script>
   <link rel="stylesheet" href="{esc(asset_root)}/styles.css">
   <link rel="stylesheet" href="{esc(asset_root)}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026j">
+  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026l">
 </head>
 <body>
   <div class="site-shell">
@@ -970,7 +970,7 @@ sitemap: true
   </script>
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../site-overrides.css">
-  <link rel="stylesheet" href="../../static/paper.css?v=20261026j">
+  <link rel="stylesheet" href="../../static/paper.css?v=20261026l">
 </head>
 <body>
   <div class="site-shell">

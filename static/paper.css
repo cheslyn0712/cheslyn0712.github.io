@@ -596,12 +596,27 @@ a.venue-badge:hover {
 }
 
 /* Hub */
-.hub-page h1 {
+.hub-page h1,
+.hub-page #research-notes h2 {
   font-family: var(--serif);
   margin: 0 0 0.75rem;
   font-size: clamp(1.75rem, 3vw, 2.15rem);
-  line-height: 1.2;
+  font-weight: 600;
+  line-height: 1.35;
   color: #102033;
+}
+
+.hub-page #research-notes {
+  margin-top: 3.5rem;
+}
+
+.hub-page #research-notes h2 {
+  margin-bottom: 1.15rem;
+}
+
+.hub-page #research-notes .section-text {
+  margin: 0 0 1.5rem;
+  line-height: 1.75;
 }
 
 .hub-grid,
@@ -754,7 +769,7 @@ a.venue-badge:hover {
 }
 
 .hub-note-card {
-  gap: 6px;
+  gap: 10px;
   margin: 0;
 }
 
@@ -767,7 +782,8 @@ a.venue-badge:hover {
 }
 
 .hub-note-copy h3 {
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.55rem;
+  line-height: 1.45;
 }
 
 .hub-note-copy p,
