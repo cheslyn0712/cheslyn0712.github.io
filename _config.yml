@@ -8,6 +8,8 @@
 # Site Settings
 title                    : "Chunlin Gong"
 description              : "PhD student at University of Minnesota, researching trustworthy agentic systems and AI safety."
+url                      : "https://chunlingong.me"
+baseurl                  : ""
 repository               : "RayeRen/acad-homepage.github.io"
 google_scholar_stats_use_cdn : true
 
@@ -65,6 +67,8 @@ include:
   - files
 exclude:
   - docs
+  - papers
+  - scripts
   - google_scholar_crawler
   - "*.sublime-project"
   - "*.sublime-workspace"

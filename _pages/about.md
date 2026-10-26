@@ -42,7 +42,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
   </div>
 
   <div class="paper-box-text">
-    <p><a href="https://arxiv.org/pdf/2602.04856">
+    <p><a href="/projects/cot-chain-of-truth/">
       <strong>CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation</strong>
     </a></p>
 
@@ -51,6 +51,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
     
     <ul>
       <li>Our paper shows that in fake-news generation, reasoning LLMs can still produce unsafe, deceptive content inside their chain-of-thought even when the final answer is a refusal, and proposes a layer/head-level Jacobian spectral analysis to localize the safety-critical routing mechanisms driving that divergence.</li>
+      <li><a href="https://proceedings.mlr.press/v306/tong26e.html">Paper</a> · <a href="https://arxiv.org/abs/2602.04856">Preprint</a> · <a href="https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth">Code</a> · <a href="/projects/cot-chain-of-truth/">Project</a></li>
     </ul>
   </div>
 </div>
@@ -64,8 +65,8 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
   </div>
 
   <div class="paper-box-text">
-    <p><a href="https://arxiv.org/pdf/2510.09712?">
-      <strong>Group-Adaptive Adversarial Learning for Robust Fake News Detection Against Malicious Comments</strong>
+    <p><a href="/projects/cognidir/">
+      <strong>CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection</strong>
     </a></p>
 
 
@@ -73,6 +74,7 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
     
     <ul>
       <li>This paper demonstrates that fake-news detectors are highly vulnerable to psychological-based malicious adversarial comments and proposes group-adaptive adversarial training to substantially improve robustness.</li>
+      <li><a href="https://aclanthology.org/2026.emnlp-main.655/">Paper</a> · <a href="https://arxiv.org/abs/2510.09712">Preprint</a> · <a href="https://github.com/cheslyn0712/CogniDir">Code</a> · <a href="/projects/cognidir/">Project</a></li>
     </ul>
   </div>
 </div>

@@ -1,13 +1,13 @@
 {
   "slug": "cot-chain-of-truth",
   "published": true,
-  "siteBase": "https://cheslyn0712.github.io",
+  "siteBase": "https://chunlingong.me",
   "title": "CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation",
   "shortTitle": "CoT is Not the Chain of Truth",
   "venue": "ICML 2026",
   "venueId": "icml",
   "year": 2026,
-  "tldr": "Reasoning LLMs can harbor unsafe planning inside Chain-of-Thought (CoT) traces even when the final answer refuses. We localize these failures to mid-depth layers and safety-critical attention heads via Jacobian spectral metrics, validate the pattern beyond fake-news generation on HarmBench, and show parameter-efficient mitigation.",
+  "tldr": "The paper studies generated reasoning traces, using fake-news generation as the main setting and HarmBench as a further check. A final refusal does not by itself show that the trace was safe. The analysis localizes divergence to layers and attention heads with Jacobian spectral measurements, perturbations, and a reported critical-head intervention. The joint Unsafe plus Potential Unsafe rate in the generation plots is not the conditional rate among refusals.",
   "abstract": "From generating headlines to fabricating news, Large Language Models (LLMs) are typically assessed by their final outputs, under the safety assumption that a refusal response signifies safe reasoning throughout the entire process. Challenging this assumption, our study reveals that during fake news generation, even when a model rejects a harmful request, its Chain-of-Thought (CoT) reasoning may still internally contain and propagate unsafe narratives. To analyze this phenomenon, we introduce a unified safety-analysis framework that systematically deconstructs CoT generation across model layers and evaluates the role of individual attention heads through Jacobian-based spectral metrics. Within this framework, we introduce three interpretable measures—stability, geometry, and energy—to quantify how specific attention heads respond to or embed deceptive reasoning patterns. Extensive experiments on multiple reasoning-oriented LLMs show that the generation risk rises significantly when the thinking mode is activated, where the critical routing decisions are concentrated in only a few contiguous mid-depth layers.",
   "keywords": [
     "Chain-of-Thought",
@@ -27,46 +27,93 @@
     "Institute of Automation, Chinese Academy of Sciences"
   ],
   "authors": [
-    { "name": "Zhao Tong", "affs": [1, 2, 5], "equal": true },
-    { "name": "Chunlin Gong", "affs": [3], "equal": true },
-    { "name": "Yiping Zhang", "affs": [4, 6] },
-    { "name": "Haichao Shi", "affs": [1] },
-    { "name": "Qiang Liu", "affs": [6] },
-    { "name": "Xingcheng Xu", "affs": [5], "corresponding": true },
-    { "name": "Shu Wu", "affs": [6] },
-    { "name": "Xiao-Yu Zhang", "affs": [1], "corresponding": true }
+    {
+      "name": "Zhao Tong",
+      "affs": [
+        1,
+        2,
+        5
+      ],
+      "equal": true
+    },
+    {
+      "name": "Chunlin Gong",
+      "affs": [
+        3
+      ],
+      "equal": true
+    },
+    {
+      "name": "Yiping Zhang",
+      "affs": [
+        4,
+        6
+      ]
+    },
+    {
+      "name": "Haichao Shi",
+      "affs": [
+        1
+      ]
+    },
+    {
+      "name": "Qiang Liu",
+      "affs": [
+        6
+      ]
+    },
+    {
+      "name": "Xingcheng Xu",
+      "affs": [
+        5
+      ],
+      "corresponding": true
+    },
+    {
+      "name": "Shu Wu",
+      "affs": [
+        6
+      ]
+    },
+    {
+      "name": "Xiao-Yu Zhang",
+      "affs": [
+        1
+      ],
+      "corresponding": true
+    }
   ],
   "links": {
-    "paper": "https://arxiv.org/abs/2602.04856",
-    "pdf": "https://arxiv.org/pdf/2602.04856",
+    "paper": "https://proceedings.mlr.press/v306/tong26e.html",
+    "pdf": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf",
     "arxiv": "https://arxiv.org/abs/2602.04856",
     "arxivId": "2602.04856",
     "code": "https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth",
-    "icmlPoster": "https://icml.cc/virtual/2026/poster/61042",
-    "conferencePoster": "https://icml.cc/virtual/2026/poster/61042",
-    "proceedings": null,
+    "icmlPoster": null,
+    "conferencePoster": null,
+    "proceedings": "https://proceedings.mlr.press/v306/tong26e.html",
     "openreview": null,
     "doi": null,
     "demo": null,
-    "dataset": null
+    "dataset": null,
+    "venueUrl": "https://proceedings.mlr.press/v306/tong26e.html",
+    "poster": "https://icml.cc/virtual/2026/poster/61042"
   },
-  "bibtex": "@misc{tong2026cotchaintruthempirical,\n      title={CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation}, \n      author={Zhao Tong and Chunlin Gong and Yiping Zhang and Haichao Shi and Qiang Liu and Xingcheng Xu and Shu Wu and Xiao-Yu Zhang},\n      year={2026},\n      eprint={2602.04856},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL},\n      url={https://arxiv.org/abs/2602.04856}, \n},",
+  "bibtex": "@InProceedings{pmlr-v306-tong26e,\n title = {{C}o{T} is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning {LLM}s for Fake News Generation},\n author = {Tong, Zhao and Gong, Chunlin and Zhang, Yiping and Shi, Haichao and Liu, Qiang and Xu, Xingcheng and Wu, Shu and Zhang, Xiao-Yu},\n booktitle = {Proceedings of the 43rd International Conference on Machine Learning},\n pages = {121562--121589},\n year = {2026},\n editor = {Zhang, Tong and Dudik, Miroslav and Jaggi, Martin and Agarwal, Alekh and Li, Sharon and Schuurmans, Dale and Zhu, Jerry and Berkenkamp, Felix and Dong, Hanze and Bietti, Alberto},\n volume = {306},\n series = {Proceedings of Machine Learning Research},\n month = {06--11 Jul},\n publisher = {PMLR},\n pdf = {https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf},\n url = {https://proceedings.mlr.press/v306/tong26e.html}\n}\n",
   "methodOverview": "We build a coarse-to-fine pipeline: (1) generate and annotate CoT traces under direct/indirect fake-news prompts; (2) localize safety-critical mid-depth layers; (3) attribute divergence to attention heads using Jacobian-based stability (B1), geometry (B2), and energy (B3) metrics; (4) validate with perturbation analysis and critical-head mitigation.",
   "contributions": [
-    "We show ~80% of CoT traces in fake-news generation are Unsafe or Potential Unsafe even when models refuse at the output layer.",
-    "We introduce a layer-to-head framework that localizes safety-critical routing in contiguous mid-depth windows.",
-    "We propose three Jacobian spectral metrics (B1–B3) for interpretable head-level attribution of unsafe reasoning.",
-    "We validate generalization beyond fake-news generation on HarmBench jailbreak tasks, with consistent mid-depth routing and head-level spectral gaps."
+    "In the reported fake-news settings, Unsafe and Potential Unsafe traces together are about 78–81% of generated samples. This is not a conditional rate among refusals, and it is not a rate for every reasoning model.",
+    "A layer-to-head analysis of where safe and unsafe traces diverge, with the windows depending on the model and prompt.",
+    "Three Jacobian spectral measurements, B1–B3, used to compare attention heads. In the public head-analysis script, the plotted B2 scalar is a direction-vector centroid, not directional alignment.",
+    "A HarmBench check on Flan-UL2 and DeepSeek-R1-70B is reported in the paper. The public repository does not yet include a separate runnable entry for that experiment or for the critical-head fine-tune."
   ],
   "mainResults": [
-    "Thinking mode raises unsafe CoT rates to nearly 80% across Llama3-8B, Qwen3-4B, and Qwen3-8B.",
-    "Safe vs. unsafe trajectories diverge in narrow mid-depth layer intervals that shift with architecture and prompting style.",
-    "Unsafe routing concentrates in a small subset of attention heads with distinct B1/B2/B3 spectral signatures.",
-    "Critical-head fine-tuning updates only 0.64%–1.95% of parameters yet improves CoT safety by +67.1 (News) and +55.0 (HarmBench) on average.",
-    "HarmBench generalization on Flan-UL2 and DeepSeek-R1-70B confirms the routing pattern is not task-specific to fake news."
+    "Thinking mode is associated with a high joint rate of Unsafe and Potential Unsafe traces in the reported Llama3-8B, Qwen3-4B, and Qwen3-8B settings. The rate is about 78–81% of generated samples in those plots.",
+    "The separating layer spans differ by model and by direct versus indirect prompting. See the table rather than a single depth band.",
+    "The critical-head update is reported to touch 0.64%–1.95% of parameters. The average safety-rate changes are +67.1 percentage points on the news setting and +55.0 percentage points on HarmBench, computed from the before/after rates in the table.",
+    "Those gains are percentage points on the reported safety rate, not relative percentages."
   ],
-  "priorWorkDiff": "Prior CoT monitoring and output-level alignment largely treat refusal as evidence of safe internal reasoning. Mechanistic interpretability work often visualizes attention outcomes without operator-level metrics tied to safety divergence. We combine fake-news CoT annotation, layer localization, and Jacobian-based head metrics into one reproducible pipeline for process-level LLM safety analysis.",
-  "whenToCite": "Cite this paper when discussing Chain-of-Thought safety monitoring, latent unsafe reasoning under refusal, fake news generation risks in reasoning LLMs, Jacobian or spectral analysis of attention routing, safety-critical layer/head localization, or parameter-efficient mitigation of unsafe CoT behavior. It is relevant to related work on CoT faithfulness, jailbreak robustness, mechanistic interpretability, and LLM alignment beyond output filtering.",
+  "priorWorkDiff": "Observing a generated chain of thought does not establish what an unexposed internal computation contained. Reasoning safety is related to, but not the same as, faithfulness or factual correctness. Prior discussion has already noted that a final refusal can still accompany harmful reasoning, including work such as SafeChain. This paper's reported addition is the layer and head localization, the Jacobian spectral measurements, and the perturbation and intervention checks. Attention-based safety work such as chain-of-thought hijacking uses different tasks, intervention targets, and measurements.",
   "figures": {
     "framework": "framework.png",
     "teaser": "teaser_figure1.png",
@@ -83,15 +130,45 @@
     "correlation": "correlation1.png"
   },
   "stats": [
-    { "value": "~80%", "label": "Unsafe / Potential Unsafe CoT" },
-    { "value": "3", "label": "Reasoning LLMs" },
-    { "value": "B1–B3", "label": "Jacobian Metrics" },
-    { "value": "+67.1", "label": "Avg. Safety Gain" }
+    {
+      "value": "~78–81%",
+      "label": "Unsafe + Potential Unsafe, generated samples"
+    },
+    {
+      "value": "3",
+      "label": "Reasoning models in the main generation setting"
+    },
+    {
+      "value": "B1–B3",
+      "label": "Jacobian head measurements"
+    },
+    {
+      "value": "+67.1 pp",
+      "label": "Mean news safety-rate change"
+    }
   ],
   "cotCategories": [
-    { "tag": "UNSAFE", "name": "Unsafe", "description": "The model does not reject and begins executing fake news generation.", "cot": "Unsafe", "response": "Unsafe" },
-    { "tag": "LEAKY", "name": "Potential Unsafe", "description": "The model refuses in the final response, but CoT still contains actionable harmful reasoning.", "cot": "Unsafe", "response": "Safe" },
-    { "tag": "SAFE", "name": "Safe", "description": "The model refuses and CoT contains no reusable harmful procedural content.", "cot": "Safe", "response": "Safe" }
+    {
+      "tag": "UNSAFE",
+      "name": "Unsafe",
+      "description": "The model does not reject and begins executing fake news generation.",
+      "cot": "Unsafe",
+      "response": "Unsafe"
+    },
+    {
+      "tag": "LEAKY",
+      "name": "Potential Unsafe",
+      "description": "The model refuses in the final response, but CoT still contains actionable harmful reasoning.",
+      "cot": "Unsafe",
+      "response": "Safe"
+    },
+    {
+      "tag": "SAFE",
+      "name": "Safe",
+      "description": "The model refuses and CoT contains no reusable harmful procedural content.",
+      "cot": "Safe",
+      "response": "Safe"
+    }
   ],
   "distributions": [
     {
@@ -120,28 +197,166 @@
     }
   ],
   "criticalLayers": [
-    { "model": "Llama3-8B", "direct": "[6, 8]", "indirect": "[8, 10]" },
-    { "model": "Qwen3-4B", "direct": "[32, 34]", "indirect": "[21, 23]" },
-    { "model": "Qwen3-8B", "direct": "[21, 23]", "indirect": "[22, 24]" }
+    {
+      "model": "Llama3-8B",
+      "direct": "[6, 8]",
+      "indirect": "[8, 10]"
+    },
+    {
+      "model": "Qwen3-4B",
+      "direct": "[32, 34]",
+      "indirect": "[21, 23]"
+    },
+    {
+      "model": "Qwen3-8B",
+      "direct": "[21, 23]",
+      "indirect": "[22, 24]"
+    }
   ],
   "metrics": [
-    { "id": "B1", "name": "Stability", "summary": "Spectral norm — sensitivity to input perturbations.", "figure": "Llama_B1.png", "caption": "B1 (Stability) across attention heads." },
-    { "id": "B2", "name": "Geometry", "summary": "Principal singular-vector alignment — consistency of information-flow directions.", "figure": "Llama_B2.png", "caption": "B2 (Geometry) across attention heads." },
-    { "id": "B3", "name": "Energy", "summary": "Spectral concentration — intensity of harmful logic in dominant modes.", "figure": "Llama_B3.png", "caption": "B3 (Energy) across attention heads." }
+    {
+      "id": "B1",
+      "name": "Stability",
+      "summary": "Spectral norm — sensitivity to input perturbations.",
+      "figure": "Llama_B1.png",
+      "caption": "B1 (Stability) across attention heads."
+    },
+    {
+      "id": "B2",
+      "name": "Geometry",
+      "summary": "The paper's geometry measurement concerns direction. The public plotting code scalarizes each direction vector by an absolute-component centroid. That centroid is not the same quantity as directional alignment.",
+      "figure": "Llama_B2.png",
+      "caption": "Plotted B2 values in the public code are direction centroids, not alignment scores."
+    },
+    {
+      "id": "B3",
+      "name": "Energy",
+      "summary": "Spectral concentration — intensity of harmful logic in dominant modes.",
+      "figure": "Llama_B3.png",
+      "caption": "B3 (Energy) across attention heads."
+    }
   ],
   "generalizationSummary": "Beyond fake-news generation, we evaluate HarmBench jailbreak tasks on Flan-UL2 and DeepSeek-R1-70B. Safe vs. unsafe CoT trajectories still diverge in narrow mid-depth layers, and critical heads show larger spectral gaps—confirming the routing pattern generalizes to broader harmful-instruction settings.",
   "correlationSummary": "B1–B3 correlate strongly with safety-relevant routing across all three models.",
   "correlationData": [
-    { "model": "Llama3-8B", "b1": "0.88", "b2": "0.82", "b3": "0.75" },
-    { "model": "Qwen3-4B", "b1": "0.86", "b2": "0.78", "b3": "0.72" },
-    { "model": "Qwen3-8B", "b1": "0.89", "b2": "0.81", "b3": "0.74" }
+    {
+      "model": "Llama3-8B",
+      "b1": "0.88",
+      "b2": "0.82",
+      "b3": "0.75"
+    },
+    {
+      "model": "Qwen3-4B",
+      "b1": "0.86",
+      "b2": "0.78",
+      "b3": "0.72"
+    },
+    {
+      "model": "Qwen3-8B",
+      "b1": "0.89",
+      "b2": "0.81",
+      "b3": "0.74"
+    }
   ],
   "mitigation": [
-    { "model": "Llama3-8B", "ftRatio": "1.56%", "news": "21.1% → 94.7%", "harmbench": "20.8% → 87.4%" },
-    { "model": "Qwen3-4B", "ftRatio": "1.95%", "news": "20.3% → 92.1%", "harmbench": "20.7% → 85.8%" },
-    { "model": "Qwen3-8B", "ftRatio": "1.43%", "news": "19.6% → 90.2%", "harmbench": "31.2% → 84.6%" },
-    { "model": "Flan-UL2", "ftRatio": "1.03%", "news": "45.2% → 88.4%", "harmbench": "41.6% → 82.9%" },
-    { "model": "DeepSeek-R1-70B", "ftRatio": "0.64%", "news": "10.5% → 86.7%", "harmbench": "34.9% → 83.7%" }
+    {
+      "model": "Llama3-8B",
+      "ftRatio": "1.56%",
+      "news": "21.1% → 94.7%",
+      "harmbench": "20.8% → 87.4%"
+    },
+    {
+      "model": "Qwen3-4B",
+      "ftRatio": "1.95%",
+      "news": "20.3% → 92.1%",
+      "harmbench": "20.7% → 85.8%"
+    },
+    {
+      "model": "Qwen3-8B",
+      "ftRatio": "1.43%",
+      "news": "19.6% → 90.2%",
+      "harmbench": "31.2% → 84.6%"
+    },
+    {
+      "model": "Flan-UL2",
+      "ftRatio": "1.03%",
+      "news": "45.2% → 88.4%",
+      "harmbench": "41.6% → 82.9%"
+    },
+    {
+      "model": "DeepSeek-R1-70B",
+      "ftRatio": "0.64%",
+      "news": "10.5% → 86.7%",
+      "harmbench": "34.9% → 83.7%"
+    }
   ],
-  "relatedProjects": []
+  "relatedProjects": [],
+  "venueFull": "Proceedings of the 43rd International Conference on Machine Learning",
+  "volume": "306",
+  "pages": {
+    "first": "121562",
+    "last": "121589"
+  },
+  "introText": "In the reported fake-news generation settings, Unsafe and Potential Unsafe traces together account for about 78–81% of generated samples. Potential Unsafe means the final answer refuses while the trace still contains unsafe content. That joint rate is not the fraction of refused answers whose traces are unsafe.",
+  "layerText": "Safe and unsafe traces separate in localized layer spans. The spans shift with architecture and prompt, as in the table below. They should not be summarized as one fixed central 30%–60% band for every model.",
+  "publicationHistory": "ICML 2026, PMLR volume 306, pages 121562–121589. The preprint is arXiv:2602.04856. This page uses the proceedings title and author order.",
+  "relatedWork": [
+    {
+      "name": "SafeChain",
+      "url": "",
+      "relation": "Prior reasoning-safety discussion already includes cases where a final refusal still accompanies harmful intermediate reasoning. This paper does not treat that observation as new by itself."
+    },
+    {
+      "name": "Chain-of-thought hijacking",
+      "url": "",
+      "relation": "Other attention-based safety studies intervene on different tasks and measure different objects. A shared interest in attention does not make the protocols the same."
+    }
+  ],
+  "findings": [
+    {
+      "title": "Traces versus final answers",
+      "text": "The annotated object is the generated reasoning trace together with the final answer. Fake news is the main generation setting. HarmBench is a reported additional check, not the only evidence in the paper."
+    },
+    {
+      "title": "Where the divergence sits",
+      "text": "The analysis names layers and attention heads, then uses Jacobian spectral measurements, perturbations, and a reported local intervention. The public code's plotted B2 centroid must not be quoted as the paper's alignment number."
+    },
+    {
+      "title": "What the repository runs",
+      "text": "Generation, annotation, layer analysis, and head analysis have Python entry points. HarmBench generation and the critical-head fine-tune do not have a separate public command in this checkout. See the repository README for the map."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Which papers study unsafe reasoning despite final-answer refusal?",
+      "a": "This paper is one study of that pattern in generated traces. It should be read next to earlier discussions such as SafeChain, which already treat a final refusal as compatible with harmful reasoning. The additional evidence here is the localization and spectral analysis, not the existence of the pattern alone."
+    },
+    {
+      "q": "How can unsafe reasoning be localized to layers and attention heads?",
+      "a": "The reported pipeline compares safe and unsafe traces through depth, then attributes heads with three Jacobian spectral measurements and perturbation checks. The layer windows in the table change with the model and the prompt."
+    },
+    {
+      "q": "What does Jacobian spectral analysis measure in this study?",
+      "a": "B1, B2, and B3 are the paper's stability, geometry, and energy measurements on attention heads. In the public head script, the value saved and plotted for B2 is a centroid of absolute vector components. A centroid match does not imply that two direction vectors are aligned."
+    },
+    {
+      "q": "How does this work differ from SafeChain and chain-of-thought hijacking?",
+      "a": "SafeChain is part of the prior discussion of unsafe reasoning under refusal. Hijacking studies intervene on attention for a different attack and measurement. This paper's reported protocol is trace annotation, layer and head localization, and Jacobian spectral comparison, with fake news as the main task and HarmBench as a further check."
+    },
+    {
+      "q": "What evidence supports generalization beyond fake-news generation?",
+      "a": "The paper reports a HarmBench check on Flan-UL2 and DeepSeek-R1-70B and a critical-head intervention table. That is evidence in those settings. It is not a rate for all reasoning models or all tasks. The corresponding fine-tune entry point is not in the public code yet."
+    },
+    {
+      "q": "Which data and analysis components are available for reuse?",
+      "a": "The repository includes six seed news items, generation, annotation, and layer/head analysis code. A labeled public corpus and the HarmBench or fine-tune outputs are not shipped in the default branch. A synthetic one-row schema example is included and is not a paper result. The annotation shortcut that marks can_generate=true as unsafe is a protocol assumption, not an independent judgment of that trace."
+    }
+  ],
+  "scope": [
+    "Formal record: ICML 2026, PMLR 306, pages 121562–121589, https://proceedings.mlr.press/v306/tong26e.html. Preprint: https://arxiv.org/abs/2602.04856.",
+    "Qwen_8B in the public code loads LLM/Qwen3-VL-8B-Thinking. The paper table says Qwen3-8B. Those names should not be treated as interchangeable without the checkpoint revision.",
+    "Layer analysis defaults to 512 tokens and head analysis defaults to 1024 tokens. The repository does not include a saved paper config that chooses between them.",
+    "Samples with can_generate=true receive an unsafe label without a separate judge call. Parse failures are not refusals.",
+    "The public B2 plot is a direction centroid. Key-head selection uses the raw group gap; the power transform is only for the drawing."
+  ]
 }

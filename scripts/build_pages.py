@@ -149,6 +149,12 @@ def render_head(p: dict, canonical: str) -> str:
   <meta name="twitter:description" content="{esc(desc)}">"""
     links = p["links"]
 
+    venue_full = p.get("venueFull") or p["venue"]
+    same_as = []
+    for key in ("paper", "arxiv"):
+        value = links.get(key)
+        if value and value not in same_as:
+            same_as.append(value)
     json_ld = {
         "@context": "https://schema.org",
         "@type": "ScholarlyArticle",
@@ -158,18 +164,29 @@ def render_head(p: dict, canonical: str) -> str:
         "datePublished": str(p["year"]),
         "url": canonical,
         "keywords": p.get("keywords", []),
-        "isPartOf": {"@type": "PublicationEvent", "name": p["venue"]},
-        "sameAs": [links["arxiv"], links["code"]],
+        "isPartOf": {"@type": "PublicationEvent", "name": venue_full},
+        "sameAs": same_as,
     }
-    poster = conference_poster(links)
-    if poster:
-        json_ld["sameAs"].append(poster)
+    if links.get("code"):
+        json_ld["mentions"] = {
+            "@type": "SoftwareSourceCode",
+            "name": f'{p["shortTitle"]} code',
+            "codeRepository": links["code"],
+        }
     if links.get("pdf"):
-        json_ld["associatedMedia"] = {"@type": "MediaObject", "contentUrl": links["pdf"]}
+        json_ld["encoding"] = {"@type": "MediaObject", "contentUrl": links["pdf"]}
 
     doi_meta = ""
     if links.get("doi"):
         doi_meta = f'  <meta name="citation_doi" content="{esc(links["doi"])}">\n'
+    pages = p.get("pages") or {}
+    page_meta = ""
+    if pages.get("first"):
+        page_meta += f'  <meta name="citation_firstpage" content="{esc(pages["first"])}">\n'
+    if pages.get("last"):
+        page_meta += f'  <meta name="citation_lastpage" content="{esc(pages["last"])}">\n'
+    if p.get("volume"):
+        page_meta += f'  <meta name="citation_volume" content="{esc(p["volume"])}">\n'
 
     return f"""  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -188,10 +205,10 @@ def render_head(p: dict, canonical: str) -> str:
   <meta name="citation_title" content="{esc(p["title"])}">
 {citation_authors}
   <meta name="citation_publication_date" content="{esc(p["year"])}">
-  <meta name="citation_conference_title" content="{esc(p["venue"])}">
+  <meta name="citation_conference_title" content="{esc(venue_full)}">
   <meta name="citation_pdf_url" content="{esc(links["pdf"])}">
   <meta name="citation_abstract_html_url" content="{esc(canonical)}">
-{doi_meta}
+{page_meta}{doi_meta}
   <script type="application/ld+json">
 {json.dumps(json_ld, indent=2)}
   </script>
@@ -246,17 +263,76 @@ def fig_file(p: dict, filename: str, alt: str, caption: str, css_class: str = "f
 
 
 def build_action_buttons(links: dict) -> list[str]:
-    buttons = [
-        f'<a class="button primary" href="{esc(links["pdf"])}" target="_blank" rel="noopener noreferrer"><span class="button-icon">{PDF_ICON}</span><span>PDF</span></a>',
-        f'<a class="button code-link" href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer"><span class="button-icon github-icon">{GITHUB_ICON}</span><span>Code</span></a>',
-    ]
+    buttons = []
+    if links.get("paper"):
+        buttons.append(
+            f'<a class="button primary" href="{esc(links["paper"])}" target="_blank" rel="noopener noreferrer">Paper</a>'
+        )
+    if links.get("pdf"):
+        buttons.append(
+            f'<a class="button" href="{esc(links["pdf"])}" target="_blank" rel="noopener noreferrer"><span class="button-icon">{PDF_ICON}</span><span>PDF</span></a>'
+        )
+    if links.get("arxiv"):
+        buttons.append(
+            f'<a class="button" href="{esc(links["arxiv"])}" target="_blank" rel="noopener noreferrer">Preprint</a>'
+        )
+    if links.get("code"):
+        buttons.append(
+            f'<a class="button code-link" href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer"><span class="button-icon github-icon">{GITHUB_ICON}</span><span>Code</span></a>'
+        )
     if links.get("dataset"):
         buttons.append(f'<a class="button" href="{esc(links["dataset"])}" target="_blank" rel="noopener noreferrer">Data</a>')
-    if links.get("demo"):
-        buttons.append(f'<a class="button" href="{esc(links["demo"])}" target="_blank" rel="noopener noreferrer">Demo</a>')
-    if links.get("openreview"):
-        buttons.append(f'<a class="button" href="{esc(links["openreview"])}" target="_blank" rel="noopener noreferrer">OpenReview</a>')
+    if links.get("poster"):
+        buttons.append(f'<a class="button" href="{esc(links["poster"])}" target="_blank" rel="noopener noreferrer">Poster</a>')
     return buttons
+
+
+def render_extra_sections(p: dict) -> str:
+    parts: list[str] = []
+    if p.get("publicationHistory"):
+        parts.append(
+            f'<section class="paper-section" id="history"><h2>Publication history</h2>'
+            f'<p class="section-text">{esc(p["publicationHistory"])}</p></section>'
+        )
+    rows = p.get("relatedWork") or []
+    if rows:
+        body = []
+        for row in rows:
+            name = esc(row["name"])
+            if row.get("url"):
+                name = (
+                    f'<a href="{esc(row["url"])}" target="_blank" rel="noopener noreferrer">{name}</a>'
+                )
+            body.append(f'<tr><td>{name}</td><td>{esc(row["relation"])}</td></tr>')
+        parts.append(
+            '<section class="paper-section" id="related"><h2>Relation to nearby work</h2>'
+            '<div class="table-wrap full-width-table scroll-x"><table class="data-table compact">'
+            '<thead><tr><th>Work</th><th>Relation</th></tr></thead>'
+            f'<tbody>{"".join(body)}</tbody></table></div></section>'
+        )
+    findings = p.get("findings") or []
+    if findings:
+        items = "".join(
+            f'<li><strong>{esc(item["title"])}.</strong> {esc(item["text"])}</li>' for item in findings
+        )
+        parts.append(
+            '<section class="paper-section" id="findings"><h2>Research findings and resources</h2>'
+            f'<ul class="section-list">{items}</ul></section>'
+        )
+    faqs = p.get("faqs") or []
+    if faqs:
+        blocks = "".join(
+            f'<h3>{esc(item["q"])}</h3><p class="section-text">{esc(item["a"])}</p>' for item in faqs
+        )
+        parts.append(f'<section class="paper-section" id="faq"><h2>Questions</h2>{blocks}</section>')
+    scope = p.get("scope") or []
+    if scope:
+        items = "".join(f"<li>{esc(item)}</li>" for item in scope)
+        parts.append(
+            '<section class="paper-section" id="scope"><h2>Scope and version</h2>'
+            f'<ul class="section-list">{items}</ul></section>'
+        )
+    return "".join(parts)
 
 
 def author_notes_html(p: dict) -> str:
@@ -430,7 +506,7 @@ def render_cognidir_paper_page(p: dict) -> str:
 
       <section class="paper-section" id="teaser">
         <h2>Cognitive Attacks Break Static Defenses</h2>
-        <p class="section-text">LLM-generated malicious comments exploit distinct cognitive mechanisms. Traditional detectors suffer &gt;18% F1 drops under heterogeneous attacks, while CogniDir narrows the gap and maintains F1 above 0.94 across attack categories.</p>
+        <p class="section-text">{esc(p.get("teaserText", ""))}</p>
         {fig(p, "teaser", "Group-wise F1 comparison under cognitive malicious comments", "<strong>Figure 1.</strong> Group-wise F1 on Weibo16: prior methods drop sharply under diverse malicious comments; CogniDir maintains high robust F1.", "figure-teaser")}
       </section>
 
@@ -460,7 +536,7 @@ def render_cognidir_paper_page(p: dict) -> str:
         {result_rows}
 
         <h3 class="subsection-title">Attack Success Rate (ASR)</h3>
-        <p class="section-text">Without adversarial training, attack success rates remain high across comment counts and attack types. CogniDir reduces mean ASR by 45% after adaptive training.</p>
+        <p class="section-text">{esc(p.get("asrText", ""))}</p>
         <div class="asr-grid">
           {fig(p, "asrBefore", "ASR before robust training", "<strong>Figure 3a.</strong> ASR before robust training under varying attack types and comment counts.", "figure-asr")}
           {fig(p, "asrAfter", "ASR after CogniDir training", "<strong>Figure 3b.</strong> ASR after robust training — substantial reduction across attack types.", "figure-asr")}
@@ -476,18 +552,15 @@ def render_cognidir_paper_page(p: dict) -> str:
       </section>
 
       <section class="paper-section" id="method">
-        <h2>How This Differs From Prior Work</h2>
+        <h2>Allocation</h2>
         <p class="section-text">{esc(p["priorWorkDiff"])}</p>
       </section>
 
-      <section class="paper-section" id="cite">
-        <h2>When to Cite This Paper</h2>
-        <p class="section-text">{esc(p["whenToCite"])}</p>
-      </section>
+      {render_extra_sections(p)}
 
       <section class="paper-section" id="bibtex">
         <h2>BibTeX</h2>
-        <p class="section-text">Download: <a href="./paper.bib" download="cognidir.bib">paper.bib</a></p>
+        <p class="section-text">Official EMNLP BibTeX. Download: <a href="./paper.bib" download="cognidir.bib">paper.bib</a></p>
         <pre class="codeblock bibtex-block"><code id="bibtex-content">{bib}</code></pre>
         <button class="button" type="button" id="copy-bibtex">Copy BibTeX</button>
       </section>
@@ -629,7 +702,7 @@ def render_cot_paper_page(p: dict) -> str:
 
       <section class="paper-section" id="introduction">
         <h2>Unsafe CoT Persists Despite Refusal</h2>
-        <p class="section-text">Even when reasoning LLMs reject harmful fake-news requests, internal CoT traces can still encode actionable unsafe narratives. Thinking mode increases unsafe output rates to nearly 80%.</p>
+        <p class="section-text">{esc(p.get("introText", ""))}</p>
         {fig(p, "teaser", "Unsafe CoT generation across reasoning LLMs", "<strong>Figure 1.</strong> Unsafe CoT traces persist despite final refusal; thinking mode increases unsafe rates to nearly 80%.", "figure-teaser")}
       </section>
 
@@ -645,7 +718,7 @@ def render_cot_paper_page(p: dict) -> str:
         <ul class="section-list">{main_results}</ul>
 
         <h3 class="subsection-title">Safety-Critical Layer Localization</h3>
-        <p class="section-text">Safe and unsafe trajectories diverge within narrow contiguous mid-depth layer windows (central 30%–60% depth).</p>
+        <p class="section-text">{esc(p.get("layerText", ""))}</p>
         <div class="table-wrap full-width-table">
           <table class="data-table compact">
             <thead><tr><th>Model</th><th>Direct Prompting</th><th>Indirect Prompting</th></tr></thead>
@@ -682,25 +755,22 @@ def render_cot_paper_page(p: dict) -> str:
             <thead><tr><th>Model</th><th>FT Ratio</th><th>News Before / After</th><th>HarmBench Before / After</th></tr></thead>
             <tbody>
               {mitigation_rows}
-              <tr><td colspan="2"><strong>Average improvement</strong></td><td><strong>+67.1</strong></td><td><strong>+55.0</strong></td></tr>
+              <tr><td colspan="2"><strong>Average change (percentage points)</strong></td><td><strong>+67.1</strong></td><td><strong>+55.0</strong></td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
       <section class="paper-section" id="method">
-        <h2>How This Differs From Prior Work</h2>
+        <h2>What this analysis adds</h2>
         <p class="section-text">{esc(p["priorWorkDiff"])}</p>
       </section>
 
-      <section class="paper-section" id="cite">
-        <h2>When to Cite This Paper</h2>
-        <p class="section-text">{esc(p["whenToCite"])}</p>
-      </section>
+      {render_extra_sections(p)}
 
       <section class="paper-section" id="bibtex">
         <h2>BibTeX</h2>
-        <p class="section-text">Download: <a href="./paper.bib" download="cot-chain-of-truth.bib">paper.bib</a></p>
+        <p class="section-text">Official PMLR BibTeX. Download: <a href="./paper.bib" download="cot-chain-of-truth.bib">paper.bib</a></p>
         <pre class="codeblock bibtex-block"><code id="bibtex-content">{bib}</code></pre>
         <button class="button" type="button" id="copy-bibtex">Copy BibTeX</button>
       </section>
@@ -721,7 +791,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
   <h2><a href="{esc(url)}">{esc(p["shortTitle"])}</a></h2>
   {hub_venue_line(p, asset_root)}
   <p>{esc(p["tldr"])}</p>
-  <p class="hub-links"><a href="{esc(url)}">Project page →</a><span>·</span><a href="{esc(p["links"]["arxiv"])}" target="_blank" rel="noopener noreferrer">arXiv</a><span>·</span><a href="{esc(p["links"]["pdf"])}" target="_blank" rel="noopener noreferrer">PDF</a></p>
+  <p class="hub-links"><a href="{esc(url)}">Project page →</a><span>·</span><a href="{esc(p["links"].get("paper") or p["links"]["arxiv"])}" target="_blank" rel="noopener noreferrer">Paper</a><span>·</span><a href="{esc(p["links"]["arxiv"])}" target="_blank" rel="noopener noreferrer">Preprint</a><span>·</span><a href="{esc(p["links"]["pdf"])}" target="_blank" rel="noopener noreferrer">PDF</a></p>
 </article>"""
         )
 
@@ -815,28 +885,28 @@ def build() -> None:
         canonical=f"{site_base}/projects/",
     )
     (PROJECTS_DIR / "index.html").write_text(projects_hub, encoding="utf-8")
-    (ROOT / "index.html").write_text(render_root_redirect(site_base), encoding="utf-8")
-
-    sitemap_entries = [
-        f"  <url><loc>{esc(site_base)}/projects/</loc></url>",
-        *[
-            f"  <url><loc>{esc(p['siteBase'])}/projects/{esc(p['slug'])}/</loc></url>"
-            for p in papers
-        ],
-    ]
-    (ROOT / "sitemap.xml").write_text(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n"
-        + "\n".join(sitemap_entries)
-        + "\n</urlset>\n",
-        encoding="utf-8",
-    )
-
-    site_base = papers[0]["siteBase"] if papers else "https://example.com"
-    (ROOT / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: {site_base}/sitemap.xml\n",
-        encoding="utf-8",
-    )
+    # The Jekyll homepage, robots.txt, and sitemap stay under _config.yml.
+    # A static index.html or a project-only sitemap would replace them.
+    if not (ROOT / "_config.yml").exists():
+        (ROOT / "index.html").write_text(render_root_redirect(site_base), encoding="utf-8")
+        sitemap_entries = [
+            f"  <url><loc>{esc(site_base)}/projects/</loc></url>",
+            *[
+                f"  <url><loc>{esc(p['siteBase'])}/projects/{esc(p['slug'])}/</loc></url>"
+                for p in papers
+            ],
+        ]
+        (ROOT / "sitemap.xml").write_text(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n"
+            + "\n".join(sitemap_entries)
+            + "\n</urlset>\n",
+            encoding="utf-8",
+        )
+        (ROOT / "robots.txt").write_text(
+            f"User-agent: *\nAllow: /\n\nSitemap: {site_base}/sitemap.xml\n",
+            encoding="utf-8",
+        )
 
 
 if __name__ == "__main__":
