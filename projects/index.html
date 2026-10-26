@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Research Projects | Chunlin Gong</title>
-  <meta name="description" content="Research on reasoning-model safety and robust misinformation detection, with methods, empirical findings, and code.">
+  <meta name="description" content="Research on reasoning-model safety and robust misinformation detection.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://chunlingong.me/projects/">
   <script type="application/ld+json">
@@ -28,36 +28,65 @@
   ]
 }
   </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="../site-overrides.css">
-  <link rel="stylesheet" href="../static/paper.css?v=20261026c">
+  <link rel="stylesheet" href="../static/paper.css?v=20261026d">
+  <link rel="stylesheet" href="../static/research-layout.css?v=20261026d">
 </head>
-<body>
-  <main class="hub-page">
+<body class="research-site research-site--projects">
+  <header class="research-nav">
+  <div class="research-nav-inner">
+    <a class="research-nav-brand" href="/">Chunlin Gong</a>
+    <nav class="research-nav-links" aria-label="Site">
+      <a href="/projects/">Projects</a>
+      <a href="/projects/#research-notes">Research notes</a>
+    </nav>
+  </div>
+</header>
+  <main class="research-main">
     <h1>Research projects</h1>
-    <p class="hub-intro">Research on reasoning-model safety and robust misinformation detection, with methods, empirical findings, and code.</p>
-    <div class="hub-grid"><article class="hub-card">
-  <h2><a href="./cognidir/">CogniDir</a></h2>
-  <p class="hub-venue"><a class="hub-venue-logo" href="https://aclanthology.org/2026.emnlp-main.655/" target="_blank" rel="noopener noreferrer"><img class="hub-logo-official" src="../static/emnlp-logo.svg" alt="EMNLP — Empirical Methods in Natural Language Processing" loading="lazy"></a><span class="hub-venue-sep">·</span><span class="hub-venue-label">EMNLP</span><span class="hub-venue-sep">·</span><span class="hub-venue-year">2026</span></p>
-  <p class="hub-kicker">Research area: Robust misinformation detection</p>
-  <p class="hub-question">How can fake news detectors adapt to different mechanisms of LLM-generated malicious comments?</p>
-  <p class="hub-summary">CogniDir strengthens comment-aware fake news detection through mechanism-specific malicious comment generation and feedback-driven training mixtures. InfoDirichlet Resampling adapts exposure across attack groups on Weibo16, Weibo20, and RumourEval-19.</p>
-  <p class="hub-links"><a href="./cognidir/">Project</a><span>·</span><a href="https://aclanthology.org/2026.emnlp-main.655/" target="_blank" rel="noopener noreferrer">Paper</a><span>·</span><a href="https://arxiv.org/abs/2510.09712" target="_blank" rel="noopener noreferrer">Preprint</a><span>·</span><a href="https://aclanthology.org/2026.emnlp-main.655.pdf" target="_blank" rel="noopener noreferrer">PDF</a><span>·</span><a href="https://github.com/cheslyn0712/CogniDir" target="_blank" rel="noopener noreferrer">Code</a></p>
-  <p class="hub-note"><span class="hub-note-label">Research note</span> <a href="/research/robust-fake-news-detection/">Robust Fake News Detection under Adversarial Social Context</a></p>
-</article><article class="hub-card">
-  <h2><a href="./cot-chain-of-truth/">CoT is Not the Chain of Truth</a></h2>
-  <p class="hub-venue"><a class="hub-venue-logo" href="https://proceedings.mlr.press/v306/tong26e.html" target="_blank" rel="noopener noreferrer"><img class="hub-logo-official" src="../static/icml-logo.svg" alt="ICML — International Conference on Machine Learning" loading="lazy"></a><span class="hub-venue-sep">·</span><span class="hub-venue-label">ICML</span><span class="hub-venue-sep">·</span><span class="hub-venue-year">2026</span></p>
-  <p class="hub-kicker">Research area: Reasoning-model safety</p>
-  <p class="hub-question">How can reasoning-trace safety be evaluated and localized inside language models?</p>
-  <p class="hub-summary">We study unsafe content in generated reasoning traces, localize safety-related layers and attention heads with Jacobian spectral analysis, and evaluate targeted safety interventions on fake-news generation and HarmBench.</p>
-  <p class="hub-links"><a href="./cot-chain-of-truth/">Project</a><span>·</span><a href="https://proceedings.mlr.press/v306/tong26e.html" target="_blank" rel="noopener noreferrer">Paper</a><span>·</span><a href="https://arxiv.org/abs/2602.04856" target="_blank" rel="noopener noreferrer">Preprint</a><span>·</span><a href="https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf" target="_blank" rel="noopener noreferrer">PDF</a><span>·</span><a href="https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth" target="_blank" rel="noopener noreferrer">Code</a></p>
-  <p class="hub-note"><span class="hub-note-label">Research note</span> <a href="/research/reasoning-trace-safety/">Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention</a></p>
+    <p class="hub-intro">Research on reasoning-model safety and robust misinformation detection.</p>
+    <div class="project-list"><article class="project-row">
+  <a class="project-thumb" href="./cognidir/"><img src="/data/figures/cognidir/Teaser0120_clean_noborder.png" alt="CogniDir"></a>
+  <div class="project-copy">
+    <p class="project-kicker">EMNLP 2026 · Robust misinformation detection</p>
+    <h2><a href="./cognidir/">CogniDir</a></h2>
+    <p class="project-summary">Adaptive training against LLM-generated malicious comments for robust fake news detection.</p>
+    <p class="project-actions">
+      <a class="button primary" href="./cognidir/">View project</a>
+      <a href="https://aclanthology.org/2026.emnlp-main.655/" target="_blank" rel="noopener noreferrer">Paper</a>
+      <a href="https://github.com/cheslyn0712/CogniDir" target="_blank" rel="noopener noreferrer">Code</a>
+    </p>
+  </div>
+</article><article class="project-row">
+  <a class="project-thumb" href="./cot-chain-of-truth/"><img src="/data/figures/teaser_figure1.png" alt="CoT is Not the Chain of Truth"></a>
+  <div class="project-copy">
+    <p class="project-kicker">ICML 2026 · Reasoning-model safety</p>
+    <h2><a href="./cot-chain-of-truth/">CoT is Not the Chain of Truth</a></h2>
+    <p class="project-summary">Layer- and head-level analysis of unsafe reasoning traces, including cases with final-answer refusal.</p>
+    <p class="project-actions">
+      <a class="button primary" href="./cot-chain-of-truth/">View project</a>
+      <a href="https://proceedings.mlr.press/v306/tong26e.html" target="_blank" rel="noopener noreferrer">Paper</a>
+      <a href="https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth" target="_blank" rel="noopener noreferrer">Code</a>
+    </p>
+  </div>
 </article></div>
-    <section class="paper-section" id="research-notes">
+    <section class="note-index" id="research-notes">
       <h2>Research notes</h2>
-      <p class="section-text">Research perspectives on reasoning-trace safety and robust fake news detection.</p>
-      <div class="hub-note-grid"><article class="hub-note-card"><h3><a href="/research/robust-fake-news-detection/">Robust Fake News Detection under Adversarial Social Context</a></h3><p>A research overview of malicious comment attacks, cognitive manipulation, and adaptive training mixtures for robust fake news detection.</p></article><article class="hub-note-card"><h3><a href="/research/reasoning-trace-safety/">Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention</a></h3><p>A research overview of reasoning-trace safety, refusal behavior, internal analysis, and targeted safety intervention.</p></article></div>
+      <article class="note-row">
+  <h3><a href="/research/robust-fake-news-detection/">Robust Fake News Detection under Adversarial Social Context</a></h3>
+  <p>A research overview of malicious comment attacks, cognitive manipulation, and adaptive training mixtures for robust fake news detection.</p>
+  <span class="note-arrow" aria-hidden="true">→</span>
+</article><article class="note-row">
+  <h3><a href="/research/reasoning-trace-safety/">Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention</a></h3>
+  <p>A research overview of reasoning-trace safety, refusal behavior, internal analysis, and targeted safety intervention.</p>
+  <span class="note-arrow" aria-hidden="true">→</span>
+</article>
     </section>
   </main>
+  <footer class="research-footer"><p><a href="/">Chunlin Gong</a></p></footer>
 </body>
 </html>

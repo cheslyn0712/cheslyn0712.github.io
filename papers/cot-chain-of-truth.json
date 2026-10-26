@@ -4,6 +4,8 @@
   "siteBase": "https://chunlingong.me",
   "title": "CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation",
   "shortTitle": "CoT is Not the Chain of Truth",
+  "cardSummary": "Layer- and head-level analysis of unsafe reasoning traces, including cases with final-answer refusal.",
+  "cardImage": "/data/figures/teaser_figure1.png",
   "venue": "ICML 2026",
   "venueId": "icml",
   "year": 2026,
@@ -144,8 +146,8 @@
       "label": "Jacobian Metrics"
     },
     {
-      "value": "+67.1",
-      "label": "Avg. Safety Gain"
+      "value": "+67.1 points",
+      "label": "Average safety gain on news"
     }
   ],
   "cotCategories": [

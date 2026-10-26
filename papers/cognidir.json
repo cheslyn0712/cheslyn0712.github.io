@@ -5,6 +5,8 @@
   "siteBase": "https://chunlingong.me",
   "title": "CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection",
   "shortTitle": "CogniDir",
+  "cardSummary": "Adaptive training against LLM-generated malicious comments for robust fake news detection.",
+  "cardImage": "/data/figures/cognidir/Teaser0120_clean_noborder.png",
   "venue": "EMNLP 2026",
   "venueId": "emnlp",
   "year": 2026,

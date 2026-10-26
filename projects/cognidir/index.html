@@ -116,65 +116,67 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../site-overrides.css">
-  <link rel="stylesheet" href="../../static/paper.css?v=20261026c">
+  <link rel="stylesheet" href="../../static/paper.css?v=20261026d">
+  <link rel="stylesheet" href="../../static/research-layout.css?v=20261026d">
 </head>
-<body>
-  <div class="site-shell">
-    <header class="site-header site-header-nav-only">
-      <nav class="site-nav">
-      <a href="#teaser">Overview</a>
-      <a href="#framework">Framework</a>
-      <a href="#results">Results</a>
-      <a href="#bibtex">BibTeX</a>
-        <a href="https://aclanthology.org/2026.emnlp-main.655.pdf" target="_blank" rel="noopener noreferrer">PDF</a>
-      </nav>
-    </header>
-
-    <main class="paper-page" id="top">
-      <header class="paper-hero">
-        <a class="venue-badge venue-badge-emnlp" href="https://aclanthology.org/2026.emnlp-main.655/" target="_blank" rel="noopener noreferrer"><img class="venue-logo-official" src="../../static/emnlp-logo.svg" alt="EMNLP — Empirical Methods in Natural Language Processing" loading="lazy"><span class="venue-label">EMNLP</span><span class="venue-year">2026</span></a>
-        <h1>CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection</h1>
+<body class="research-site research-site--paper">
+  <header class="research-nav">
+  <div class="research-nav-inner">
+    <a class="research-nav-brand" href="/">Chunlin Gong</a>
+    <nav class="research-nav-links" aria-label="Site">
+      <a href="/projects/">Projects</a>
+      <a href="/projects/#research-notes">Research notes</a>
+    </nav>
+  </div>
+</header>
+  <nav class="paper-toc" aria-label="On this page">
+  <a href="#tldr">Overview</a>
+  <a href="#method">Method</a>
+  <a href="#results">Results</a>
+  <a href="#resources">Resources</a>
+  <a href="#bibtex">Citation</a>
+</nav>
+  <main class="paper-page" id="top">
+    <header class="paper-hero">
+        <p class="venue-pill">EMNLP 2026</p>
+        <h1><span class="paper-title-main">CogniDir:</span><span class="paper-title-sub">Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection</span></h1>
         <p class="paper-authors"><span class="author-name">Zhao Tong<sup class="author-tag">*</sup><sup class="author-aff">1,2</sup></span><span class="author-sep">, </span><span class="author-name">Chunlin Gong<sup class="author-tag">*</sup><sup class="author-aff">3</sup></span><span class="author-sep">, </span><span class="author-name">Yimeng Gu<sup class="author-aff">4</sup></span><span class="author-sep">, </span><span class="author-name">Haichao Shi<sup class="author-aff">1</sup></span><span class="author-sep">, </span><span class="author-name">Qiang Liu<sup class="author-aff">5</sup></span><span class="author-sep">, </span><span class="author-name">Shu Wu<sup class="author-tag">†</sup><sup class="author-aff">5</sup></span><span class="author-sep">, </span><span class="author-name">Xingcheng Xu<sup class="author-aff">6</sup></span><span class="author-sep">, </span><span class="author-name">Xiao-Yu Zhang<sup class="author-tag">†</sup><sup class="author-aff">1</sup></span></p>
-        <ol class="paper-affiliations"><li><sup>1</sup>Institute of Information Engineering, Chinese Academy of Sciences</li><li><sup>2</sup>School of Cyber Security, University of Chinese Academy of Sciences</li><li><sup>3</sup>University of Minnesota</li><li><sup>4</sup>Queen Mary University of London</li><li><sup>5</sup>New Laboratory of Pattern Recognition (NLPR), Institute of Automation, Chinese Academy of Sciences</li><li><sup>6</sup>Shanghai AI Laboratory</li></ol>
-        <p class="paper-notes"><sup>*</sup>Equal contribution: Zhao Tong, Chunlin Gong · <sup>†</sup>Corresponding author: Shu Wu, Xiao-Yu Zhang</p>
-        <div class="paper-hero-actions"><a class="button primary" href="https://aclanthology.org/2026.emnlp-main.655/" target="_blank" rel="noopener noreferrer">Paper</a><a class="button" href="https://aclanthology.org/2026.emnlp-main.655.pdf" target="_blank" rel="noopener noreferrer"><span class="button-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h5"></path><path d="M9 13h6M9 17h4"></path></svg></span><span>PDF</span></a><a class="button" href="https://arxiv.org/abs/2510.09712" target="_blank" rel="noopener noreferrer">Preprint</a><a class="button code-link" href="https://github.com/cheslyn0712/CogniDir" target="_blank" rel="noopener noreferrer"><span class="button-icon github-icon"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.2A6.8 6.8 0 0 0 5.85 14.45c.34.06.47-.14.47-.33v-1.17c-1.9.42-2.3-.81-2.3-.81-.3-.77-.76-.97-.76-.97-.62-.42.05-.41.05-.41.69.05 1.05.7 1.05.7.6 1.04 1.59.74 1.98.56.06-.45.24-.75.44-.92-1.52-.18-3.13-.76-3.13-3.4 0-.75.27-1.36.7-1.84-.07-.17-.3-.88.07-1.84 0 0 .57-.18 1.86.7A6.36 6.36 0 0 1 8 4.4c.58 0 1.16.08 1.7.23 1.29-.88 1.86-.7 1.86-.7.37.96.14 1.67.07 1.84.44.48.7 1.1.7 1.84 0 2.64-1.61 3.21-3.14 3.39.25.22.47.64.47 1.29v1.9c0 .19.13.39.47.33A6.8 6.8 0 0 0 8 1.2z"></path></svg></span><span>Code</span></a></div>
-        <div class="paper-hero-stats"><div class="paper-stat"><strong>+17.9%</strong><span>Best F1 Gain (Weibo20)</span></div><div class="paper-stat"><strong>0.947</strong><span>Weibo20 Robust Macro-F1</span></div><div class="paper-stat"><strong>45%</strong><span>Mean ASR Reduction</span></div><div class="paper-stat"><strong>3</strong><span>Benchmarks</span></div></div>
+        <p class="equal-note"><sup>*</sup> Equal contribution: Zhao Tong, Chunlin Gong</p>
+        <details class="author-details">
+          <summary>Affiliations and author notes</summary>
+          <ol class="paper-affiliations"><li><sup>1</sup>Institute of Information Engineering, Chinese Academy of Sciences</li><li><sup>2</sup>School of Cyber Security, University of Chinese Academy of Sciences</li><li><sup>3</sup>University of Minnesota</li><li><sup>4</sup>Queen Mary University of London</li><li><sup>5</sup>New Laboratory of Pattern Recognition (NLPR), Institute of Automation, Chinese Academy of Sciences</li><li><sup>6</sup>Shanghai AI Laboratory</li></ol>
+          <p class="paper-notes"><sup>*</sup>Equal contribution: Zhao Tong, Chunlin Gong · <sup>†</sup>Corresponding author: Shu Wu, Xiao-Yu Zhang</p>
+        </details>
+        <div class="hero-actions">
+          <div class="hero-actions-primary">
+            <a class="button primary" href="https://aclanthology.org/2026.emnlp-main.655/" target="_blank" rel="noopener noreferrer">Read paper</a>
+            <a class="button secondary" href="https://github.com/cheslyn0712/CogniDir" target="_blank" rel="noopener noreferrer">Code</a>
+          </div>
+          <p class="hero-actions-secondary"><a href="https://aclanthology.org/2026.emnlp-main.655.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="https://arxiv.org/abs/2510.09712" target="_blank" rel="noopener noreferrer">arXiv</a></p>
+        </div>
+        <section class="paper-section" id="tldr">
+          <p class="paper-summary">CogniDir strengthens comment-aware fake news detection through mechanism-specific malicious comment generation and feedback-driven training mixtures. InfoDirichlet Resampling adapts exposure across attack groups on Weibo16, Weibo20, and RumourEval-19.</p>
+        </section>
       </header>
-
-      <section class="paper-section" id="tldr">
-        <h2>TL;DR</h2>
-        <p class="lead-text">CogniDir strengthens comment-aware fake news detection through mechanism-specific malicious comment generation and feedback-driven training mixtures. InfoDirichlet Resampling adapts exposure across attack groups on Weibo16, Weibo20, and RumourEval-19.</p>
-      </section>
-
-      <section class="paper-section" id="research-context"><h2>Research context</h2><p class="section-text">Comment-aware fake news detectors combine news content with social responses. LLM-generated malicious comments can manipulate this context through fact distortion, logical confusion, and emotional manipulation. CogniDir studies these mechanisms as distinct sources of detector vulnerability.</p><p class="section-text">The framework connects adversarial social-context evaluation with adaptive training-data allocation. It scores vulnerability across attack groups and uses a Dirichlet-mean allocation to update training exposure. Experiments on Weibo16, Weibo20, and RumourEval-19 evaluate robustness across attack mechanisms and comment settings.</p><p class="section-text">Research note: <a href="/research/robust-fake-news-detection/">Robust Fake News Detection under Adversarial Social Context</a></p></section>
-
-      <section class="paper-section" id="teaser">
-        <h2>Cognitive Attacks Break Static Defenses</h2>
-        <p class="section-text">On Weibo16, prior methods drop sharply under diverse malicious comments. CogniDir maintains high robust F1, staying near 0.94 across attack categories.</p>
-        <figure class="paper-figure figure-teaser">
-  <img src="../../data/figures/cognidir/Teaser0120_clean_noborder.png" alt="Group-wise F1 comparison under cognitive malicious comments" loading="lazy">
-  <figcaption><strong>Figure 1.</strong> Group-wise F1 on Weibo16: prior methods drop sharply under diverse malicious comments; CogniDir maintains high robust F1. · <a href="../../data/figures/cognidir/Teaser0120_clean_noborder.pdf" target="_blank" rel="noopener">Vector PDF</a></figcaption>
-</figure>
-      </section>
-
+    
       <section class="paper-section" id="framework">
-        <h2>Framework</h2>
-        <p class="section-text">CogniDir works in three stages: mechanism-specific malicious comment generation, InfoDirichlet Resampling that updates the training mixture from group vulnerability after each epoch, and robust evaluation under mixed adversarial comments. The mixture uses the Dirichlet mean, a smooth closed-form allocation that tracks the weakest attack group.</p>
-        <figure class="paper-figure figure-full">
-  <img src="../../data/figures/cognidir/Method1833_clean_notext_0826.png" alt="CogniDir framework overview" loading="lazy">
-  <figcaption><strong>Figure 2.</strong> Cognitive malicious comment synthesis, InfoDirichlet Resampling (IDR), and robust evaluation under mixed attack settings. · <a href="../../data/figures/cognidir/Method1833_clean_notext_0826.pdf" target="_blank" rel="noopener">Vector PDF</a></figcaption>
+        <div class="wide-block">
+          <figure class="paper-figure figure-overview wide-block">
+  <a href="../../data/figures/cognidir/Method1833_clean_notext_0826.png"><img src="../../data/figures/cognidir/Method1833_clean_notext_0826.png" alt="CogniDir framework overview"></a>
+  <figcaption><strong>Figure 2.</strong> Cognitive malicious comment synthesis, InfoDirichlet Resampling, and robust evaluation. · <a href="https://aclanthology.org/2026.emnlp-main.655.pdf" target="_blank" rel="noopener noreferrer">View PDF</a></figcaption>
 </figure>
+        </div>
       </section>
-
-      <section class="paper-section" id="contributions">
-        <h2>Key Contributions</h2>
-        <ul class="section-list"><li>A cognitive-grounded synthesis pipeline that produces mechanism-labeled comments for fact distortion, logical confusion, and emotional manipulation.</li><li>InfoDirichlet Resampling, which turns group-wise vulnerability into an adaptive training mixture through the Dirichlet mean.</li><li>Strong robustness on Weibo16, Weibo20, and RumourEval-19, with up to +17.9% F1 and a 45% reduction in mean ASR.</li></ul>
-      </section>
-
-      <section class="paper-section" id="attacks">
-        <h2>Cognitive Attack Taxonomy</h2>
-        <p class="section-text">Grounded in cognitive psychology, we categorize adversarial comments into three complementary mechanisms and synthesize mechanism-labeled training data with multiple LLMs.</p>
-        <div class="taxonomy-grid"><article class="taxonomy-card">
+      <section class="paper-section" id="findings"><div class="content-column"><h2>Research findings</h2><ul class="section-list"><li><strong>Mechanism-specific attacks.</strong> Fact distortion, logical confusion, and emotional manipulation define distinct adversarial comment groups.</li><li><strong>Feedback-driven training.</strong> Group-wise vulnerability scores guide the next training mixture through InfoDirichlet Resampling.</li><li><strong>Robustness evaluation.</strong> Experiments on Weibo16, Weibo20, and RumourEval-19 measure detection performance and attack success across the reported settings.</li></ul></div></section>
+      <section class="paper-section" id="method">
+        <div class="content-column">
+          <h2>Method</h2>
+          <p class="section-text">CogniDir works in three stages: mechanism-specific malicious comment generation, InfoDirichlet Resampling that updates the training mixture from group vulnerability after each epoch, and robust evaluation under mixed adversarial comments. The mixture uses the Dirichlet mean, a smooth closed-form allocation that tracks the weakest attack group.</p>
+          <ul class="section-list"><li>A cognitive-grounded synthesis pipeline that produces mechanism-labeled comments for fact distortion, logical confusion, and emotional manipulation.</li><li>InfoDirichlet Resampling, which turns group-wise vulnerability into an adaptive training mixture through the Dirichlet mean.</li><li>Strong robustness on Weibo16, Weibo20, and RumourEval-19, with up to +17.9% F1 and a 45% reduction in mean ASR.</li></ul>
+          <h3 class="subsection-title">Cognitive attack taxonomy</h3>
+          <p class="section-text">Grounded in cognitive psychology, we categorize adversarial comments into three complementary mechanisms and synthesize mechanism-labeled training data with multiple LLMs.</p>
+        </div>
+        <div class="taxonomy-grid wide-block"><article class="taxonomy-card">
   <span class="taxonomy-tag">FACT</span>
   <h3>Fact Distortion</h3>
   <p>Injects unverified or misleading factual details to create false credibility and encourage dissemination.</p>
@@ -187,15 +189,25 @@
   <h3>Emotional Manipulation</h3>
   <p>Uses affective framing and social pressure to shift attention away from veracity signals in the news–comment pair.</p>
 </article></div>
+        <div class="content-column">
+          <h3 class="subsection-title">Allocation</h3>
+          <p class="section-text">CogniDir assigns training exposure to distinct attack mechanisms and updates the mixture from group-wise vulnerability feedback. InfoDirichlet Resampling maps the scores to positive Dirichlet parameters and uses the normalized mean as the next training mixture.</p>
+        </div>
       </section>
-
       <section class="paper-section" id="results">
-        <h2>Main Results</h2>
-        <ul class="section-list"><li>On Weibo16, CogniDir keeps F1 near 0.94 across attack categories, while prior detectors drop sharply under diverse malicious comments.</li><li>Robust F1 improves by +9.0% on Weibo16, +17.9% on Weibo20 (Macro-F1 0.947), and +14.5% on RumourEval-19 over the strongest baselines.</li><li>Adaptive training reduces mean ASR by 45%, down to 0.116, across attack types and comment counts.</li><li>Malicious-comment generation, vulnerability scoring, and Dirichlet expectation allocation each contribute to the final robustness.</li></ul>
-
-        <h3 class="subsection-title">Performance vs. Baselines</h3>
-        <p class="section-text">Performance comparison between CogniDir and baselines. O = original detection, A = under attack, R = after robust training (all F1). Δ Improve is relative gain over the second-best baseline.</p>
-        <div class="table-wrap full-width-table scroll-x">
+        <div class="wide-block">
+          <h2>Results</h2>
+          <div class="paper-hero-stats"><div class="paper-stat"><strong>+17.9%</strong><span>Best F1 Gain (Weibo20)</span></div><div class="paper-stat"><strong>0.947</strong><span>Weibo20 Robust Macro-F1</span></div><div class="paper-stat"><strong>45%</strong><span>Mean ASR Reduction</span></div><div class="paper-stat"><strong>3</strong><span>Benchmarks</span></div></div>
+          <h3 class="subsection-title">Cognitive attacks break static defenses</h3>
+          <p class="section-text">On Weibo16, prior methods drop sharply under diverse malicious comments. CogniDir maintains high robust F1, staying near 0.94 across attack categories.</p>
+          <figure class="paper-figure figure-teaser">
+  <img src="../../data/figures/cognidir/Teaser0120_clean_noborder.png" alt="Group-wise F1 comparison under cognitive malicious comments" loading="lazy">
+  <figcaption><strong>Figure 1.</strong> Group-wise F1 on Weibo16: prior methods drop sharply under diverse malicious comments; CogniDir maintains high robust F1. · <a href="../../data/figures/cognidir/Teaser0120_clean_noborder.pdf" target="_blank" rel="noopener">Vector PDF</a></figcaption>
+</figure>
+          <ul class="section-list"><li>On Weibo16, CogniDir keeps F1 near 0.94 across attack categories, while prior detectors drop sharply under diverse malicious comments.</li><li>Robust F1 improves by +9.0% on Weibo16, +17.9% on Weibo20 (Macro-F1 0.947), and +14.5% on RumourEval-19 over the strongest baselines.</li><li>Adaptive training reduces mean ASR by 45%, down to 0.116, across attack types and comment counts.</li><li>Malicious-comment generation, vulnerability scoring, and Dirichlet expectation allocation each contribute to the final robustness.</li></ul>
+          <h3 class="subsection-title">Performance vs. baselines</h3>
+          <p class="section-text">Performance comparison between CogniDir and baselines. O = original detection, A = under attack, R = after robust training (all F1). Δ Improve is relative gain over the second-best baseline.</p>
+          <div class="table-wrap full-width-table scroll-x">
   <table class="data-table compact results-matrix">
     <thead>
       <tr>
@@ -212,35 +224,32 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td rowspan="4"><strong>LLM-Only</strong></td><td>Gemma-2-2B</td><td>0.322</td><td>0.291</td><td>0.274</td><td>0.345</td><td>0.292</td><td>0.326</td><td>0.294</td><td>0.238</td><td>0.275</td></tr><tr><td>Mistral-7B</td><td>0.686</td><td>0.334</td><td>0.495</td><td>0.654</td><td>0.315</td><td>0.375</td><td>0.468</td><td>0.184</td><td>0.252</td></tr><tr><td>Llama-3-8B</td><td>0.598</td><td>0.324</td><td>0.408</td><td>0.582</td><td>0.363</td><td>0.408</td><td>0.377</td><td>0.219</td><td>0.276</td></tr><tr><td>Qwen2.5-32B</td><td>0.831</td><td>0.282</td><td>0.716</td><td>0.823</td><td>0.367</td><td>0.541</td><td>0.553</td><td>0.343</td><td>0.412</td></tr><tr><td rowspan="6"><strong>Deep-Learning Based</strong></td><td>dEFEND</td><td>0.902</td><td>0.727</td><td>0.745</td><td>0.884</td><td>0.557</td><td>0.585</td><td>0.648</td><td>0.407</td><td>0.687</td></tr><tr><td>Dual-CAN</td><td>0.895</td><td>0.366</td><td>0.578</td><td>0.872</td><td>0.436</td><td>0.580</td><td>0.628</td><td>0.377</td><td>0.546</td></tr><tr><td>GenFEND</td><td>0.915</td><td>0.578</td><td>0.867</td><td>0.892</td><td>0.640</td><td>0.761</td><td>0.662</td><td>0.456</td><td>0.606</td></tr><tr><td>L-Defense</td><td>0.882</td><td>0.706</td><td>0.759</td><td>0.860</td><td>0.666</td><td>0.702</td><td>0.610</td><td>0.343</td><td>0.709</td></tr><tr><td>ARG</td><td>0.884</td><td>0.619</td><td>0.820</td><td>0.812</td><td>0.576</td><td>0.803</td><td>0.712</td><td>0.440</td><td>0.609</td></tr><tr><td><strong>CogniDir</strong></td><td><strong>0.955</strong></td><td><strong>0.792</strong></td><td><strong>0.945</strong></td><td><strong>0.936</strong></td><td><strong>0.728</strong></td><td><strong>0.947</strong></td><td><strong>0.822</strong></td><td><strong>0.552</strong></td><td><strong>0.812</strong></td></tr>
-      <tr class="table-highlight-row"><td colspan="2"><strong>Δ Improve</strong></td><td><strong>+4.4%</strong></td><td><strong>+8.9%</strong></td><td><strong>+9.0%</strong></td><td><strong>+4.9%</strong></td><td><strong>+9.3%</strong></td><td><strong>+17.9%</strong></td><td><strong>+15.5%</strong></td><td><strong>+21.1%</strong></td><td><strong>+14.5%</strong></td></tr>
+      <tr><td rowspan="4"><strong>LLM-Only</strong></td><td>Gemma-2-2B</td><td class="num">0.322</td><td class="num">0.291</td><td class="num">0.274</td><td class="num">0.345</td><td class="num">0.292</td><td class="num">0.326</td><td class="num">0.294</td><td class="num">0.238</td><td class="num">0.275</td></tr><tr><td>Mistral-7B</td><td class="num">0.686</td><td class="num">0.334</td><td class="num">0.495</td><td class="num">0.654</td><td class="num">0.315</td><td class="num">0.375</td><td class="num">0.468</td><td class="num">0.184</td><td class="num">0.252</td></tr><tr><td>Llama-3-8B</td><td class="num">0.598</td><td class="num">0.324</td><td class="num">0.408</td><td class="num">0.582</td><td class="num">0.363</td><td class="num">0.408</td><td class="num">0.377</td><td class="num">0.219</td><td class="num">0.276</td></tr><tr><td>Qwen2.5-32B</td><td class="num">0.831</td><td class="num">0.282</td><td class="num">0.716</td><td class="num">0.823</td><td class="num">0.367</td><td class="num">0.541</td><td class="num">0.553</td><td class="num">0.343</td><td class="num">0.412</td></tr><tr><td rowspan="6"><strong>Deep-Learning Based</strong></td><td>dEFEND</td><td class="num">0.902</td><td class="num">0.727</td><td class="num">0.745</td><td class="num">0.884</td><td class="num">0.557</td><td class="num">0.585</td><td class="num">0.648</td><td class="num">0.407</td><td class="num">0.687</td></tr><tr><td>Dual-CAN</td><td class="num">0.895</td><td class="num">0.366</td><td class="num">0.578</td><td class="num">0.872</td><td class="num">0.436</td><td class="num">0.580</td><td class="num">0.628</td><td class="num">0.377</td><td class="num">0.546</td></tr><tr><td>GenFEND</td><td class="num">0.915</td><td class="num">0.578</td><td class="num">0.867</td><td class="num">0.892</td><td class="num">0.640</td><td class="num">0.761</td><td class="num">0.662</td><td class="num">0.456</td><td class="num">0.606</td></tr><tr><td>L-Defense</td><td class="num">0.882</td><td class="num">0.706</td><td class="num">0.759</td><td class="num">0.860</td><td class="num">0.666</td><td class="num">0.702</td><td class="num">0.610</td><td class="num">0.343</td><td class="num">0.709</td></tr><tr><td>ARG</td><td class="num">0.884</td><td class="num">0.619</td><td class="num">0.820</td><td class="num">0.812</td><td class="num">0.576</td><td class="num">0.803</td><td class="num">0.712</td><td class="num">0.440</td><td class="num">0.609</td></tr><tr class="row-highlight"><td><strong>CogniDir</strong></td><td class="num"><strong>0.955</strong></td><td class="num"><strong>0.792</strong></td><td class="num"><strong>0.945</strong></td><td class="num"><strong>0.936</strong></td><td class="num"><strong>0.728</strong></td><td class="num"><strong>0.947</strong></td><td class="num"><strong>0.822</strong></td><td class="num"><strong>0.552</strong></td><td class="num"><strong>0.812</strong></td></tr>
+      <tr class="table-highlight-row"><td colspan="2"><strong>Δ Improve</strong></td><td class="num"><strong>+4.4%</strong></td><td class="num"><strong>+8.9%</strong></td><td class="num"><strong>+9.0%</strong></td><td class="num"><strong>+4.9%</strong></td><td class="num"><strong>+9.3%</strong></td><td class="num"><strong>+17.9%</strong></td><td class="num"><strong>+15.5%</strong></td><td class="num"><strong>+21.1%</strong></td><td class="num"><strong>+14.5%</strong></td></tr>
     </tbody>
   </table>
 </div>
-
-        <h3 class="subsection-title">Attack Success Rate (ASR)</h3>
-        <p class="section-text">Adaptive training cuts mean attack success rate by 45%, bringing it down to 0.116 across attack types and comment counts.</p>
-        <div class="asr-grid">
-          <figure class="paper-figure figure-asr">
+          <h3 class="subsection-title">Attack success rate</h3>
+          <p class="section-text">Adaptive training cuts mean attack success rate by 45%, bringing it down to 0.116 across attack types and comment counts.</p>
+          <div class="asr-stack">
+            <figure class="paper-figure figure-asr">
   <img src="../../data/figures/cognidir/ASR_ori_grid.png" alt="ASR before robust training" loading="lazy">
   <figcaption><strong>Figure 3a.</strong> ASR before robust training under varying attack types and comment counts. · <a href="../../data/figures/cognidir/ASR_ori_grid.pdf" target="_blank" rel="noopener">Vector PDF</a></figcaption>
 </figure>
-          <figure class="paper-figure figure-asr">
+            <figure class="paper-figure figure-asr">
   <img src="../../data/figures/cognidir/ASR_com_grid.png" alt="ASR after CogniDir training" loading="lazy">
-  <figcaption><strong>Figure 3b.</strong> ASR after robust training — substantial reduction across attack types. · <a href="../../data/figures/cognidir/ASR_com_grid.pdf" target="_blank" rel="noopener">Vector PDF</a></figcaption>
+  <figcaption><strong>Figure 3b.</strong> ASR after robust training across attack types. · <a href="../../data/figures/cognidir/ASR_com_grid.pdf" target="_blank" rel="noopener">Vector PDF</a></figcaption>
 </figure>
-        </div>
-
-        <h3 class="subsection-title">Adaptive Robustness During Training</h3>
-        <p class="section-text">Validation accuracy rises for all attack groups and the inter-group gap shrinks from 0.23 to 0.08, showing IDR reallocates learning toward weaker mechanisms.</p>
-        <figure class="paper-figure figure-large">
+          </div>
+          <h3 class="subsection-title">Adaptive robustness during training</h3>
+          <p class="section-text">Validation accuracy rises for all attack groups and the inter-group gap shrinks from 0.23 to 0.08, showing IDR reallocates learning toward weaker mechanisms.</p>
+          <figure class="paper-figure figure-large">
   <img src="../../data/figures/cognidir/VAL_grid.png" alt="Validation accuracy convergence across attack groups" loading="lazy">
-  <figcaption><strong>Figure 4.</strong> Group-wise validation accuracy during training — Fact Distortion, Logical Confusion, and Emotional Manipulation. · <a href="../../data/figures/cognidir/VAL_grid.pdf" target="_blank" rel="noopener">Vector PDF</a></figcaption>
+  <figcaption><strong>Figure 4.</strong> Group-wise validation accuracy during training. · <a href="../../data/figures/cognidir/VAL_grid.pdf" target="_blank" rel="noopener">Vector PDF</a></figcaption>
 </figure>
-
-        <h3 class="subsection-title">Ablation Study</h3>
-        <p class="section-text">Ablation of malicious comment generation (G), vulnerability score (VS), and Dirichlet expectation allocation (DEA).</p>
-        <div class="table-wrap full-width-table scroll-x">
+          <h3 class="subsection-title">Ablation study</h3>
+          <p class="section-text">Ablation of malicious comment generation (G), vulnerability score (VS), and Dirichlet expectation allocation (DEA).</p>
+          <div class="table-wrap full-width-table scroll-x">
   <table class="data-table compact">
     <thead>
       <tr><th>Dataset</th><th>Method</th><th>Macro-F1</th><th>Acc.</th><th>F1-real</th><th>F1-fake</th></tr>
@@ -248,19 +257,22 @@
     <tbody><tr><td rowspan="4"><strong>Weibo16</strong></td><td>CogniDir-G</td><td>0.792</td><td>0.811</td><td>0.830</td><td>0.754</td></tr><tr><td>CogniDir-VS</td><td>0.821</td><td>0.836</td><td>0.862</td><td>0.780</td></tr><tr><td>CogniDir-DEA</td><td>0.855</td><td>0.872</td><td>0.895</td><td>0.815</td></tr><tr><td><strong>CogniDir</strong></td><td><strong>0.945</strong></td><td><strong>0.947</strong></td><td><strong>0.957</strong></td><td><strong>0.933</strong></td></tr><tr><td rowspan="4"><strong>Weibo20</strong></td><td>CogniDir-G</td><td>0.728</td><td>0.742</td><td>0.770</td><td>0.686</td></tr><tr><td>CogniDir-VS</td><td>0.792</td><td>0.807</td><td>0.825</td><td>0.759</td></tr><tr><td>CogniDir-DEA</td><td>0.834</td><td>0.848</td><td>0.872</td><td>0.796</td></tr><tr><td><strong>CogniDir</strong></td><td><strong>0.947</strong></td><td><strong>0.947</strong></td><td><strong>0.951</strong></td><td><strong>0.943</strong></td></tr><tr><td rowspan="4"><strong>RumourEval-19</strong></td><td>CogniDir-G</td><td>0.552</td><td>0.574</td><td>0.620</td><td>0.484</td></tr><tr><td>CogniDir-VS</td><td>0.613</td><td>0.628</td><td>0.662</td><td>0.564</td></tr><tr><td>CogniDir-DEA</td><td>0.692</td><td>0.707</td><td>0.748</td><td>0.636</td></tr><tr><td><strong>CogniDir</strong></td><td><strong>0.812</strong></td><td><strong>0.836</strong></td><td><strong>0.883</strong></td><td><strong>0.741</strong></td></tr></tbody>
   </table>
 </div>
+        </div>
       </section>
-
-      <section class="paper-section" id="method">
-        <h2>Allocation</h2>
-        <p class="section-text">CogniDir assigns training exposure to distinct attack mechanisms and updates the mixture from group-wise vulnerability feedback. InfoDirichlet Resampling maps the scores to positive Dirichlet parameters and uses the normalized mean as the next training mixture.</p>
-      </section>
-
-      <section class="paper-section" id="related"><h2>Related research</h2><div class="table-wrap full-width-table scroll-x"><table class="data-table compact"><thead><tr><th>Work</th><th>Connection</th></tr></thead><tbody><tr><td><a href="https://aclanthology.org/2025.acl-long.617/" target="_blank" rel="noopener noreferrer">SINCon: Mitigate LLM-Generated Malicious Message Injection Attack for Rumor Detection</a></td><td>SINCon uses contrastive learning to make predictive influence more uniform across nodes in message propagation trees. CogniDir adapts training exposure across mechanism-specific malicious comment groups.</td></tr><tr><td><a href="https://aclanthology.org/2025.acl-long.1182/" target="_blank" rel="noopener noreferrer">Generate First, Then Sample: Enhancing Fake News Detection with LLM-Augmented Reinforced Sampling</a></td><td>This work generates fake news and uses reinforcement learning to sample real and fake training examples. CogniDir constructs cognitive malicious comments and updates the training mixture across attack mechanisms.</td></tr></tbody></table></div></section><section class="paper-section" id="findings"><h2>Research findings</h2><ul class="section-list"><li><strong>Mechanism-specific attacks.</strong> Fact distortion, logical confusion, and emotional manipulation define distinct adversarial comment groups.</li><li><strong>Feedback-driven training.</strong> Group-wise vulnerability scores guide the next training mixture through InfoDirichlet Resampling.</li><li><strong>Robustness evaluation.</strong> Experiments on Weibo16, Weibo20, and RumourEval-19 measure detection performance and attack success across the reported settings.</li></ul></section><section class="paper-section" id="resources"><h2>Code and resources</h2><ul class="section-list"><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/Src/scripts/train.py" target="_blank" rel="noopener noreferrer">Training</a> — Run the detector training entry point.</li><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/Src/scripts/test.py" target="_blank" rel="noopener noreferrer">Evaluation</a> — Run model evaluation, including group-wise evaluation.</li><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/Data/README.md" target="_blank" rel="noopener noreferrer">Data format</a> — Read the data preparation and format documentation.</li><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/BERT/README.md" target="_blank" rel="noopener noreferrer">BERT setup</a> — Read the pretrained BERT model setup instructions.</li><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/LLM/README.md" target="_blank" rel="noopener noreferrer">Generation model setup</a> — Read the comment-generation model setup instructions.</li></ul></section><section class="paper-section" id="faq"><h2>Questions</h2><h3>How do social comments affect fake news detection?</h3><p class="section-text">Comment-aware detectors use social responses together with news content. Manipulated comments can alter this evidence and affect the detector&#x27;s predictions. CogniDir evaluates this behavior under LLM-generated cognitive malicious comments.</p><h3>Which cognitive attack mechanisms are studied?</h3><p class="section-text">The study evaluates fact distortion, logical confusion, and emotional manipulation as separate comment attack groups. Group-wise results characterize detector vulnerability across these mechanisms.</p><h3>How does CogniDir adapt adversarial training?</h3><p class="section-text">After each epoch, the framework scores attack-group vulnerability using accuracy and probabilistic confidence. InfoDirichlet Resampling converts these scores into Dirichlet parameters and uses the Dirichlet mean to set the next training mixture.</p><h3>How does group-wise evaluation guide training exposure?</h3><p class="section-text">Group-wise measurements track how the detector responds to each attack mechanism. The allocation gives vulnerable groups additional exposure and updates the mixture as the detector learns.</p><h3>Which datasets and languages are evaluated?</h3><p class="section-text">The experiments use Weibo16, Weibo20, and RumourEval-19, covering Chinese and English comment-based fake news detection. The evaluation reports detection performance across attack mechanisms and comment settings.</p><h3>Which components are available in the repository?</h3><p class="section-text">The repository provides training and evaluation entry points, model and sampling modules, and data-format documentation. The project resources link to the training script, evaluation script, and setup instructions.</p></section><section class="paper-section" id="history"><h2>Publication history</h2><p class="section-text">Earlier arXiv versions of this work were titled &quot;Group-Adaptive Adversarial Learning for Robust Fake News Detection Against Malicious Comments.&quot; The published EMNLP 2026 version is titled &quot;CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection&quot; (arXiv:2510.09712).</p><p class="section-text"><a href="https://arxiv.org/abs/2510.09712">arXiv version history</a></p></section>
-
-      <section class="paper-section" id="bibtex">
-        <h2>BibTeX</h2>
-        <p class="section-text">Official EMNLP BibTeX. Download: <a href="./paper.bib" download="cognidir.bib">paper.bib</a></p>
-        <pre class="codeblock bibtex-block"><code id="bibtex-content">@inproceedings{tong-etal-2026-cognidir,
+    
+    <section class="paper-section" id="resources"><div class="content-column"><h2>Code and resources</h2><ul class="section-list"><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/Src/scripts/train.py" target="_blank" rel="noopener noreferrer">Training</a> — Run the detector training entry point.</li><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/Src/scripts/test.py" target="_blank" rel="noopener noreferrer">Evaluation</a> — Run model evaluation, including group-wise evaluation.</li><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/Data/README.md" target="_blank" rel="noopener noreferrer">Data format</a> — Read the data preparation and format documentation.</li><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/BERT/README.md" target="_blank" rel="noopener noreferrer">BERT setup</a> — Read the pretrained BERT model setup instructions.</li><li><a href="https://github.com/cheslyn0712/CogniDir/blob/main/LLM/README.md" target="_blank" rel="noopener noreferrer">Generation model setup</a> — Read the comment-generation model setup instructions.</li></ul></div></section>
+    <section class="paper-section" id="research-context"><div class="content-column"><h2>Research context</h2><p class="section-text">How can fake news detectors adapt to different mechanisms of LLM-generated malicious comments?</p><p class="section-text">Comment-aware fake news detectors combine news content with social responses. LLM-generated malicious comments can manipulate this context through fact distortion, logical confusion, and emotional manipulation. CogniDir studies these mechanisms as distinct sources of detector vulnerability.</p><p class="section-text">The framework connects adversarial social-context evaluation with adaptive training-data allocation. It scores vulnerability across attack groups and uses a Dirichlet-mean allocation to update training exposure. Experiments on Weibo16, Weibo20, and RumourEval-19 evaluate robustness across attack mechanisms and comment settings.</p><p class="section-text">Research note: <a href="/research/robust-fake-news-detection/">Robust Fake News Detection under Adversarial Social Context</a></p></div></section>
+    <section class="paper-section" id="related"><div class="wide-block"><h2>Related research</h2><div class="table-wrap full-width-table scroll-x"><table class="data-table compact related-table"><thead><tr><th>Work</th><th>Connection</th></tr></thead><tbody><tr><td><a href="https://aclanthology.org/2025.acl-long.617/" target="_blank" rel="noopener noreferrer">SINCon: Mitigate LLM-Generated Malicious Message Injection Attack for Rumor Detection</a></td><td>SINCon uses contrastive learning to make predictive influence more uniform across nodes in message propagation trees. CogniDir adapts training exposure across mechanism-specific malicious comment groups.</td></tr><tr><td><a href="https://aclanthology.org/2025.acl-long.1182/" target="_blank" rel="noopener noreferrer">Generate First, Then Sample: Enhancing Fake News Detection with LLM-Augmented Reinforced Sampling</a></td><td>This work generates fake news and uses reinforcement learning to sample real and fake training examples. CogniDir constructs cognitive malicious comments and updates the training mixture across attack mechanisms.</td></tr></tbody></table></div></div></section>
+    <section class="paper-section" id="faq"><div class="content-column"><h2>Questions</h2><div class="faq-list"><details><summary>How do social comments affect fake news detection?</summary><p class="section-text">Comment-aware detectors use social responses together with news content. Manipulated comments can alter this evidence and affect the detector&#x27;s predictions. CogniDir evaluates this behavior under LLM-generated cognitive malicious comments.</p></details><details><summary>Which cognitive attack mechanisms are studied?</summary><p class="section-text">The study evaluates fact distortion, logical confusion, and emotional manipulation as separate comment attack groups. Group-wise results characterize detector vulnerability across these mechanisms.</p></details><details><summary>How does CogniDir adapt adversarial training?</summary><p class="section-text">After each epoch, the framework scores attack-group vulnerability using accuracy and probabilistic confidence. InfoDirichlet Resampling converts these scores into Dirichlet parameters and uses the Dirichlet mean to set the next training mixture.</p></details><details><summary>How does group-wise evaluation guide training exposure?</summary><p class="section-text">Group-wise measurements track how the detector responds to each attack mechanism. The allocation gives vulnerable groups additional exposure and updates the mixture as the detector learns.</p></details><details><summary>Which datasets and languages are evaluated?</summary><p class="section-text">The experiments use Weibo16, Weibo20, and RumourEval-19, covering Chinese and English comment-based fake news detection. The evaluation reports detection performance across attack mechanisms and comment settings.</p></details><details><summary>Which components are available in the repository?</summary><p class="section-text">The repository provides training and evaluation entry points, model and sampling modules, and data-format documentation. The project resources link to the training script, evaluation script, and setup instructions.</p></details></div></div></section>
+    <section class="paper-section" id="history"><div class="content-column"><h2>Publication history</h2><p class="section-text">Earlier arXiv versions of this work were titled &quot;Group-Adaptive Adversarial Learning for Robust Fake News Detection Against Malicious Comments.&quot; The published EMNLP 2026 version is titled &quot;CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection&quot; (arXiv:2510.09712).</p><p class="section-text"><a href="https://arxiv.org/abs/2510.09712">arXiv version history</a></p></div></section>
+    <section class="paper-section" id="bibtex">
+        <div class="content-column">
+          <div class="citation-head">
+            <h2>Citation</h2>
+            <button class="button secondary" type="button" id="copy-bibtex">Copy BibTeX</button>
+          </div>
+          <p class="section-text">Official EMNLP BibTeX. Download: <a href="./paper.bib" download="cognidir.bib">paper.bib</a></p>
+          <pre class="codeblock bibtex-block"><code id="bibtex-content">@inproceedings{tong-etal-2026-cognidir,
  title = &quot;{C}ogni{D}ir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection&quot;,
  author = &quot;Tong, Zhao and Gong, Chunlin and Gu, Yimeng and Shi, Haichao and Liu, Qiang and Wu, Shu and Xu, Xingcheng and Zhang, Xiao-Yu&quot;,
  editor = &quot;Lee, Hung-Yi and Dev, Sunipa and Li, Jessy and Elliott, Desmond&quot;,
@@ -274,10 +286,10 @@
  ISBN = &quot;979-8-89176-459-0&quot;
 }
 </code></pre>
-        <button class="button" type="button" id="copy-bibtex">Copy BibTeX</button>
+        </div>
       </section>
-    </main>
-  </div>
+  </main>
+  <footer class="research-footer"><p><a href="/">Chunlin Gong</a></p></footer>
   <script src="../../static/copy-bibtex.js" defer></script>
 </body>
 </html>

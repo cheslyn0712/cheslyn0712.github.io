@@ -40,7 +40,7 @@ PROTECTED = [
     "bibtex",
     "abstract",
 ]
-EXTRA_ORDER = ["related", "findings", "resources", "faq", "history"]
+EXTRA_ORDER = ["findings", "resources", "related", "faq", "history"]
 GENERATED = [
     ROOT / "projects" / "index.html",
     ROOT / "projects" / "cot-chain-of-truth" / "index.html",
@@ -175,6 +175,8 @@ def resolve_link(href: str, source: Path) -> tuple[Path | None, str]:
     base = ROOT if source == HOME else source.parent
     if not path_part:
         return source, anchor
+    if path_part == "/":
+        return HOME, ""
     if path_part.startswith("/"):
         target = ROOT / path_part.lstrip("/")
     else:
@@ -221,10 +223,15 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
     context_detail = []
     for slug, page in pages.items():
         ids = section_ids(page)
-        if "tldr" not in ids or ids[ids.index("tldr") + 1] != "research-context":
+        if (
+            "tldr" not in ids
+            or "resources" not in ids
+            or "research-context" not in ids
+            or ids[ids.index("resources") + 1] != "research-context"
+        ):
             context_ok = False
             context_detail.append(slug)
-    report.check(2, "Research context follows TL;DR", context_ok, ", ".join(context_detail))
+    report.check(2, "Research context follows results and resources", context_ok, ", ".join(context_detail))
 
     order_ok = True
     order_detail = []
@@ -232,12 +239,12 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
         present = [item for item in EXTRA_ORDER if section_ids(page).count(item)]
         expected = []
         data = papers[slug]
-        if data.get("relatedWork"):
-            expected.append("related")
         if data.get("findings"):
             expected.append("findings")
         if data.get("resources"):
             expected.append("resources")
+        if data.get("relatedWork"):
+            expected.append("related")
         if data.get("faqs"):
             expected.append("faq")
         if data.get("publicationHistory"):
@@ -251,7 +258,7 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
     faq_detail = []
     for slug, page in pages.items():
         block = section_html(page, "faq")
-        questions = [norm(item) for item in re.findall(r"<h3>(.*?)</h3>", block, re.S)]
+        questions = [norm(item) for item in re.findall(r"<summary>(.*?)</summary>", block, re.S)]
         answers = [norm(item) for item in re.findall(r'<p class="section-text">(.*?)</p>', block, re.S)]
         expected_q = [norm(item["q"]) for item in papers[slug]["faqs"]]
         expected_a = [norm(item["a"]) for item in papers[slug]["faqs"]]
@@ -321,14 +328,16 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
     hub = (ROOT / "projects" / "index.html").read_text(encoding="utf-8")
     hub_ok = True
     for data in papers.values():
-        if data["researchQuestion"] not in hub:
+        if data.get("cardSummary") not in hub:
             hub_ok = False
         if f'href="{data["links"]["code"]}"' not in hub:
             hub_ok = False
         note = data["researchNote"]
         if f'href="{note["url"]}">{html.escape(note["title"])}</a>' not in hub:
             hub_ok = False
-    report.check(9, "Project index includes questions, code, and research notes", hub_ok)
+        if data["researchQuestion"] not in pages[data["slug"]]:
+            hub_ok = False
+    report.check(9, "Project index includes summaries, code, and research notes", hub_ok)
 
     author_names = [author["name"] for author in papers["cognidir"]["authors"]]
     report.check(
@@ -442,6 +451,10 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
                 continue
             if not target.exists():
                 broken.append(f"{source.name} -> {href}")
+                continue
+            if target.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", ".svg"}:
+                if anchor:
+                    broken.append(f"{source.name} -> {href}")
                 continue
             page_text = target.read_text(encoding="utf-8")
             if anchor and f'id="{anchor}"' not in page_text and f"id='{anchor}'" not in page_text:

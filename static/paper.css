@@ -746,7 +746,6 @@ a.venue-badge:hover {
   .layer-grid,
   .asr-grid,
   .metrics-grid,
-  .paper-hero-stats,
   .distribution-grid {
     grid-template-columns: 1fr;
   }
