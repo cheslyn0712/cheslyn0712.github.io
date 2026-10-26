@@ -40,7 +40,7 @@ VENUE_LOGOS = {
     "emnlp": {
         "file": "emnlp-2026-main.png",
         "alt": "EMNLP 2026 Main Conference, Budapest",
-        "label": "Main conference",
+        "label": "Main",
         "css": "venue-badge-emnlp",
     },
 }
@@ -58,27 +58,10 @@ def venue_id(p: dict) -> str:
     return p.get("venueId") or "icml"
 
 
-def venue_logo(p: dict, asset_root: str, css_class: str = "venue-logo-official", loading: str = "lazy") -> str:
+def venue_logo(p: dict, asset_root: str, css_class: str = "venue-logo-official") -> str:
     cfg = VENUE_LOGOS.get(venue_id(p), VENUE_LOGOS["icml"])
     src = f'{asset_root.rstrip("/")}/static/{cfg["file"]}'
-    lazy = ' loading="lazy"' if loading == "lazy" else ""
-    return f'<img class="{css_class}" src="{esc(src)}" alt="{esc(cfg["alt"])}"{lazy}>'
-
-
-def venue_mark(p: dict, asset_root: str, css_class: str) -> str:
-    cfg = VENUE_LOGOS.get(venue_id(p), VENUE_LOGOS["icml"])
-    logo = venue_logo(p, asset_root, css_class, loading="eager")
-    if venue_id(p) == "emnlp":
-        note = cfg["label"]
-    else:
-        note = str(p.get("year", ""))
-    inner = f'{logo}<span class="venue-track">{esc(note)}</span>'
-    link = venue_link(p.get("links", {}))
-    if link:
-        return (
-            f'<a href="{esc(link)}" target="_blank" rel="noopener noreferrer">{inner}</a>'
-        )
-    return inner
+    return f'<img class="{css_class}" src="{esc(src)}" alt="{esc(cfg["alt"])}" loading="lazy">'
 
 
 def venue_badge_html(p: dict, asset_root: str) -> str:
@@ -105,7 +88,11 @@ def hub_venue_line(p: dict, asset_root: str) -> str:
         cfg = VENUE_LOGOS[venue_id(p)]
         logo = venue_logo(p, asset_root, "hub-logo-official")
         label = f'<span class="hub-venue-label">{esc(cfg["label"])}</span>'
-        tail = f'<span class="hub-venue-sep">·</span>{label}<span class="hub-venue-sep">·</span><span class="hub-venue-year">{year}</span>'
+        tail = (
+            f'<span class="hub-venue-text"><span class="hub-venue-sep">·</span>'
+            f'{label}<span class="hub-venue-sep">·</span>'
+            f'<span class="hub-venue-year">{year}</span></span>'
+        )
         if link:
             return (
                 f'<p class="hub-venue">'
@@ -238,8 +225,7 @@ def render_head(p: dict, canonical: str) -> str:
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/styles.css">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026f">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/research-layout.css?v=20261026f">"""
+  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026j">"""
 
 
 def figure_src(p: dict, filename: str) -> str:
@@ -252,19 +238,26 @@ def figure_src(p: dict, filename: str) -> str:
 def figure_pdf_link(p: dict, png_filename: str) -> str:
     pdf_name = Path(png_filename).stem + ".pdf"
     if p.get("figureDir"):
-        return f'{p["_assetRoot"]}/data/figures/{p["figureDir"]}/{pdf_name}'
-    return f'{p["_assetRoot"]}/data/figures/{pdf_name}'
+        rel = Path("data") / "figures" / p["figureDir"] / pdf_name
+        href = f'{p["_assetRoot"]}/data/figures/{p["figureDir"]}/{pdf_name}'
+    else:
+        rel = Path("data") / "figures" / pdf_name
+        href = f'{p["_assetRoot"]}/data/figures/{pdf_name}'
+    if not (ROOT / rel).is_file():
+        return ""
+    return href
 
 
 def fig(p: dict, key: str, alt: str, caption: str, css_class: str = "figure-medium") -> str:
     filename = p["figures"][key]
     src = figure_src(p, filename)
     pdf_href = figure_pdf_link(p, filename)
-    cap = (
-        f"<figcaption>{caption} · <a href=\"{esc(pdf_href)}\" target=\"_blank\" rel=\"noopener\">Vector PDF</a></figcaption>"
-        if caption
+    vector = (
+        f' · <a href="{esc(pdf_href)}" target="_blank" rel="noopener">Vector PDF</a>'
+        if pdf_href
         else ""
     )
+    cap = f"<figcaption>{caption}{vector}</figcaption>" if caption else ""
     return f"""<figure class="paper-figure {css_class}">
   <img src="{esc(src)}" alt="{esc(alt)}" loading="lazy">
   {cap}
@@ -308,253 +301,81 @@ def build_action_buttons(links: dict) -> list[str]:
     return buttons
 
 
-LAYOUT_CSS = "research-layout.css?v=20261026f"
-FONT_CSS = (
-    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&"
-    "family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
-)
-
-
-def site_nav() -> str:
-    return """<header class="research-nav">
-  <div class="research-nav-inner">
-    <a class="research-nav-brand" href="/">Chunlin Gong</a>
-    <nav class="research-nav-links" aria-label="Site">
-      <a href="/projects/">Projects</a>
-      <a href="/projects/#research-notes">Research notes</a>
-    </nav>
-  </div>
-</header>"""
-
-
-def site_footer() -> str:
-    return """<footer class="research-footer"><p><a href="/">Chunlin Gong</a></p></footer>"""
-
-
-def paper_toc() -> str:
-    return """<nav class="paper-toc" aria-label="On this page">
-  <a href="#tldr">Overview</a>
-  <a href="#method">Method</a>
-  <a href="#results">Results</a>
-  <a href="#resources">Resources</a>
-  <a href="#bibtex">Citation</a>
-</nav>"""
-
-
-def split_title(p: dict) -> str:
-    short = p["shortTitle"]
-    full = p["title"]
-    if full.startswith(short):
-        rest = full[len(short) :].lstrip()
-        main = short
-        if rest.startswith(":"):
-            main = f"{short}:"
-            rest = rest[1:].lstrip()
-        return (
-            f'<h1><span class="paper-title-main">{esc(main)}</span>'
-            f'<span class="paper-title-sub">{esc(rest)}</span></h1>'
-        )
-    return f"<h1>{esc(full)}</h1>"
-
-
-def render_paper_hero(p: dict) -> str:
-    links = p["links"]
-    equal_names = ", ".join(a["name"] for a in p["authors"] if a.get("equal"))
-    aff_list = "".join(
-        f"<li><sup>{i + 1}</sup>{esc(a)}</li>" for i, a in enumerate(p["authorAffiliations"])
-    )
-    secondary = []
-    if links.get("pdf"):
-        secondary.append(
-            f'<a href="{esc(links["pdf"])}" target="_blank" rel="noopener noreferrer">PDF</a>'
-        )
-    if links.get("arxiv"):
-        secondary.append(
-            f'<a href="{esc(links["arxiv"])}" target="_blank" rel="noopener noreferrer">arXiv</a>'
-        )
-    poster = links.get("poster") or conference_poster(links)
-    if poster:
-        secondary.append(
-            f'<a href="{esc(poster)}" target="_blank" rel="noopener noreferrer">Poster</a>'
-        )
-    secondary_html = f'<p class="hero-actions-secondary">{"".join(secondary)}</p>' if secondary else ""
-    return f"""<header class="paper-hero">
-        <p class="venue-mark">{venue_mark(p, p["_assetRoot"], "venue-mark-logo")}</p>
-        {split_title(p)}
-        <p class="paper-authors">{render_authors(p["authors"])}</p>
-        <p class="equal-note"><sup>*</sup> Equal contribution: {esc(equal_names)}</p>
-        <details class="author-details">
-          <summary>Affiliations and author notes</summary>
-          <ol class="paper-affiliations">{aff_list}</ol>
-          {author_notes_html(p)}
-        </details>
-        <div class="hero-actions">
-          <div class="hero-actions-primary">
-            <a class="button primary" href="{esc(links.get("paper") or links["arxiv"])}" target="_blank" rel="noopener noreferrer">Read paper</a>
-            <a class="button secondary" href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer">Code</a>
-          </div>
-          {secondary_html}
-        </div>
-        <section class="paper-section" id="tldr">
-          <p class="paper-summary">{esc(p["tldr"])}</p>
-        </section>
-      </header>"""
-
-
-def overview_figure(p: dict, key: str, alt: str, caption: str) -> str:
-    filename = p["figures"][key]
-    src = figure_src(p, filename)
-    return f"""<figure class="paper-figure figure-overview wide-block">
-  <a href="{esc(src)}"><img src="{esc(src)}" alt="{esc(alt)}"></a>
-  <figcaption>{caption} · <a href="{esc(p["links"]["pdf"])}" target="_blank" rel="noopener noreferrer">View PDF</a></figcaption>
-</figure>"""
-
-
-def render_stats(p: dict) -> str:
-    stats = "".join(
-        f'<div class="paper-stat"><strong>{esc(s["value"])}</strong><span>{esc(s["label"])}</span></div>'
-        for s in p.get("stats", [])
-    )
-    if not stats:
-        return ""
-    return f'<div class="paper-hero-stats">{stats}</div>'
-
-
-def render_findings(p: dict) -> str:
-    findings = p.get("findings") or []
-    if not findings:
-        return ""
-    items = "".join(
-        f'<li><strong>{esc(item["title"])}.</strong> {esc(item["text"])}</li>' for item in findings
-    )
-    return (
-        '<section class="paper-section" id="findings"><div class="content-column"><h2>Research findings</h2>'
-        f'<ul class="section-list">{items}</ul></div></section>'
-    )
-
-
-def render_resources(p: dict) -> str:
-    resources = p.get("resources") or []
-    if not resources:
-        return ""
-    items = "".join(
-        f'<li><a href="{esc(item["url"])}" target="_blank" rel="noopener noreferrer">{esc(item["name"])}</a>'
-        f' — {esc(item["description"])}</li>'
-        for item in resources
-    )
-    return (
-        '<section class="paper-section" id="resources"><div class="content-column"><h2>Code and resources</h2>'
-        f'<ul class="section-list">{items}</ul></div></section>'
-    )
-
-
 def render_research_context(p: dict) -> str:
-    paragraphs = []
-    if p.get("researchQuestion"):
-        paragraphs.append(f'<p class="section-text">{esc(p["researchQuestion"])}</p>')
-    paragraphs.extend(
+    paragraphs = [
         f'<p class="section-text">{esc(text)}</p>' for text in (p.get("researchContext") or [])
-    )
+    ]
     note = p.get("researchNote") or {}
     if note.get("title") and note.get("url"):
         paragraphs.append(
-            '<p class="section-text">Research note: '
+            '<p class="note-row"><span class="note-row-label">Research note</span>'
             f'<a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
         )
     if not paragraphs:
         return ""
     return (
-        '<section class="paper-section" id="research-context"><div class="content-column"><h2>Research context</h2>'
+        '<section class="paper-section" id="research-context"><h2>Research context</h2>'
         + "".join(paragraphs)
-        + "</div></section>"
+        + "</section>"
     )
 
 
-def render_related(p: dict) -> str:
+def render_extra_sections(p: dict) -> str:
+    parts: list[str] = []
     rows = p.get("relatedWork") or []
-    if not rows:
-        return ""
-    body = []
-    for row in rows:
-        name = esc(row["name"])
-        if row.get("url"):
-            name = f'<a href="{esc(row["url"])}" target="_blank" rel="noopener noreferrer">{name}</a>'
-        body.append(f"<tr><td>{name}</td><td>{esc(row['relation'])}</td></tr>")
-    return (
-        '<section class="paper-section" id="related"><div class="wide-block"><h2>Related research</h2>'
-        '<div class="table-wrap full-width-table scroll-x"><table class="data-table compact related-table">'
-        "<thead><tr><th>Work</th><th>Connection</th></tr></thead>"
-        f'<tbody>{"".join(body)}</tbody></table></div></div></section>'
-    )
-
-
-def render_faq(p: dict) -> str:
-    faqs = p.get("faqs") or []
-    if not faqs:
-        return ""
-    blocks = "".join(
-        f'<details><summary>{esc(item["q"])}</summary><p class="section-text">{esc(item["a"])}</p></details>'
-        for item in faqs
-    )
-    return (
-        '<section class="paper-section" id="faq"><div class="content-column"><h2>Questions</h2>'
-        f'<div class="faq-list">{blocks}</div></div></section>'
-    )
-
-
-def render_history(p: dict) -> str:
-    if not p.get("publicationHistory"):
-        return ""
-    history_link = ""
-    if p.get("slug") == "cognidir":
-        history_link = (
-            '<p class="section-text"><a href="https://arxiv.org/abs/2510.09712">arXiv version history</a></p>'
+    if rows:
+        body = []
+        for row in rows:
+            name = esc(row["name"])
+            if row.get("url"):
+                name = (
+                    f'<a href="{esc(row["url"])}" target="_blank" rel="noopener noreferrer">{name}</a>'
+                )
+            body.append(f'<tr><td>{name}</td><td>{esc(row["relation"])}</td></tr>')
+        parts.append(
+            '<section class="paper-section" id="related"><h2>Related research</h2>'
+            '<div class="table-wrap full-width-table scroll-x"><table class="data-table compact">'
+            '<thead><tr><th>Work</th><th>Connection</th></tr></thead>'
+            f'<tbody>{"".join(body)}</tbody></table></div></section>'
         )
-    return (
-        '<section class="paper-section" id="history"><div class="content-column"><h2>Publication history</h2>'
-        f'<p class="section-text">{esc(p["publicationHistory"])}</p>{history_link}</div></section>'
-    )
-
-
-def render_citation(p: dict, label: str, download_name: str) -> str:
-    bib = esc(p["bibtex"])
-    return f"""<section class="paper-section" id="bibtex">
-        <div class="content-column">
-          <div class="citation-head">
-            <h2>Citation</h2>
-            <button class="button secondary" type="button" id="copy-bibtex">Copy BibTeX</button>
-          </div>
-          <p class="section-text">{label} Download: <a href="./paper.bib" download="{esc(download_name)}">paper.bib</a></p>
-          <pre class="codeblock bibtex-block"><code id="bibtex-content">{bib}</code></pre>
-        </div>
-      </section>"""
-
-
-def paper_shell(p: dict, canonical: str, body: str, citation: str) -> str:
-    asset = p["_assetRoot"]
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-{render_head(p, canonical)}
-</head>
-<body class="research-site research-site--paper">
-  {site_nav()}
-  {paper_toc()}
-  <main class="paper-page" id="top">
-    {render_paper_hero(p)}
-    {body}
-    {render_resources(p)}
-    {render_research_context(p)}
-    {render_related(p)}
-    {render_faq(p)}
-    {render_history(p)}
-    {citation}
-  </main>
-  {site_footer()}
-  <script src="{esc(asset)}/static/copy-bibtex.js" defer></script>
-</body>
-</html>
-"""
+    findings = p.get("findings") or []
+    if findings:
+        items = "".join(
+            f'<li><strong>{esc(item["title"])}.</strong> {esc(item["text"])}</li>' for item in findings
+        )
+        parts.append(
+            '<section class="paper-section" id="findings"><h2>Research findings</h2>'
+            f'<ul class="section-list">{items}</ul></section>'
+        )
+    resources = p.get("resources") or []
+    if resources:
+        items = "".join(
+            f'<li><a href="{esc(item["url"])}" target="_blank" rel="noopener noreferrer">{esc(item["name"])}</a>'
+            f' — {esc(item["description"])}</li>'
+            for item in resources
+        )
+        parts.append(
+            '<section class="paper-section" id="resources"><h2>Code and resources</h2>'
+            f'<ul class="section-list">{items}</ul></section>'
+        )
+    faqs = p.get("faqs") or []
+    if faqs:
+        blocks = "".join(
+            f'<h3>{esc(item["q"])}</h3><p class="section-text">{esc(item["a"])}</p>' for item in faqs
+        )
+        parts.append(f'<section class="paper-section" id="faq"><h2>Questions</h2>{blocks}</section>')
+    if p.get("publicationHistory"):
+        history_link = ""
+        if p.get("slug") == "cognidir":
+            history_link = (
+                '<p class="section-text"><a href="https://arxiv.org/abs/2510.09712">'
+                "arXiv version history</a></p>"
+            )
+        parts.append(
+            '<section class="paper-section" id="history"><h2>Publication history</h2>'
+            f'<p class="section-text">{esc(p["publicationHistory"])}</p>{history_link}</section>'
+        )
+    return "".join(parts)
 
 
 def author_notes_html(p: dict) -> str:
@@ -576,7 +397,7 @@ def render_paper_page(p: dict) -> str:
 def render_metric_cells(values: list[str], highlight: bool = False) -> str:
     tag_open = "<strong>" if highlight else ""
     tag_close = "</strong>" if highlight else ""
-    return "".join(f'<td class="num">{tag_open}{esc(v)}{tag_close}</td>' for v in values)
+    return "".join(f"<td>{tag_open}{esc(v)}{tag_close}</td>" for v in values)
 
 
 def render_cognidir_main_table(table: dict) -> str:
@@ -585,13 +406,12 @@ def render_cognidir_main_table(table: dict) -> str:
         rows = group["rows"]
         for index, row in enumerate(rows):
             highlight = bool(row.get("highlight"))
-            row_class = ' class="row-highlight"' if highlight else ""
             model = f"<strong>{esc(row['model'])}</strong>" if highlight else esc(row["model"])
             type_cell = ""
             if index == 0:
                 type_cell = f'<td rowspan="{len(rows)}"><strong>{esc(group["type"])}</strong></td>'
             body_rows.append(
-                f"<tr{row_class}>{type_cell}<td>{model}</td>"
+                f"<tr>{type_cell}<td>{model}</td>"
                 f"{render_metric_cells(row['weibo16'], highlight)}"
                 f"{render_metric_cells(row['weibo20'], highlight)}"
                 f"{render_metric_cells(row['rumour'], highlight)}</tr>"
@@ -661,10 +481,21 @@ def render_cognidir_ablation_table(table: dict) -> str:
 </div>"""
 
 
-
 def render_cognidir_paper_page(p: dict) -> str:
+    asset = p["_assetRoot"]
     canonical = f'{p["siteBase"]}/projects/{p["slug"]}/'
+    links = p["links"]
+
+    aff_list = "".join(
+        f"<li><sup>{i + 1}</sup>{esc(a)}</li>" for i, a in enumerate(p["authorAffiliations"])
+    )
+    stats = "".join(
+        f'<div class="paper-stat"><strong>{esc(s["value"])}</strong><span>{esc(s["label"])}</span></div>'
+        for s in p.get("stats", [])
+    )
     contributions = "".join(f"<li>{esc(c)}</li>" for c in p["contributions"])
+    main_results = "".join(f"<li>{esc(r)}</li>" for r in p["mainResults"])
+
     taxonomy = "".join(
         f"""<article class="taxonomy-card">
   <span class="taxonomy-tag">{esc(c["tag"])}</span>
@@ -673,67 +504,138 @@ def render_cognidir_paper_page(p: dict) -> str:
 </article>"""
         for c in p["attackCategories"]
     )
-    main_results = "".join(f"<li>{esc(r)}</li>" for r in p["mainResults"])
-    body = f"""
+
+    result_rows = render_cognidir_main_table(p["mainResultsTable"])
+    ablation_table = render_cognidir_ablation_table(p["ablationTable"])
+    main_table_caption = esc(p["mainResultsTable"]["caption"])
+    ablation_caption = esc(p["ablationTable"]["caption"])
+
+    nav = """
+      <a href="#teaser">Overview</a>
+      <a href="#framework">Framework</a>
+      <a href="#results">Results</a>
+      <a href="#bibtex">BibTeX</a>"""
+
+    bib = esc(p["bibtex"])
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+{render_head(p, canonical)}
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header site-header-nav-only">
+      <nav class="site-nav">{nav}
+        <a href="{esc(links['pdf'])}" target="_blank" rel="noopener noreferrer">PDF</a>
+      </nav>
+    </header>
+
+    <main class="paper-page" id="top">
+      <header class="paper-hero">
+        {venue_badge_html(p, asset)}
+        <h1>{esc(p["title"])}</h1>
+        <p class="paper-authors">{render_authors(p["authors"])}</p>
+        <ol class="paper-affiliations">{aff_list}</ol>
+        {author_notes_html(p)}
+        <div class="paper-hero-actions">{''.join(build_action_buttons(links))}</div>
+        <div class="paper-hero-stats">{stats}</div>
+      </header>
+
+      <section class="paper-section" id="tldr">
+        <h2>TL;DR</h2>
+        <p class="lead-text">{esc(p["tldr"])}</p>
+      </section>
+
+      {render_research_context(p)}
+
+      <section class="paper-section" id="teaser">
+        <h2>Cognitive Attacks Break Static Defenses</h2>
+        <p class="section-text">{esc(p.get("teaserText", ""))}</p>
+        {fig(p, "teaser", "Group-wise F1 comparison under cognitive malicious comments", "<strong>Figure 1.</strong> Group-wise F1 on Weibo16: prior methods drop sharply under diverse malicious comments; CogniDir maintains high robust F1.", "figure-teaser")}
+      </section>
+
       <section class="paper-section" id="framework">
-        <div class="wide-block">
-          {overview_figure(p, "framework", "CogniDir framework overview", "<strong>Figure 2.</strong> Cognitive malicious comment synthesis, InfoDirichlet Resampling, and robust evaluation.")}
-        </div>
+        <h2>Framework</h2>
+        <p class="section-text">{esc(p["methodOverview"])}</p>
+        {fig(p, "framework", "CogniDir framework overview", "<strong>Figure 2.</strong> Cognitive malicious comment synthesis, InfoDirichlet Resampling (IDR), and robust evaluation under mixed attack settings.", "figure-full")}
       </section>
-      {render_findings(p)}
-      <section class="paper-section" id="method">
-        <div class="content-column">
-          <h2>Method</h2>
-          <p class="section-text">{esc(p["methodOverview"])}</p>
-          <ul class="section-list">{contributions}</ul>
-          <h3 class="subsection-title">Cognitive attack taxonomy</h3>
-          <p class="section-text">Grounded in cognitive psychology, we categorize adversarial comments into three complementary mechanisms and synthesize mechanism-labeled training data with multiple LLMs.</p>
-        </div>
-        <div class="taxonomy-grid wide-block">{taxonomy}</div>
-        <div class="content-column">
-          <h3 class="subsection-title">Allocation</h3>
-          <p class="section-text">{esc(p["priorWorkDiff"])}</p>
-        </div>
+
+      <section class="paper-section" id="contributions">
+        <h2>Key Contributions</h2>
+        <ul class="section-list">{contributions}</ul>
       </section>
+
+      <section class="paper-section" id="attacks">
+        <h2>Cognitive Attack Taxonomy</h2>
+        <p class="section-text">Grounded in cognitive psychology, we categorize adversarial comments into three complementary mechanisms and synthesize mechanism-labeled training data with multiple LLMs.</p>
+        <div class="taxonomy-grid">{taxonomy}</div>
+      </section>
+
       <section class="paper-section" id="results">
-        <div class="wide-block">
-          <h2>Results</h2>
-          {render_stats(p)}
-          <h3 class="subsection-title">Cognitive attacks break static defenses</h3>
-          <p class="section-text">{esc(p.get("teaserText", ""))}</p>
-          {fig(p, "teaser", "Group-wise F1 comparison under cognitive malicious comments", "<strong>Figure 1.</strong> Group-wise F1 on Weibo16: prior methods drop sharply under diverse malicious comments; CogniDir maintains high robust F1.", "figure-teaser")}
-          <ul class="section-list">{main_results}</ul>
-          <h3 class="subsection-title">Performance vs. baselines</h3>
-          <p class="section-text">{esc(p["mainResultsTable"]["caption"])}</p>
-          {render_cognidir_main_table(p["mainResultsTable"])}
-          <h3 class="subsection-title">Attack success rate</h3>
-          <p class="section-text">{esc(p.get("asrText", ""))}</p>
-          <div class="asr-stack">
-            {fig(p, "asrBefore", "ASR before robust training", "<strong>Figure 3a.</strong> ASR before robust training under varying attack types and comment counts.", "figure-asr")}
-            {fig(p, "asrAfter", "ASR after CogniDir training", "<strong>Figure 3b.</strong> ASR after robust training across attack types.", "figure-asr")}
-          </div>
-          <h3 class="subsection-title">Adaptive robustness during training</h3>
-          <p class="section-text">Validation accuracy rises for all attack groups and the inter-group gap shrinks from 0.23 to 0.08, showing IDR reallocates learning toward weaker mechanisms.</p>
-          {fig(p, "convergence", "Validation accuracy convergence across attack groups", "<strong>Figure 4.</strong> Group-wise validation accuracy during training.", "figure-large")}
-          <h3 class="subsection-title">Ablation study</h3>
-          <p class="section-text">{esc(p["ablationTable"]["caption"])}</p>
-          {render_cognidir_ablation_table(p["ablationTable"])}
+        <h2>Main Results</h2>
+        <ul class="section-list">{main_results}</ul>
+
+        <h3 class="subsection-title">Performance vs. Baselines</h3>
+        <p class="section-text">{main_table_caption}</p>
+        {result_rows}
+
+        <h3 class="subsection-title">Attack Success Rate (ASR)</h3>
+        <p class="section-text">{esc(p.get("asrText", ""))}</p>
+        <div class="asr-grid">
+          {fig(p, "asrBefore", "ASR before robust training", "<strong>Figure 3a.</strong> ASR before robust training under varying attack types and comment counts.", "figure-asr")}
+          {fig(p, "asrAfter", "ASR after CogniDir training", "<strong>Figure 3b.</strong> ASR after robust training — substantial reduction across attack types.", "figure-asr")}
         </div>
+
+        <h3 class="subsection-title">Adaptive Robustness During Training</h3>
+        <p class="section-text">Validation accuracy rises for all attack groups and the inter-group gap shrinks from 0.23 to 0.08, showing IDR reallocates learning toward weaker mechanisms.</p>
+        {fig(p, "convergence", "Validation accuracy convergence across attack groups", "<strong>Figure 4.</strong> Group-wise validation accuracy during training — Fact Distortion, Logical Confusion, and Emotional Manipulation.", "figure-large")}
+
+        <h3 class="subsection-title">Ablation Study</h3>
+        <p class="section-text">{ablation_caption}</p>
+        {ablation_table}
       </section>
-    """
-    return paper_shell(
-        p,
-        canonical,
-        body,
-        render_citation(p, "Official EMNLP BibTeX.", "cognidir.bib"),
-    )
+
+      <section class="paper-section" id="method">
+        <h2>Allocation</h2>
+        <p class="section-text">{esc(p["priorWorkDiff"])}</p>
+      </section>
+
+      {render_extra_sections(p)}
+
+      <section class="paper-section" id="bibtex">
+        <h2>BibTeX</h2>
+        <p class="section-text">Official EMNLP BibTeX. Download: <a href="./paper.bib" download="cognidir.bib">paper.bib</a></p>
+        <pre class="codeblock bibtex-block"><code id="bibtex-content">{bib}</code></pre>
+        <button class="button" type="button" id="copy-bibtex">Copy BibTeX</button>
+      </section>
+    </main>
+  </div>
+  <script src="{esc(asset)}/static/copy-bibtex.js" defer></script>
+</body>
+</html>
+"""
 
 
 def render_cot_paper_page(p: dict) -> str:
     asset = p["_assetRoot"]
     canonical = f'{p["siteBase"]}/projects/{p["slug"]}/'
+    links = p["links"]
+
+    action_buttons = build_action_buttons(links)
+
+    aff_list = "".join(
+        f"<li><sup>{i + 1}</sup>{esc(a)}</li>" for i, a in enumerate(p["authorAffiliations"])
+    )
+
+    stats = "".join(
+        f'<div class="paper-stat"><strong>{esc(s["value"])}</strong><span>{esc(s["label"])}</span></div>'
+        for s in p.get("stats", [])
+    )
+
     contributions = "".join(f"<li>{esc(c)}</li>" for c in p["contributions"])
     main_results = "".join(f"<li>{esc(r)}</li>" for r in p["mainResults"])
+
     taxonomy = "".join(
         f"""<article class="taxonomy-card">
   <span class="taxonomy-tag">{esc(c["tag"])}</span>
@@ -743,21 +645,24 @@ def render_cot_paper_page(p: dict) -> str:
 </article>"""
         for c in p["cotCategories"]
     )
-    distributions = "".join(
-        f"""<article class="distribution-block">
+
+    distributions = ""
+    for d in p["distributions"]:
+        distributions += f"""
+<article class="distribution-block">
   <h3>{esc(d["title"])}</h3>
   <p class="distribution-lead">{esc(d["description"])}</p>
   {fig_file(p, d["figure"], d["title"], f"<strong>{esc(d['caption'])}</strong>", "figure-pie")}
 </article>"""
-        for d in p["distributions"]
-    )
+
     layer_rows = "".join(
         f"<tr><td><strong>{esc(r['model'])}</strong></td><td>{esc(r['direct'])}</td><td>{esc(r['indirect'])}</td></tr>"
         for r in p["criticalLayers"]
     )
+
     layer_figs = "".join(
         f"""<figure class="paper-figure figure-compact-inline">
-  <a href="{esc(asset)}/data/figures/{esc(p['figures'][k])}"><img src="{esc(asset)}/data/figures/{esc(p['figures'][k])}" alt="{esc(alt)}" loading="lazy"></a>
+  <img src="{esc(asset)}/data/figures/{esc(p['figures'][k])}" alt="{esc(alt)}" loading="lazy">
   <figcaption>{esc(alt)}</figcaption>
 </figure>"""
         for k, alt in [
@@ -766,128 +671,201 @@ def render_cot_paper_page(p: dict) -> str:
             ("layerQwen8B", "Qwen3-8B layer separation"),
         ]
     )
+
     metrics = "".join(
         f"""<article class="metric-panel">
   <header class="metric-panel-head"><span class="metric-id">{esc(m["id"])}</span><h3>{esc(m["name"])}</h3><p>{esc(m["summary"])}</p></header>
   <figure class="paper-figure figure-metric">
-    <a href="{esc(asset)}/data/figures/{esc(m["figure"])}"><img src="{esc(asset)}/data/figures/{esc(m["figure"])}" alt="{esc(m["name"])} metric plot" loading="lazy"></a>
+    <img src="{esc(asset)}/data/figures/{esc(m["figure"])}" alt="{esc(m["name"])} metric plot" loading="lazy">
     <figcaption>{esc(m["caption"])}</figcaption>
   </figure>
 </article>"""
         for m in p["metrics"]
     )
+
     mitigation_rows = "".join(
         f"<tr><td><strong>{esc(r['model'])}</strong></td><td>{esc(r['ftRatio'])}</td><td>{esc(r['news'])}</td><td>{esc(r['harmbench'])}</td></tr>"
         for r in p["mitigation"]
     )
+
     correlation_rows = "".join(
-        f"<tr><td>{esc(r['model'])}</td><td class=\"num\">{esc(r['b1'])}</td><td class=\"num\">{esc(r['b2'])}</td><td class=\"num\">{esc(r['b3'])}</td></tr>"
+        f"<tr><td>{esc(r['model'])}</td><td>{esc(r['b1'])}</td><td>{esc(r['b2'])}</td><td>{esc(r['b3'])}</td></tr>"
         for r in p.get("correlationData", [])
     )
-    body = f"""
+
+    nav = """
+      <a href="#framework">Framework</a>
+      <a href="#results">Results</a>
+      <a href="#method">Method</a>
+      <a href="#bibtex">BibTeX</a>"""
+
+    venue_html = venue_badge_html(p, asset)
+
+    author_notes = author_notes_html(p)
+
+    bib = esc(p["bibtex"])
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+{render_head(p, canonical)}
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header site-header-nav-only">
+      <nav class="site-nav">{nav}
+        <a href="{esc(links['pdf'])}" target="_blank" rel="noopener noreferrer">PDF</a>
+      </nav>
+    </header>
+
+    <main class="paper-page" id="top">
+      <header class="paper-hero">
+        {venue_html}
+        <h1>{esc(p["title"])}</h1>
+        <p class="paper-authors">{render_authors(p["authors"])}</p>
+        <ol class="paper-affiliations">{aff_list}</ol>
+        {author_notes}
+        <div class="paper-hero-actions">{''.join(action_buttons)}</div>
+        <div class="paper-hero-stats">{stats}</div>
+      </header>
+
+      <section class="paper-section" id="tldr">
+        <h2>TL;DR</h2>
+        <p class="lead-text">{esc(p["tldr"])}</p>
+      </section>
+
+      {render_research_context(p)}
+
       <section class="paper-section" id="framework">
-        <div class="wide-block">
-          {overview_figure(p, "framework", "Unified safety-analysis framework overview", "<strong>Framework overview.</strong> CoT generation and annotation, critical-layer localization, Jacobian head metrics, and perturbation analysis.")}
-        </div>
+        <h2>Framework</h2>
+        <p class="section-text">{esc(p["methodOverview"])}</p>
+        {fig(p, "framework", "Unified safety-analysis framework overview", "<strong>Framework overview.</strong> CoT generation and annotation, critical-layer localization, Jacobian head metrics (B1–B3), and perturbation analysis.", "figure-full")}
       </section>
-      {render_findings(p)}
-      <section class="paper-section" id="method">
-        <div class="content-column">
-          <h2>Method</h2>
-          <p class="section-text">{esc(p["methodOverview"])}</p>
-          <p class="section-text">{esc(p["priorWorkDiff"])}</p>
-          <ul class="section-list">{contributions}</ul>
-          <h3 class="subsection-title">CoT safety taxonomy</h3>
-          <p class="section-text">We annotate each CoT as Safe, Potential Unsafe, or Unsafe under direct and indirect prompting. Each stylistic setting is reported separately below.</p>
-        </div>
-        <div class="taxonomy-grid wide-block">{taxonomy}</div>
-        <div class="distribution-grid wide-block">{distributions}</div>
+
+      <section class="paper-section" id="contributions">
+        <h2>Key Contributions</h2>
+        <ul class="section-list">{contributions}</ul>
       </section>
+
+      <section class="paper-section" id="introduction">
+        <h2>Unsafe CoT Persists Despite Refusal</h2>
+        <p class="section-text">{esc(p.get("introText", ""))}</p>
+        {fig(p, "teaser", "Unsafe CoT generation across reasoning LLMs", "<strong>Figure 1.</strong> Unsafe CoT traces persist despite final refusal; thinking mode increases unsafe rates to nearly 80%.", "figure-teaser")}
+      </section>
+
+      <section class="paper-section" id="dataset">
+        <h2>CoT Safety Taxonomy &amp; Distribution</h2>
+        <p class="section-text">We annotate each CoT as Safe, Potential Unsafe, or Unsafe under direct and indirect prompting. Each stylistic setting is reported separately below.</p>
+        <div class="taxonomy-grid">{taxonomy}</div>
+        <div class="distribution-grid">{distributions}</div>
+      </section>
+
       <section class="paper-section" id="results">
-        <div class="wide-block">
-          <h2>Results</h2>
-          {render_stats(p)}
-          <ul class="section-list">{main_results}</ul>
-          <h3 class="subsection-title">Unsafe CoT persists despite refusal</h3>
-          <p class="section-text">{esc(p.get("introText", ""))}</p>
-          {fig(p, "teaser", "Unsafe CoT generation across reasoning LLMs", "<strong>Figure 1.</strong> Unsafe CoT traces persist despite final refusal; thinking mode increases unsafe rates to nearly 80%.", "figure-teaser")}
-          <h3 class="subsection-title">Safety-critical layer localization</h3>
-          <p class="section-text">{esc(p.get("layerText", ""))}</p>
-          <div class="table-wrap scroll-x">
-            <table class="data-table compact">
-              <thead><tr><th>Model</th><th>Direct Prompting</th><th>Indirect Prompting</th></tr></thead>
-              <tbody>{layer_rows}</tbody>
-            </table>
-          </div>
-          <div class="layer-grid">{layer_figs}</div>
-          <h3 class="subsection-title">Perturbation sensitivity</h3>
-          {fig(p, "perturbation", "Layer perturbation sensitivity in Llama3-8B", "<strong>Figure 4.</strong> Critical layers exhibit greater sensitivity under perturbation.", "figure-large")}
-          <h3 class="subsection-title">Jacobian spectral metrics</h3>
-          <p class="section-text">Safe reasoning shows lower B1/B2 and higher B3, indicating stronger stability and broader spectral participation.</p>
-          <div class="metrics-grid">{metrics}</div>
-          <h3 class="subsection-title">Metric correlation</h3>
-          <p class="section-text">{esc(p["correlationSummary"])}</p>
-          <div class="table-wrap scroll-x">
-            <table class="data-table compact">
+        <h2>Main Results</h2>
+        <ul class="section-list">{main_results}</ul>
+
+        <h3 class="subsection-title">Safety-Critical Layer Localization</h3>
+        <p class="section-text">{esc(p.get("layerText", ""))}</p>
+        <div class="table-wrap full-width-table">
+          <table class="data-table compact">
+            <thead><tr><th>Model</th><th>Direct Prompting</th><th>Indirect Prompting</th></tr></thead>
+            <tbody>{layer_rows}</tbody>
+          </table>
+        </div>
+        <div class="layer-grid">{layer_figs}</div>
+
+        <h3 class="subsection-title">Perturbation Sensitivity</h3>
+        {fig(p, "perturbation", "Layer perturbation sensitivity in Llama3-8B", "<strong>Figure 4.</strong> Critical layers exhibit greater sensitivity under perturbation (Llama3-8B, indirect prompting).", "figure-large")}
+
+        <h3 class="subsection-title">Jacobian Spectral Metrics (B1, B2, B3)</h3>
+        <p class="section-text">Safe reasoning shows lower B1/B2 and higher B3, indicating stronger stability and broader spectral participation.</p>
+        <div class="metrics-grid">{metrics}</div>
+
+        <h3 class="subsection-title">Metric Correlation</h3>
+        <div class="correlation-block">
+          <p class="correlation-lead">{esc(p["correlationSummary"])}</p>
+          <div class="table-wrap correlation-table-wrap">
+            <table class="data-table compact correlation-table">
               <thead><tr><th>Model</th><th>B1</th><th>B2</th><th>B3</th></tr></thead>
               <tbody>{correlation_rows}</tbody>
             </table>
           </div>
           {fig(p, "correlation", "Correlation between Jacobian metrics and safety routing", "<strong>Figure 5.</strong> Correlation between Jacobian-based metrics and safety-relevant routing.", "figure-correlation-inline")}
-          <h3 class="subsection-title">Generalization beyond fake news</h3>
-          <p class="section-text">{esc(p.get("generalizationSummary", ""))}</p>
-          <h3 class="subsection-title">Critical-head mitigation</h3>
-          <div class="table-wrap scroll-x">
-            <table class="data-table compact">
-              <thead><tr><th>Model</th><th>FT Ratio</th><th>News Before / After</th><th>HarmBench Before / After</th></tr></thead>
-              <tbody>
-                {mitigation_rows}
-                <tr><td colspan="2"><strong>Average safety gain</strong></td><td class="num"><strong>+67.1 points</strong></td><td class="num"><strong>+55.0 points</strong></td></tr>
-              </tbody>
-            </table>
-          </div>
+        </div>
+
+        <h3 class="subsection-title">Generalization Beyond Fake News</h3>
+        <p class="section-text">{esc(p.get("generalizationSummary", ""))}</p>
+
+        <h3 class="subsection-title">Critical-Head Mitigation</h3>
+        <div class="table-wrap full-width-table">
+          <table class="data-table compact">
+            <thead><tr><th>Model</th><th>FT Ratio</th><th>News Before / After</th><th>HarmBench Before / After</th></tr></thead>
+            <tbody>
+              {mitigation_rows}
+              <tr><td colspan="2"><strong>Average improvement</strong></td><td><strong>+67.1</strong></td><td><strong>+55.0</strong></td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
-    """
-    return paper_shell(
-        p,
-        canonical,
-        body,
-        render_citation(p, "Official PMLR BibTeX.", "cot-chain-of-truth.bib"),
-    )
+
+      <section class="paper-section" id="method">
+        <h2>What this analysis adds</h2>
+        <p class="section-text">{esc(p["priorWorkDiff"])}</p>
+      </section>
+
+      {render_extra_sections(p)}
+
+      <section class="paper-section" id="bibtex">
+        <h2>BibTeX</h2>
+        <p class="section-text">Official PMLR BibTeX. Download: <a href="./paper.bib" download="cot-chain-of-truth.bib">paper.bib</a></p>
+        <pre class="codeblock bibtex-block"><code id="bibtex-content">{bib}</code></pre>
+        <button class="button" type="button" id="copy-bibtex">Copy BibTeX</button>
+      </section>
+    </main>
+  </div>
+  <script src="{esc(asset)}/static/copy-bibtex.js" defer></script>
+</body>
+</html>
+"""
+
 
 def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, canonical: str) -> str:
-    description = "Research on reasoning-model safety and robust misinformation detection."
-    rows = []
+    description = (
+        "Research on reasoning-model safety and robust misinformation detection, "
+        "with methods, empirical findings, and code."
+    )
+    cards = []
     notes = []
     for p in papers:
         url = f'{paper_href_prefix}{p["slug"]}/'
         links = p["links"]
-        image = p.get("cardImage") or ""
-        rows.append(
-            f"""<article class="project-row">
-  <a class="project-thumb" href="{esc(url)}"><img src="{esc(image)}" alt="{esc(p["shortTitle"])}"></a>
-  <div class="project-copy">
-    <p class="project-kicker">{venue_mark(p, asset_root, "project-venue-logo")}<span class="project-theme">· {esc(p.get("researchTheme", ""))}</span></p>
-    <h2><a href="{esc(url)}">{esc(p["shortTitle"])}</a></h2>
-    <p class="project-summary">{esc(p.get("cardSummary") or p["tldr"])}</p>
-    <p class="project-actions">
-      <a class="button primary" href="{esc(url)}">View project</a>
-      <a href="{esc(links.get("paper") or links["arxiv"])}" target="_blank" rel="noopener noreferrer">Paper</a>
-      <a href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer">Code</a>
-    </p>
-  </div>
+        note = p.get("researchNote") or {}
+        note_link = ""
+        if note.get("title") and note.get("url"):
+            note_link = (
+                f'<p class="note-row"><span class="note-row-label">Research note</span>'
+                f'<a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
+            )
+            notes.append(
+                '<article class="hub-note-card">'
+                '<span class="note-row-label">Research note</span>'
+                '<div class="hub-note-copy">'
+                f'<h3><a href="{esc(note["url"])}">{esc(note["title"])}</a></h3>'
+                f'<p>{esc(note.get("description", ""))}</p>'
+                '</div></article>'
+            )
+        cards.append(
+            f"""<article class="hub-card">
+  <h2><a href="{esc(url)}">{esc(p["shortTitle"])}</a></h2>
+  {hub_venue_line(p, asset_root)}
+  <p class="hub-kicker">Research area: {esc(p.get("researchTheme", ""))}</p>
+  <p class="hub-question">{esc(p.get("researchQuestion", ""))}</p>
+  <p class="hub-summary">{esc(p["tldr"])}</p>
+  <p class="hub-links"><a href="{esc(url)}">Project</a><span>·</span><a href="{esc(links.get("paper") or links["arxiv"])}" target="_blank" rel="noopener noreferrer">Paper</a><span>·</span><a href="{esc(links["arxiv"])}" target="_blank" rel="noopener noreferrer">Preprint</a><span>·</span><a href="{esc(links["pdf"])}" target="_blank" rel="noopener noreferrer">PDF</a><span>·</span><a href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer">Code</a></p>
+  {note_link}
 </article>"""
         )
-        note = p.get("researchNote") or {}
-        if note.get("title") and note.get("url"):
-            notes.append(
-                f"""<article class="note-row">
-  <h3><a href="{esc(note["url"])}">{esc(note["title"])}</a></h3>
-  <p>{esc(note.get("description", ""))}</p>
-  <span class="note-arrow" aria-hidden="true">→</span>
-</article>"""
-            )
+
     item_list = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -902,6 +880,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
             for i, p in enumerate(papers)
         ],
     }
+
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -914,26 +893,29 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
   <script type="application/ld+json">
 {json.dumps(item_list, indent=2)}
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="{FONT_CSS}" rel="stylesheet">
   <link rel="stylesheet" href="{esc(asset_root)}/styles.css">
   <link rel="stylesheet" href="{esc(asset_root)}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026f">
-  <link rel="stylesheet" href="{esc(asset_root)}/static/{LAYOUT_CSS}">
+  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026j">
 </head>
-<body class="research-site research-site--projects">
-  {site_nav()}
-  <main class="research-main">
+<body>
+  <div class="site-shell">
+    <header class="site-header site-header-nav-only">
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a href="#research-notes">Research notes</a>
+      </nav>
+    </header>
+    <main class="hub-page">
     <h1>Research projects</h1>
     <p class="hub-intro">{esc(description)}</p>
-    <div class="project-list">{''.join(rows)}</div>
-    <section class="note-index" id="research-notes">
+    <div class="hub-grid">{''.join(cards)}</div>
+    <section class="paper-section" id="research-notes">
       <h2>Research notes</h2>
-      {''.join(notes)}
+      <p class="section-text">Research perspectives on reasoning-trace safety and robust fake news detection.</p>
+      <div class="hub-note-grid">{''.join(notes)}</div>
     </section>
   </main>
-  {site_footer()}
+  </div>
 </body>
 </html>"""
 
@@ -986,39 +968,46 @@ sitemap: true
   <script type="application/ld+json">
 {json.dumps(article, indent=2)}
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="{FONT_CSS}" rel="stylesheet">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../site-overrides.css">
-  <link rel="stylesheet" href="../../static/paper.css?v=20261026f">
-  <link rel="stylesheet" href="../../static/{LAYOUT_CSS}">
+  <link rel="stylesheet" href="../../static/paper.css?v=20261026j">
 </head>
-<body class="research-site research-site--note">
-  {site_nav()}
-  <main class="paper-page">
-    <p class="note-kicker">Research note</p>
-    <h1>{esc(note["title"])}</h1>
-    <p class="note-byline">Research note by Chunlin Gong · Updated October 26, 2026</p>
-    <p class="note-lead">{esc(note["lead"])}</p>
-    {''.join(sections)}
-    <section class="paper-section" id="references">
-      <h2>References</h2>
-      <ul class="section-list">{references}</ul>
-    </section>
-    <section class="paper-section" id="project">
-      <h2>Associated paper</h2>
-      <p class="associated-actions">
+<body>
+  <div class="site-shell">
+    <header class="site-header site-header-nav-only">
+      <nav class="site-nav">
+        <a href="/projects/">Projects</a>
         <a href="/projects/{esc(p["slug"])}/">Project</a>
         <a href="{esc(links["paper"])}" target="_blank" rel="noopener noreferrer">Paper</a>
         <a href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer">Code</a>
-      </p>
-    </section>
-  </main>
-  {site_footer()}
+      </nav>
+    </header>
+    <main class="paper-page">
+      <header class="paper-hero">
+        <h1>{esc(note["title"])}</h1>
+        <p class="paper-byline">Research note by Chunlin Gong · Updated October 26, 2026</p>
+        <p class="lead-text">{esc(note["lead"])}</p>
+      </header>
+      {''.join(sections)}
+      <section class="paper-section" id="references">
+        <h2>References</h2>
+        <ul class="section-list">{references}</ul>
+      </section>
+      <section class="paper-section" id="project">
+        <h2>Related project</h2>
+        <p class="note-row"><span class="note-row-label">Project</span><a href="/projects/{esc(p["slug"])}/">{esc(p["title"])}</a></p>
+        <div class="paper-hero-actions note-actions">
+          <a class="button primary" href="/projects/{esc(p["slug"])}/">Project</a>
+          <a class="button" href="{esc(links["paper"])}" target="_blank" rel="noopener noreferrer">Paper</a>
+          <a class="button code-link" href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer"><span class="button-icon github-icon">{GITHUB_ICON}</span><span>Code</span></a>
+        </div>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
 """
+
 
 def render_root_redirect(site_base: str) -> str:
     canonical = f"{site_base}/projects/"

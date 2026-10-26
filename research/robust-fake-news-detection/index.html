@@ -36,43 +36,41 @@ sitemap: true
   ]
 }
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../site-overrides.css">
-  <link rel="stylesheet" href="../../static/paper.css?v=20261026f">
-  <link rel="stylesheet" href="../../static/research-layout.css?v=20261026f">
+  <link rel="stylesheet" href="../../static/paper.css?v=20261026j">
 </head>
-<body class="research-site research-site--note">
-  <header class="research-nav">
-  <div class="research-nav-inner">
-    <a class="research-nav-brand" href="/">Chunlin Gong</a>
-    <nav class="research-nav-links" aria-label="Site">
-      <a href="/projects/">Projects</a>
-      <a href="/projects/#research-notes">Research notes</a>
-    </nav>
-  </div>
-</header>
-  <main class="paper-page">
-    <p class="note-kicker">Research note</p>
-    <h1>Robust Fake News Detection under Adversarial Social Context</h1>
-    <p class="note-byline">Research note by Chunlin Gong · Updated October 26, 2026</p>
-    <p class="note-lead">Social responses are an important input for comment-aware fake news detection. They also create an attack surface: malicious comments can manipulate the context used by a detector. Research on this problem connects adversarial text generation, mechanism-specific evaluation, and adaptive robust training.</p>
-    <section class="paper-section" id="social-context"><h2>Studying adversarial social context</h2><p class="section-text">A social-context evaluation records the news item, the comments supplied to the detector, and the resulting prediction. LLMs make it possible to generate comments with different rhetorical and cognitive mechanisms, creating structured tests of detector robustness.</p><p class="section-text">CogniDir studies fact distortion, logical confusion, and emotional manipulation as distinct attack groups. This organization connects the design of malicious comments with group-wise vulnerability measurements.</p></section><section class="paper-section" id="evaluation"><h2>Measuring vulnerability across mechanisms</h2><p class="section-text">Aggregate detection performance summarizes the overall result, while group-wise measurements reveal how the detector responds to different attacks. Evaluating several comment settings makes this view useful for studying the effect of both attack mechanism and context composition.</p><p class="section-text">The CogniDir experiments use Weibo16, Weibo20, and RumourEval-19. The project page presents detection results, attack success rates, and ablations of malicious comment generation, vulnerability scoring, and allocation.</p></section><section class="paper-section" id="training-mixtures"><h2>Adapting the training mixture</h2><p class="section-text">Adaptive training allocates exposure according to the detector&#x27;s current vulnerabilities. In CogniDir, group-wise accuracy and probabilistic confidence inform vulnerability scores. InfoDirichlet Resampling maps these scores to Dirichlet parameters and uses the mean to set the next training mixture.</p><p class="section-text">This feedback connects evaluation with training: the detector is assessed across attack mechanisms, the allocation is updated, and subsequent training responds to the measured weaknesses.</p></section><section class="paper-section" id="research-connections"><h2>Connecting generation, sampling, and defense</h2><p class="section-text">Generate First, Then Sample studies LLM-generated fake news and reinforcement-learning-based sampling of real and fake training examples. SINCon studies malicious message injection in rumor detection and uses contrastive learning to make node influence more uniform in message propagation trees.</p><p class="section-text">CogniDir contributes mechanism-specific malicious comments and feedback-driven allocation across attack groups. These methods provide useful reference points for researchers studying generated training data, adversarial social context, and adaptive robustness. The linked project page and repository collect the experiments, training entry points, and official EMNLP 2026 citation.</p></section>
-    <section class="paper-section" id="references">
-      <h2>References</h2>
-      <ul class="section-list"><li><a href="https://aclanthology.org/2026.emnlp-main.655/">CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection</a></li><li><a href="https://aclanthology.org/2025.acl-long.617/">SINCon: Mitigate LLM-Generated Malicious Message Injection Attack for Rumor Detection</a></li><li><a href="https://aclanthology.org/2025.acl-long.1182/">Generate First, Then Sample: Enhancing Fake News Detection with LLM-Augmented Reinforced Sampling</a></li></ul>
-    </section>
-    <section class="paper-section" id="project">
-      <h2>Associated paper</h2>
-      <p class="associated-actions">
+<body>
+  <div class="site-shell">
+    <header class="site-header site-header-nav-only">
+      <nav class="site-nav">
+        <a href="/projects/">Projects</a>
         <a href="/projects/cognidir/">Project</a>
         <a href="https://aclanthology.org/2026.emnlp-main.655/" target="_blank" rel="noopener noreferrer">Paper</a>
         <a href="https://github.com/cheslyn0712/CogniDir" target="_blank" rel="noopener noreferrer">Code</a>
-      </p>
-    </section>
-  </main>
-  <footer class="research-footer"><p><a href="/">Chunlin Gong</a></p></footer>
+      </nav>
+    </header>
+    <main class="paper-page">
+      <header class="paper-hero">
+        <h1>Robust Fake News Detection under Adversarial Social Context</h1>
+        <p class="paper-byline">Research note by Chunlin Gong · Updated October 26, 2026</p>
+        <p class="lead-text">Social responses are an important input for comment-aware fake news detection. They also create an attack surface: malicious comments can manipulate the context used by a detector. Research on this problem connects adversarial text generation, mechanism-specific evaluation, and adaptive robust training.</p>
+      </header>
+      <section class="paper-section" id="social-context"><h2>Studying adversarial social context</h2><p class="section-text">A social-context evaluation records the news item, the comments supplied to the detector, and the resulting prediction. LLMs make it possible to generate comments with different rhetorical and cognitive mechanisms, creating structured tests of detector robustness.</p><p class="section-text">CogniDir studies fact distortion, logical confusion, and emotional manipulation as distinct attack groups. This organization connects the design of malicious comments with group-wise vulnerability measurements.</p></section><section class="paper-section" id="evaluation"><h2>Measuring vulnerability across mechanisms</h2><p class="section-text">Aggregate detection performance summarizes the overall result, while group-wise measurements reveal how the detector responds to different attacks. Evaluating several comment settings makes this view useful for studying the effect of both attack mechanism and context composition.</p><p class="section-text">The CogniDir experiments use Weibo16, Weibo20, and RumourEval-19. The project page presents detection results, attack success rates, and ablations of malicious comment generation, vulnerability scoring, and allocation.</p></section><section class="paper-section" id="training-mixtures"><h2>Adapting the training mixture</h2><p class="section-text">Adaptive training allocates exposure according to the detector&#x27;s current vulnerabilities. In CogniDir, group-wise accuracy and probabilistic confidence inform vulnerability scores. InfoDirichlet Resampling maps these scores to Dirichlet parameters and uses the mean to set the next training mixture.</p><p class="section-text">This feedback connects evaluation with training: the detector is assessed across attack mechanisms, the allocation is updated, and subsequent training responds to the measured weaknesses.</p></section><section class="paper-section" id="research-connections"><h2>Connecting generation, sampling, and defense</h2><p class="section-text">Generate First, Then Sample studies LLM-generated fake news and reinforcement-learning-based sampling of real and fake training examples. SINCon studies malicious message injection in rumor detection and uses contrastive learning to make node influence more uniform in message propagation trees.</p><p class="section-text">CogniDir contributes mechanism-specific malicious comments and feedback-driven allocation across attack groups. These methods provide useful reference points for researchers studying generated training data, adversarial social context, and adaptive robustness. The linked project page and repository collect the experiments, training entry points, and official EMNLP 2026 citation.</p></section>
+      <section class="paper-section" id="references">
+        <h2>References</h2>
+        <ul class="section-list"><li><a href="https://aclanthology.org/2026.emnlp-main.655/">CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection</a></li><li><a href="https://aclanthology.org/2025.acl-long.617/">SINCon: Mitigate LLM-Generated Malicious Message Injection Attack for Rumor Detection</a></li><li><a href="https://aclanthology.org/2025.acl-long.1182/">Generate First, Then Sample: Enhancing Fake News Detection with LLM-Augmented Reinforced Sampling</a></li></ul>
+      </section>
+      <section class="paper-section" id="project">
+        <h2>Related project</h2>
+        <p class="note-row"><span class="note-row-label">Project</span><a href="/projects/cognidir/">CogniDir: Combating Cognitive Malicious Comments via Adaptive Distributional Learning for Robust Fake News Detection</a></p>
+        <div class="paper-hero-actions note-actions">
+          <a class="button primary" href="/projects/cognidir/">Project</a>
+          <a class="button" href="https://aclanthology.org/2026.emnlp-main.655/" target="_blank" rel="noopener noreferrer">Paper</a>
+          <a class="button code-link" href="https://github.com/cheslyn0712/CogniDir" target="_blank" rel="noopener noreferrer"><span class="button-icon github-icon"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.2A6.8 6.8 0 0 0 5.85 14.45c.34.06.47-.14.47-.33v-1.17c-1.9.42-2.3-.81-2.3-.81-.3-.77-.76-.97-.76-.97-.62-.42.05-.41.05-.41.69.05 1.05.7 1.05.7.6 1.04 1.59.74 1.98.56.06-.45.24-.75.44-.92-1.52-.18-3.13-.76-3.13-3.4 0-.75.27-1.36.7-1.84-.07-.17-.3-.88.07-1.84 0 0 .57-.18 1.86.7A6.36 6.36 0 0 1 8 4.4c.58 0 1.16.08 1.7.23 1.29-.88 1.86-.7 1.86-.7.37.96.14 1.67.07 1.84.44.48.7 1.1.7 1.84 0 2.64-1.61 3.21-3.14 3.39.25.22.47.64.47 1.29v1.9c0 .19.13.39.47.33A6.8 6.8 0 0 0 8 1.2z"></path></svg></span><span>Code</span></a>
+        </div>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
