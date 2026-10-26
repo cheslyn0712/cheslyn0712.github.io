@@ -221,7 +221,7 @@ def render_head(p: dict, canonical: str) -> str:
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/styles.css">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css">"""
+  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026c">"""
 
 
 def figure_src(p: dict, filename: str) -> str:
@@ -831,18 +831,21 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
         note = p.get("researchNote") or {}
         note_link = ""
         if note.get("title") and note.get("url"):
-            note_link = f'<p><a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
+            note_link = (
+                f'<p class="hub-note"><span class="hub-note-label">Research note</span> '
+                f'<a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
+            )
             notes.append(
-                f'<p><a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
-                f'<p class="section-text">{esc(note.get("description", ""))}</p>'
+                f'<article class="hub-note-card"><h3><a href="{esc(note["url"])}">{esc(note["title"])}</a></h3>'
+                f'<p>{esc(note.get("description", ""))}</p></article>'
             )
         cards.append(
             f"""<article class="hub-card">
   <h2><a href="{esc(url)}">{esc(p["shortTitle"])}</a></h2>
   {hub_venue_line(p, asset_root)}
-  <p>Research area: {esc(p.get("researchTheme", ""))}</p>
-  <p>{esc(p.get("researchQuestion", ""))}</p>
-  <p>{esc(p["tldr"])}</p>
+  <p class="hub-kicker">Research area: {esc(p.get("researchTheme", ""))}</p>
+  <p class="hub-question">{esc(p.get("researchQuestion", ""))}</p>
+  <p class="hub-summary">{esc(p["tldr"])}</p>
   <p class="hub-links"><a href="{esc(url)}">Project</a><span>·</span><a href="{esc(links.get("paper") or links["arxiv"])}" target="_blank" rel="noopener noreferrer">Paper</a><span>·</span><a href="{esc(links["arxiv"])}" target="_blank" rel="noopener noreferrer">Preprint</a><span>·</span><a href="{esc(links["pdf"])}" target="_blank" rel="noopener noreferrer">PDF</a><span>·</span><a href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer">Code</a></p>
   {note_link}
 </article>"""
@@ -877,7 +880,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
   </script>
   <link rel="stylesheet" href="{esc(asset_root)}/styles.css">
   <link rel="stylesheet" href="{esc(asset_root)}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css">
+  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026c">
 </head>
 <body>
   <main class="hub-page">
@@ -887,7 +890,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
     <section class="paper-section" id="research-notes">
       <h2>Research notes</h2>
       <p class="section-text">Research perspectives on reasoning-trace safety and robust fake news detection.</p>
-      {''.join(notes)}
+      <div class="hub-note-grid">{''.join(notes)}</div>
     </section>
   </main>
 </body>
@@ -944,7 +947,7 @@ sitemap: true
   </script>
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../site-overrides.css">
-  <link rel="stylesheet" href="../../static/paper.css">
+  <link rel="stylesheet" href="../../static/paper.css?v=20261026c">
 </head>
 <body>
   <div class="site-shell">

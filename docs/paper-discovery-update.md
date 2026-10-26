@@ -48,21 +48,19 @@ Result: exit 0. Checks 01–17 all PASS. `git diff --check` produced no whitespa
 
 ## GitHub About
 
-Status: pending_access.
-
-`gh` is not installed, and Git Credential Manager did not return a GitHub token for the API. The request bodies to apply are:
+Status: verified on 2026-10-26 with the public repository API. GitHub lists topics alphabetically.
 
 CoT description: `ICML 2026: reasoning-trace safety, Jacobian-based layer and attention-head analysis, and targeted safety intervention.`
 
 CoT homepage: `https://chunlingong.me/projects/cot-chain-of-truth/`
 
-CoT topics: `llm-safety`, `chain-of-thought`, `reasoning-models`, `mechanistic-interpretability`, `attention-heads`, `jacobian-analysis`, `fake-news-generation`
+CoT topics: `attention-heads`, `chain-of-thought`, `fake-news-generation`, `jacobian-analysis`, `llm-safety`, `mechanistic-interpretability`, `reasoning-models`
 
 CogniDir description: `EMNLP 2026: robust fake news detection with LLM-generated cognitive comments and adaptive adversarial data mixtures.`
 
 CogniDir homepage: `https://chunlingong.me/projects/cognidir/`
 
-CogniDir topics: `fake-news-detection`, `adversarial-robustness`, `malicious-comments`, `llm-generated-content`, `adaptive-sampling`, `adversarial-training`
+CogniDir topics: `adaptive-sampling`, `adversarial-robustness`, `adversarial-training`, `fake-news-detection`, `llm-generated-content`, `malicious-comments`
 
 ## Page review
 
@@ -75,6 +73,8 @@ Reviewed locally at desktop width 1280 and phone width 390.
 | `/projects/cot-chain-of-truth/` | verified. Research context, related research, findings, resources, and six questions are present. No publication-history section. |
 | `/research/reasoning-trace-safety/` | verified. Title, byline, four sections, references, and related project link are present. Phone width does not overflow the page. |
 | `/research/robust-fake-news-detection/` | verified. Title, byline, four sections, references, and related project link are present. Phone width does not overflow the page. |
+
+The project index was then given a clearer hierarchy: each card shows the venue, research area, question, summary, and links as separate lines, and the two research notes sit in their own cards. Desktop width 1100 and phone width 390 have no page-level horizontal overflow.
 
 The research-note source files include Jekyll front matter so GitHub Pages can publish them and add them to the sitemap. A plain static server shows that front matter; the Jekyll build removes it.
 
