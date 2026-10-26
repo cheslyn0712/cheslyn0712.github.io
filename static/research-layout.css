@@ -252,14 +252,13 @@
   font-size: 14px;
 }
 
-.research-site .paper-summary,
-.research-site .section-text,
-.research-site .lead-text {
-  max-width: var(--r-reading);
-  margin: 18px 0 0;
-  color: var(--r-text);
-  font-size: 17px;
-  line-height: 1.75;
+.research-site--paper .content-column,
+.research-site--paper .paper-summary,
+.research-site--paper .section-text,
+.research-site--paper .lead-text,
+.research-site--paper .section-list {
+  width: 100%;
+  max-width: none;
 }
 
 .research-site--paper .paper-hero .paper-summary {
@@ -278,6 +277,19 @@
   margin: 0 0 12px;
   font-size: 17px;
   line-height: 1.7;
+}
+
+.research-site--paper .content-column,
+.research-site--paper .section-text,
+.research-site--paper .lead-text,
+.research-site--paper .section-list,
+.research-site--paper .section-list li,
+.research-site--paper .paper-section p,
+.research-site--paper .paper-section li {
+  width: 100%;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.72;
 }
 
 .research-site--paper h2,
@@ -423,9 +435,8 @@
 }
 
 .research-site .bibtex-block {
-  max-height: 320px;
-  overflow: auto;
-  white-space: pre;
+  overflow-x: auto;
+  white-space: pre-wrap;
   border-radius: 8px;
   background: var(--r-soft);
   font-family: "IBM Plex Mono", ui-monospace, monospace;

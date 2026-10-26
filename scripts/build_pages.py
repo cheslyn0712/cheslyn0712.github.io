@@ -221,8 +221,8 @@ def render_head(p: dict, canonical: str) -> str:
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/styles.css">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026d">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/research-layout.css?v=20261026d">"""
+  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026e">
+  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/research-layout.css?v=20261026e">"""
 
 
 def figure_src(p: dict, filename: str) -> str:
@@ -291,7 +291,7 @@ def build_action_buttons(links: dict) -> list[str]:
     return buttons
 
 
-LAYOUT_CSS = "research-layout.css?v=20261026d"
+LAYOUT_CSS = "research-layout.css?v=20261026e"
 FONT_CSS = (
     "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&"
     "family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
@@ -902,7 +902,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
   <link href="{FONT_CSS}" rel="stylesheet">
   <link rel="stylesheet" href="{esc(asset_root)}/styles.css">
   <link rel="stylesheet" href="{esc(asset_root)}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026d">
+  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026e">
   <link rel="stylesheet" href="{esc(asset_root)}/static/{LAYOUT_CSS}">
 </head>
 <body class="research-site research-site--projects">
@@ -974,7 +974,7 @@ sitemap: true
   <link href="{FONT_CSS}" rel="stylesheet">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../site-overrides.css">
-  <link rel="stylesheet" href="../../static/paper.css?v=20261026d">
+  <link rel="stylesheet" href="../../static/paper.css?v=20261026e">
   <link rel="stylesheet" href="../../static/{LAYOUT_CSS}">
 </head>
 <body class="research-site research-site--note">
