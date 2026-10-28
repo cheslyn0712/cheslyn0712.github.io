@@ -6,6 +6,7 @@ from __future__ import annotations
 import html
 import json
 import re
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -225,7 +226,7 @@ def render_head(p: dict, canonical: str) -> str:
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/styles.css">
   <link rel="stylesheet" href="{esc(p["_assetRoot"])}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261026l">"""
+  <link rel="stylesheet" href="{esc(p["_assetRoot"])}/static/paper.css?v=20261028">"""
 
 
 def figure_src(p: dict, filename: str) -> str:
@@ -301,21 +302,77 @@ def build_action_buttons(links: dict) -> list[str]:
     return buttons
 
 
+def format_note_date(value: str) -> str:
+    updated = date.fromisoformat(value)
+    return f"{updated.strftime('%B')} {updated.day}, {updated.year}"
+
+
+def render_note_cell(value: object) -> str:
+    if isinstance(value, dict):
+        url = str(value["url"])
+        extra = (
+            ' target="_blank" rel="noopener noreferrer"'
+            if url.startswith(("http://", "https://"))
+            else ""
+        )
+        return f'<a href="{esc(url)}"{extra}>{esc(value["label"])}</a>'
+    return esc(value)
+
+
+def render_note_table(table: dict) -> str:
+    columns = "".join(f'<th scope="col">{esc(value)}</th>' for value in table["columns"])
+    rows = "".join(
+        "<tr>" + "".join(f"<td>{render_note_cell(value)}</td>" for value in row) + "</tr>"
+        for row in table["rows"]
+    )
+    caption = f'<caption>{esc(table["caption"])}</caption>' if table.get("caption") else ""
+    return (
+        '<div class="table-wrap full-width-table scroll-x">'
+        f'<table class="data-table compact">{caption}'
+        f"<thead><tr>{columns}</tr></thead><tbody>{rows}</tbody></table></div>"
+    )
+
+
+def render_note_links(links: list) -> str:
+    if not links:
+        return ""
+    items = "".join(
+        f'<li><a href="{esc(item["url"])}">{esc(item["label"])}</a></li>' for item in links
+    )
+    return f'<ul class="section-list">{items}</ul>'
+
+
 def render_research_context(p: dict) -> str:
-    paragraphs = [
-        f'<p class="section-text">{esc(text)}</p>' for text in (p.get("researchContext") or [])
-    ]
+    parts = [f'<p class="section-text">{esc(text)}</p>' for text in (p.get("researchContext") or [])]
+    evidence = p.get("evidenceMap") or []
+    if evidence:
+        parts.append(
+            render_note_table(
+                {
+                    "columns": ["Research question", "Contribution", "Evidence"],
+                    "rows": [
+                        [
+                            row["question"],
+                            row["contribution"],
+                            {"label": row["evidence"], "url": row["url"]},
+                        ]
+                        for row in evidence
+                    ],
+                }
+            )
+        )
     note = p.get("researchNote") or {}
     if note.get("title") and note.get("url"):
-        paragraphs.append(
+        parts.append(
             '<p class="note-row"><span class="note-row-label">Research note</span>'
             f'<a href="{esc(note["url"])}">{esc(note["title"])}</a></p>'
         )
-    if not paragraphs:
+    if not parts:
         return ""
+    heading = p.get("researchContextHeading") or "Research context"
     return (
-        '<section class="paper-section" id="research-context"><h2>Research context</h2>'
-        + "".join(paragraphs)
+        f'<section class="paper-section" id="research-context"><h2>{esc(heading)}</h2>'
+        + "".join(parts)
         + "</section>"
     )
 
@@ -895,7 +952,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
   </script>
   <link rel="stylesheet" href="{esc(asset_root)}/styles.css">
   <link rel="stylesheet" href="{esc(asset_root)}/site-overrides.css">
-  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261026l">
+  <link rel="stylesheet" href="{esc(asset_root)}/static/paper.css?v=20261028">
 </head>
 <body>
   <div class="site-shell">
@@ -929,12 +986,19 @@ def render_research_note(p: dict) -> str:
         paragraphs = "".join(
             f'<p class="section-text">{esc(paragraph)}</p>' for paragraph in section["paragraphs"]
         )
+        table = render_note_table(section["table"]) if section.get("table") else ""
+        links_html = render_note_links(section.get("links") or [])
         sections.append(
             f'<section class="paper-section" id="{esc(section["id"])}">'
-            f'<h2>{esc(section["title"])}</h2>{paragraphs}</section>'
+            f'<h2>{esc(section["title"])}</h2>{paragraphs}{table}{links_html}</section>'
         )
     references = "".join(
         f'<li><a href="{esc(item["url"])}">{esc(item["name"])}</a></li>' for item in note["references"]
+    )
+    author_note = (
+        f'\n        <p class="section-text">{esc(note["authorNote"])}</p>'
+        if note.get("authorNote")
+        else ""
     )
     article = {
         "@context": "https://schema.org",
@@ -970,7 +1034,7 @@ sitemap: true
   </script>
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../site-overrides.css">
-  <link rel="stylesheet" href="../../static/paper.css?v=20261026l">
+  <link rel="stylesheet" href="../../static/paper.css?v=20261028">
 </head>
 <body>
   <div class="site-shell">
@@ -985,7 +1049,7 @@ sitemap: true
     <main class="paper-page">
       <header class="paper-hero">
         <h1>{esc(note["title"])}</h1>
-        <p class="paper-byline">Research note by Chunlin Gong · Updated October 26, 2026</p>
+        <p class="paper-byline">Research note by {esc(note["author"])} · Updated <time datetime="{esc(note["updated"])}">{esc(format_note_date(note["updated"]))}</time></p>{author_note}
         <p class="lead-text">{esc(note["lead"])}</p>
       </header>
       {''.join(sections)}

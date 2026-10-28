@@ -810,6 +810,19 @@ a.venue-badge:hover {
   font-size: 0.92rem;
 }
 
+.data-table caption {
+  caption-side: top;
+  padding: 0 0 0.5rem;
+  color: #334155;
+  font-size: 0.92rem;
+  text-align: left;
+}
+
+.paper-page .table-wrap,
+.hub-page .table-wrap {
+  max-width: 100%;
+}
+
 .paper-section .note-actions {
   justify-content: flex-start;
   margin: 0.9rem 0 0;

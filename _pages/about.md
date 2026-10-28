@@ -50,9 +50,9 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
     <p>Zhao Tong*,<strong>Chunlin Gong*</strong>, Yiping Zhang, Haichao Shi, Qiang Liu, Xingcheng Xu, Shu Wu, Xiao-Yu Zhang</p>
     
     <ul>
-      <li>We study reasoning-trace safety in language models through trace annotation, Jacobian-based layer and attention-head analysis, and targeted safety intervention. The experiments examine fake-news generation and HarmBench tasks.</li>
+      <li>We study chain-of-thought (CoT) safety in reasoning LLMs, connect unsafe reasoning traces and final-answer refusal to safety-related layers and attention heads, and evaluate targeted interventions on fake-news generation and HarmBench.</li>
       <li><a href="https://proceedings.mlr.press/v306/tong26e.html">Paper</a> · <a href="https://arxiv.org/abs/2602.04856">Preprint</a> · <a href="https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth">Code</a> · <a href="/projects/cot-chain-of-truth/">Project</a></li>
-      <li>Research perspective: <a href="/research/reasoning-trace-safety/">Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention</a></li>
+      <li>Research perspective: <a href="/research/reasoning-trace-safety/">Chain-of-Thought Safety and Mechanistic Interpretability</a></li>
     </ul>
   </div>
 </div>

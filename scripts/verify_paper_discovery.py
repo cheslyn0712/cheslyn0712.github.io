@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import sys
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,11 +50,6 @@ GENERATED = [
     ROOT / "research" / "robust-fake-news-detection" / "index.html",
 ]
 HOME = ROOT / "_pages" / "about.md"
-COT_INTRO = (
-    "We study reasoning-trace safety in language models through trace annotation, "
-    "Jacobian-based layer and attention-head analysis, and targeted safety intervention. "
-    "The experiments examine fake-news generation and HarmBench tasks."
-)
 COG_INTRO = (
     "CogniDir strengthens comment-aware fake news detection with mechanism-specific "
     "malicious comments and adaptive adversarial training mixtures. InfoDirichlet "
@@ -93,6 +89,41 @@ def bib_block(text: str) -> str:
 
 def section_ids(page: str) -> list[str]:
     return re.findall(r'<section class="paper-section" id="([^"]+)"', page)
+
+
+def format_note_date(value: str) -> str:
+    updated = date.fromisoformat(value)
+    return f"{updated.strftime('%B')} {updated.day}, {updated.year}"
+
+
+def note_byline(note: dict) -> str:
+    return f"Research note by {note['author']} · Updated {format_note_date(note['updated'])}"
+
+
+def table_matches(block: str, table: dict) -> bool:
+    caption = table.get("caption")
+    if caption and f"<caption>{html.escape(caption)}</caption>" not in block:
+        return False
+    headers = re.findall(r'<th scope="col">(.*?)</th>', block, re.S)
+    if [norm(item) for item in headers] != [norm(item) for item in table["columns"]]:
+        return False
+    body_rows = re.findall(r"<tbody>(.*?)</tbody>", block, re.S)
+    if not body_rows:
+        return False
+    rows_html = re.findall(r"<tr>(.*?)</tr>", body_rows[0], re.S)
+    if len(rows_html) != len(table["rows"]):
+        return False
+    for row_html, row in zip(rows_html, table["rows"]):
+        cells = re.findall(r"<td>(.*?)</td>", row_html, re.S)
+        if len(cells) != len(row):
+            return False
+        for cell_html, value in zip(cells, row):
+            if isinstance(value, dict):
+                if html.escape(value["label"]) not in cell_html or f'href="{html.escape(value["url"], quote=True)}"' not in cell_html:
+                    return False
+            elif norm(re.sub(r"<[^>]+>", "", cell_html)) != norm(str(value)):
+                return False
+    return True
 
 
 def section_html(page: str, section_id: str) -> str:
@@ -288,7 +319,9 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
         page = page_path.read_text(encoding="utf-8")
         title_ok = f"<title>{html.escape(note['title'])} | Chunlin Gong</title>" in page
         h1_ok = f"<h1>{html.escape(note['title'])}</h1>" in page
-        byline_ok = "Research note by Chunlin Gong · Updated October 26, 2026" in page
+        byline_match = re.search(r'<p class="paper-byline">(.*?)</p>', page, re.S)
+        byline_text = norm(re.sub(r"<[^>]+>", "", byline_match.group(1))) if byline_match else ""
+        byline_ok = byline_text == norm(note_byline(note))
         sections_ok = True
         for section in note["sections"]:
             block = section_html(page, section["id"])
@@ -298,6 +331,12 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
                 sections_ok = False
             if paragraphs != [norm(item) for item in section["paragraphs"]]:
                 sections_ok = False
+            if section.get("table") and not table_matches(block, section["table"]):
+                sections_ok = False
+            for link in section.get("links") or []:
+                expected_link = f'href="{html.escape(link["url"], quote=True)}">{html.escape(link["label"])}</a>'
+                if expected_link not in block:
+                    sections_ok = False
         refs = section_html(page, "references")
         ref_names = [norm(item) for item in re.findall(r"<a [^>]*>(.*?)</a>", refs, re.S)]
         ref_urls = re.findall(r'<a href="([^"]+)"', refs)
@@ -348,11 +387,13 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
         ],
     )
 
+    cot_note = papers["cot-chain-of-truth"]["researchNote"]
+    cog_note = papers["cognidir"]["researchNote"]
     home_ok = (
-        COT_INTRO in home
+        papers["cot-chain-of-truth"]["tldr"] in home
         and COG_INTRO in home
-        and 'href="/research/reasoning-trace-safety/">Reasoning-Trace Safety: Evaluation, Mechanisms, and Intervention</a>' in home
-        and 'href="/research/robust-fake-news-detection/">Robust Fake News Detection under Adversarial Social Context</a>' in home
+        and f'href="{cot_note["url"]}">{html.escape(cot_note["title"])}</a>' in home
+        and f'href="{cog_note["url"]}">{html.escape(cog_note["title"])}</a>' in home
         and 'alt="CoT is Not the Chain of Truth project figure"' in home
         and 'alt="CogniDir project figure"' in home
     )
