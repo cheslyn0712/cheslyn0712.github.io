@@ -120,7 +120,7 @@ def render_authors(authors: list[dict]) -> str:
 
 
 def render_head(p: dict, canonical: str) -> str:
-    desc = p["tldr"][:300]
+    desc = p.get("seoDescription") or p["tldr"][:300]
     keywords = ", ".join(p.get("keywords", []))
     authors_json = []
     for a in p["authors"]:
@@ -389,8 +389,9 @@ def render_extra_sections(p: dict) -> str:
                     f'<a href="{esc(row["url"])}" target="_blank" rel="noopener noreferrer">{name}</a>'
                 )
             body.append(f'<tr><td>{name}</td><td>{esc(row["relation"])}</td></tr>')
+        heading = p.get("relatedWorkHeading") or "Related research"
         parts.append(
-            '<section class="paper-section" id="related"><h2>Related research</h2>'
+            f'<section class="paper-section" id="related"><h2>{esc(heading)}</h2>'
             '<div class="table-wrap full-width-table scroll-x"><table class="data-table compact">'
             '<thead><tr><th>Work</th><th>Connection</th></tr></thead>'
             f'<tbody>{"".join(body)}</tbody></table></div></section>'
@@ -750,6 +751,16 @@ def render_cot_paper_page(p: dict) -> str:
         for r in p.get("correlationData", [])
     )
 
+    critical_head_figure = fig(
+        p,
+        "criticalHeadPerturbation",
+        "Critical-head versus random-head routing perturbations and discriminator-assessed safety in Llama3-8B",
+        "<strong>Figure 6.</strong> Critical-head versus random-head perturbations in Llama3-8B. "
+        "Safety is assessed using a discriminator trained on final-layer representations. "
+        f'<a href="{esc(links["pdf"])}#page=8">Original paper, page 8</a>.',
+        "figure-large",
+    )
+
     nav = """
       <a href="#framework">Framework</a>
       <a href="#results">Results</a>
@@ -793,21 +804,22 @@ def render_cot_paper_page(p: dict) -> str:
 
       {render_research_context(p)}
 
+      <section class="paper-section" id="contributions">
+        <h2>Key Contributions</h2>
+        <ul class="section-list">{contributions}</ul>
+      </section>
+
+
       <section class="paper-section" id="framework">
         <h2>Framework</h2>
         <p class="section-text">{esc(p["methodOverview"])}</p>
         {fig(p, "framework", "Unified safety-analysis framework overview", "<strong>Framework overview.</strong> CoT generation and annotation, critical-layer localization, Jacobian head metrics (B1–B3), and perturbation analysis.", "figure-full")}
       </section>
 
-      <section class="paper-section" id="contributions">
-        <h2>Key Contributions</h2>
-        <ul class="section-list">{contributions}</ul>
-      </section>
-
       <section class="paper-section" id="introduction">
         <h2>Unsafe CoT Persists Despite Refusal</h2>
         <p class="section-text">{esc(p.get("introText", ""))}</p>
-        {fig(p, "teaser", "Unsafe CoT generation across reasoning LLMs", "<strong>Figure 1.</strong> Unsafe CoT traces persist despite final refusal; thinking mode increases unsafe rates to nearly 80%.", "figure-teaser")}
+        {fig(p, "teaser", "Unsafe CoT generation across reasoning LLMs", "<strong>Figure 1.</strong> Example of unsafe CoT before final refusal and the reported comparison between thinking and non-thinking modes.", "figure-teaser")}
       </section>
 
       <section class="paper-section" id="dataset">
@@ -832,11 +844,15 @@ def render_cot_paper_page(p: dict) -> str:
         <div class="layer-grid">{layer_figs}</div>
 
         <h3 class="subsection-title">Perturbation Sensitivity</h3>
-        {fig(p, "perturbation", "Layer perturbation sensitivity in Llama3-8B", "<strong>Figure 4.</strong> Critical layers exhibit greater sensitivity under perturbation (Llama3-8B, indirect prompting).", "figure-large")}
+        {fig(p, "perturbation", "Layer perturbation sensitivity in Llama3-8B", "<strong>Figure 5.</strong> Layer-level sensitivity to routing perturbations in Llama3-8B under indirect prompting.", "figure-large")}
 
-        <h3 class="subsection-title">Jacobian Spectral Metrics (B1, B2, B3)</h3>
+        <h3 class="subsection-title" id="attention-head-analysis">Mechanistic Interpretability of Attention Routing</h3>
         <p class="section-text">Safe reasoning shows lower B1/B2 and higher B3, indicating stronger stability and broader spectral participation.</p>
         <div class="metrics-grid">{metrics}</div>
+
+        <h3 class="subsection-title" id="perturbation-validation">Safety Relevance of Critical Attention Heads</h3>
+        <p class="section-text">{esc(p["perturbationText"])}</p>
+        {critical_head_figure}
 
         <h3 class="subsection-title">Metric Correlation</h3>
         <div class="correlation-block">
@@ -847,26 +863,28 @@ def render_cot_paper_page(p: dict) -> str:
               <tbody>{correlation_rows}</tbody>
             </table>
           </div>
-          {fig(p, "correlation", "Correlation between Jacobian metrics and safety routing", "<strong>Figure 5.</strong> Correlation between Jacobian-based metrics and safety-relevant routing.", "figure-correlation-inline")}
+          {fig(p, "correlation", "Correlations between routing-Jacobian metrics and discriminator-assessed safety", "<strong>Figure 7.</strong> Correlations between the spectral metrics and safety rates under routing perturbations.", "figure-correlation-inline")}
         </div>
 
-        <h3 class="subsection-title">Generalization Beyond Fake News</h3>
+        <h3 class="subsection-title" id="generalization">Generalization Beyond Fake-News Generation</h3>
         <p class="section-text">{esc(p.get("generalizationSummary", ""))}</p>
 
-        <h3 class="subsection-title">Critical-Head Mitigation</h3>
+        <h3 class="subsection-title" id="mitigation">Parameter-Efficient Safety Fine-Tuning</h3>
+        <p class="section-text">{esc(p["mitigationSummary"])}</p>
         <div class="table-wrap full-width-table">
           <table class="data-table compact">
-            <thead><tr><th>Model</th><th>FT Ratio</th><th>News Before / After</th><th>HarmBench Before / After</th></tr></thead>
+            <thead><tr><th>Model</th><th>Parameters updated (%)</th><th>News before / after (%)</th><th>HarmBench before / after (%)</th></tr></thead>
             <tbody>
               {mitigation_rows}
-              <tr><td colspan="2"><strong>Average improvement</strong></td><td><strong>+67.1</strong></td><td><strong>+55.0</strong></td></tr>
+              <tr><td colspan="2"><strong>Mean improvement (percentage points)</strong></td><td><strong>+67.1</strong></td><td><strong>+55.0</strong></td></tr>
             </tbody>
           </table>
         </div>
+        <p class="section-text"><a href="{esc(links["pdf"])}#page=9">Table 4: safety mitigation results</a> · <a href="{esc(links["pdf"])}#page=23">Table 9: MATH500 and GPQA after mitigation</a></p>
       </section>
 
       <section class="paper-section" id="method">
-        <h2>What this analysis adds</h2>
+        <h2>Contribution to AI Safety and Mechanistic Interpretability</h2>
         <p class="section-text">{esc(p["priorWorkDiff"])}</p>
       </section>
 
@@ -888,7 +906,7 @@ def render_cot_paper_page(p: dict) -> str:
 
 def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, canonical: str) -> str:
     description = (
-        "Research on reasoning-model safety and robust misinformation detection, "
+        "Research on AI safety, mechanistic interpretability of reasoning models, and robust misinformation detection, "
         "with methods, empirical findings, and code."
     )
     cards = []
@@ -917,7 +935,7 @@ def render_hub(papers: list[dict], *, asset_root: str, paper_href_prefix: str, c
   {hub_venue_line(p, asset_root)}
   <p class="hub-kicker">Research area: {esc(p.get("researchTheme", ""))}</p>
   <p class="hub-question">{esc(p.get("researchQuestion", ""))}</p>
-  <p class="hub-summary">{esc(p["tldr"])}</p>
+  <p class="hub-summary">{esc(p.get("cardSummary") or p["tldr"])}</p>
   <p class="hub-links"><a href="{esc(url)}">Project</a><span>·</span><a href="{esc(links.get("paper") or links["arxiv"])}" target="_blank" rel="noopener noreferrer">Paper</a><span>·</span><a href="{esc(links["arxiv"])}" target="_blank" rel="noopener noreferrer">Preprint</a><span>·</span><a href="{esc(links["pdf"])}" target="_blank" rel="noopener noreferrer">PDF</a><span>·</span><a href="{esc(links["code"])}" target="_blank" rel="noopener noreferrer">Code</a></p>
   {note_link}
 </article>"""

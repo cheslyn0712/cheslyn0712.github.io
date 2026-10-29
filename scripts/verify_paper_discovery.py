@@ -8,6 +8,7 @@ import hashlib
 import html
 import json
 import re
+import shutil
 import subprocess
 import sys
 from datetime import date
@@ -218,17 +219,21 @@ def resolve_link(href: str, source: Path) -> tuple[Path | None, str]:
 
 
 def git_show(relative: str) -> str:
-    git = r"C:\Program Files\Git\cmd\git.exe"
+    executable = shutil.which("git")
+    if executable is None:
+        fallback = Path(r"C:\Program Files\Git\cmd\git.exe")
+        if fallback.is_file():
+            executable = str(fallback)
+    if executable is None:
+        raise SystemExit("Git is required for the existing link and baseline checks.")
     result = subprocess.run(
-        [git, "show", f"HEAD:{relative}"],
+        [executable, "show", f"HEAD:{relative}"],
         cwd=ROOT,
         capture_output=True,
         text=True,
         encoding="utf-8",
     )
-    if result.returncode != 0:
-        return ""
-    return result.stdout
+    return result.stdout if result.returncode == 0 else ""
 
 
 def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Path) -> int:
@@ -499,6 +504,61 @@ def verify(cot_repo: Path, cog_repo: Path, baseline_path: Path, targets_path: Pa
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build_pages.py")], check=True, cwd=ROOT)
     after = {path: file_sha(path) for path in GENERATED}
     report.check(17, "A second build leaves generated files unchanged", before == after)
+
+    cot = papers["cot-chain-of-truth"]
+    cot_page = pages["cot-chain-of-truth"]
+    guide = (ROOT / "research" / cot["researchNote"]["slug"] / "index.html").read_text(encoding="utf-8")
+    upgrade_detail = []
+    ids = section_ids(cot_page)
+    for earlier, later in (
+        ("tldr", "research-context"),
+        ("research-context", "contributions"),
+        ("contributions", "framework"),
+    ):
+        if earlier not in ids or later not in ids or ids.index(later) != ids.index(earlier) + 1:
+            upgrade_detail.append(f"{earlier} -> {later}")
+    for row in cot["evidenceMap"]:
+        anchor = row["url"].split("#", 1)[1]
+        if cot_page.count(f'id="{anchor}"') != 1:
+            upgrade_detail.append(anchor)
+    for label in (
+        "Figure 1.",
+        "Figure 2.",
+        "Figure 4(a).",
+        "Figure 4(b).",
+        "Figure 4(c).",
+        "Figure 5.",
+        "Figure 6.",
+        "Figure 7.",
+        "Figure 13.",
+        "Figure 14.",
+    ):
+        if label not in cot_page:
+            upgrade_detail.append(label)
+    figure = ROOT / "data" / "figures" / cot["figures"]["criticalHeadPerturbation"]
+    if not figure.is_file():
+        upgrade_detail.append("figure 6 file")
+    for phrase in (
+        "67.1 percentage points",
+        "1.5 percentage points",
+        "0.64%-1.95%",
+        "+67.1",
+        "+55.0",
+    ):
+        if phrase not in cot_page and phrase not in guide:
+            upgrade_detail.append(phrase)
+    if 'id="findings"' in cot_page or cot.get("findings"):
+        upgrade_detail.append("findings")
+    if cot["seoDescription"] not in cot_page:
+        upgrade_detail.append("seo")
+    if len(cot["researchNote"]["sections"]) != 7:
+        upgrade_detail.append("guide sections")
+    report.check(
+        18,
+        "CoT contribution anchors, figure numbers, and units are rendered",
+        not upgrade_detail,
+        ", ".join(upgrade_detail),
+    )
 
     return 1 if report.failed else 0
 

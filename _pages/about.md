@@ -50,9 +50,9 @@ I also had the privilege of interning at the **Institute of Automation, Chinese 
     <p>Zhao Tong*,<strong>Chunlin Gong*</strong>, Yiping Zhang, Haichao Shi, Qiang Liu, Xingcheng Xu, Shu Wu, Xiao-Yu Zhang</p>
     
     <ul>
-      <li>We study chain-of-thought (CoT) safety in reasoning LLMs, connect unsafe reasoning traces and final-answer refusal to safety-related layers and attention heads, and evaluate targeted interventions on fake-news generation and HarmBench.</li>
+      <li>We connect chain-of-thought safety, mechanistic interpretability, and targeted attention-head fine-tuning for AI safety in reasoning LLMs. Across five models, updating 0.64%-1.95% of parameters improves CoT safety by 67.1 percentage points on News and 55.0 on HarmBench on average.</li>
       <li><a href="https://proceedings.mlr.press/v306/tong26e.html">Paper</a> · <a href="https://arxiv.org/abs/2602.04856">Preprint</a> · <a href="https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth">Code</a> · <a href="/projects/cot-chain-of-truth/">Project</a></li>
-      <li>Research perspective: <a href="/research/reasoning-trace-safety/">Chain-of-Thought Safety and Mechanistic Interpretability</a></li>
+      <li>Research perspective: <a href="/research/reasoning-trace-safety/">AI Safety and Mechanistic Interpretability of Chain-of-Thought Reasoning</a></li>
     </ul>
   </div>
 </div>

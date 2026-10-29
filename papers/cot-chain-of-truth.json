@@ -4,23 +4,30 @@
   "siteBase": "https://chunlingong.me",
   "title": "CoT is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning LLMs for Fake News Generation",
   "shortTitle": "CoT is Not the Chain of Truth",
-  "cardSummary": "Chain-of-thought safety analysis connecting unsafe reasoning traces, final-answer refusal, and attention-head mechanisms.",
+  "cardSummary": "AI safety and mechanistic interpretability of reasoning LLMs through attention-head analysis and parameter-efficient safety fine-tuning.",
   "cardImage": "/data/figures/teaser_figure1.png",
   "venue": "ICML 2026",
   "venueId": "icml",
   "year": 2026,
-  "tldr": "We study chain-of-thought (CoT) safety in reasoning LLMs, connect unsafe reasoning traces and final-answer refusal to safety-related layers and attention heads, and evaluate targeted interventions on fake-news generation and HarmBench.",
+  "tldr": "We connect chain-of-thought safety, mechanistic interpretability, and targeted attention-head fine-tuning for AI safety in reasoning LLMs. Across five models, updating 0.64%-1.95% of parameters improves CoT safety by 67.1 percentage points on News and 55.0 on HarmBench on average.",
   "abstract": "From generating headlines to fabricating news, Large Language Models (LLMs) are typically assessed by their final outputs, under the safety assumption that a refusal response signifies safe reasoning throughout the entire process. Challenging this assumption, our study reveals that during fake news generation, even when a model rejects a harmful request, its Chain-of-Thought (CoT) reasoning may still internally contain and propagate unsafe narratives. To analyze this phenomenon, we introduce a unified safety-analysis framework that systematically deconstructs CoT generation across model layers and evaluates the role of individual attention heads through Jacobian-based spectral metrics. Within this framework, we introduce three interpretable measures—stability, geometry, and energy—to quantify how specific attention heads respond to or embed deceptive reasoning patterns. Extensive experiments on multiple reasoning-oriented LLMs show that the generation risk rises significantly when the thinking mode is activated, where the critical routing decisions are concentrated in only a few contiguous mid-depth layers.",
   "keywords": [
+    "AI safety",
+    "AI interpretability",
+    "mechanistic interpretability",
     "chain-of-thought safety",
     "CoT safety",
     "reasoning model safety",
     "reasoning-trace safety",
     "process-level safety evaluation",
-    "mechanistic interpretability",
+    "unsafe chain-of-thought",
+    "final-answer refusal",
     "refusal mechanisms",
-    "attention-head analysis",
+    "attention-head interventions",
+    "attention routing",
     "Jacobian spectral analysis",
+    "parameter-efficient safety fine-tuning",
+    "HarmBench",
     "fake news generation"
   ],
   "authorAffiliations": [
@@ -105,20 +112,21 @@
     "poster": "https://icml.cc/virtual/2026/poster/61042"
   },
   "bibtex": "@InProceedings{pmlr-v306-tong26e,\n title = {{C}o{T} is Not the Chain of Truth: An Empirical Internal Analysis of Reasoning {LLM}s for Fake News Generation},\n author = {Tong, Zhao and Gong, Chunlin and Zhang, Yiping and Shi, Haichao and Liu, Qiang and Xu, Xingcheng and Wu, Shu and Zhang, Xiao-Yu},\n booktitle = {Proceedings of the 43rd International Conference on Machine Learning},\n pages = {121562--121589},\n year = {2026},\n editor = {Zhang, Tong and Dudik, Miroslav and Jaggi, Martin and Agarwal, Alekh and Li, Sharon and Schuurmans, Dale and Zhu, Jerry and Berkenkamp, Felix and Dong, Hanze and Bietti, Alberto},\n volume = {306},\n series = {Proceedings of Machine Learning Research},\n month = {06--11 Jul},\n publisher = {PMLR},\n pdf = {https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf},\n url = {https://proceedings.mlr.press/v306/tong26e.html}\n}\n",
-  "methodOverview": "We build a coarse-to-fine pipeline: (1) generate and annotate CoT traces under direct/indirect fake-news prompts; (2) localize safety-critical mid-depth layers; (3) attribute divergence to attention heads using Jacobian-based stability (B1), geometry (B2), and energy (B3) metrics; (4) validate with perturbation analysis and critical-head mitigation.",
+  "methodOverview": "We connect process-level CoT safety evaluation to mechanistic interpretability and targeted mitigation: generate and jointly annotate reasoning traces and final responses; localize layer intervals with strong safe/unsafe separation; characterize individual attention heads using routing-Jacobian metrics B1-B3; validate safety relevance through controlled perturbations; and evaluate critical-head fine-tuning on News and HarmBench.",
   "contributions": [
-    "Unsafe and Potential Unsafe traces together reach about 78-81% in the reported fake-news generation settings, including cases where the final answer refuses.",
-    "A layer-to-head framework that localizes safety-critical routing in contiguous mid-depth windows.",
-    "Three Jacobian spectral metrics, B1-B3, for interpretable head-level attribution of unsafe reasoning.",
-    "Generalization on HarmBench and critical-head fine-tuning that updates 0.64%-1.95% of parameters and raises CoT safety by +67.1 on news and +55.0 on HarmBench on average."
+    "A joint process-level safety evaluation identifies unsafe reasoning generated before safe final responses, including refusals, and supplies labels for internal analysis.",
+    "A layer-to-attention-head mechanistic interpretability framework uses routing-Jacobian spectral metrics to localize components associated with unsafe CoT.",
+    "Metric-targeted perturbations compare critical heads with an equal number of random heads, validating safety relevance through final-layer safety readouts; the analysis also extends to HarmBench.",
+    "Parameter-efficient critical-head fine-tuning updates 0.64%-1.95% of parameters and improves CoT safety by 67.1 percentage points on News and 55.0 on HarmBench on average across five models."
   ],
   "mainResults": [
-    "Thinking mode raises the share of Unsafe and Potential Unsafe traces to about 78-81% across Llama3-8B, Qwen3-4B, and Qwen3-8B.",
-    "Safe and unsafe trajectories diverge in contiguous mid-depth layer windows for both direct and indirect prompting.",
-    "Unsafe routing concentrates in a small subset of attention heads with distinct B1, B2, and B3 spectral signatures.",
-    "Critical-head fine-tuning improves CoT safety by +67.1 on news and +55.0 on HarmBench on average."
+    "Unsafe and Potential Unsafe CoTs together account for about 78%-81% in the reported fake-news generation settings.",
+    "Safe/unsafe representation separation and attention-head spectral differences concentrate in localized layer windows and a subset of heads.",
+    "Under metric-targeted routing perturbations, critical-head interventions produce a larger overall decline in discriminator-assessed safety than random-head interventions.",
+    "Across five models, critical-head fine-tuning improves CoT safety by an average of 67.1 percentage points on News and 55.0 on HarmBench while updating 0.64%-1.95% of parameters.",
+    "Average performance decreases after mitigation are 1.5 percentage points on MATH500 and 1.7 on GPQA."
   ],
-  "priorWorkDiff": "The analysis links annotated reasoning traces to model layers and individual attention heads. Jacobian-based measurements characterize stability, geometry, and spectral energy, and perturbation experiments and targeted updates evaluate the identified components.",
+  "priorWorkDiff": "CoT is Not the Chain of Truth connects chain-of-thought safety to mechanistic interpretability through joint trace/response safety labels, layer-to-head routing-Jacobian analysis, perturbation validation, and parameter-efficient critical-head mitigation. Experiments link observed unsafe reasoning to localized components and evaluate those components as safety fine-tuning targets on fake-news generation and HarmBench.",
   "figures": {
     "framework": "framework.png",
     "teaser": "teaser_figure1.png",
@@ -132,45 +140,46 @@
     "metricB1": "Llama_B1.png",
     "metricB2": "Llama_B2.png",
     "metricB3": "Llama_B3.png",
-    "correlation": "correlation1.png"
+    "correlation": "correlation1.png",
+    "criticalHeadPerturbation": "original/figure_6_p8.png"
   },
   "stats": [
     {
-      "value": "~80%",
-      "label": "Unsafe / Potential Unsafe CoT"
+      "value": "0.64%-1.95%",
+      "label": "Parameters updated in critical-head fine-tuning"
     },
     {
-      "value": "3",
-      "label": "Reasoning LLMs"
+      "value": "+67.1 pp",
+      "label": "Mean News safety gain across 5 models"
     },
     {
-      "value": "B1-B3",
-      "label": "Jacobian Metrics"
+      "value": "+55.0 pp",
+      "label": "Mean HarmBench safety gain across 5 models"
     },
     {
-      "value": "+67.1 points",
-      "label": "Average safety gain on news"
+      "value": "5",
+      "label": "Models evaluated in mitigation"
     }
   ],
   "cotCategories": [
     {
       "tag": "UNSAFE",
       "name": "Unsafe",
-      "description": "The model accepts the request and begins executing fake news generation.",
+      "description": "Both the generated reasoning trace and final response contain unsafe content.",
       "cot": "Unsafe",
       "response": "Unsafe"
     },
     {
       "tag": "LEAKY",
       "name": "Potential Unsafe",
-      "description": "The model refuses in the final response, but CoT still contains actionable harmful reasoning.",
+      "description": "The reasoning trace contains unsafe content while the final response is safe, including cases with a final refusal.",
       "cot": "Unsafe",
       "response": "Safe"
     },
     {
       "tag": "SAFE",
       "name": "Safe",
-      "description": "The model refuses and CoT contains no reusable harmful procedural content.",
+      "description": "Both the generated reasoning trace and final response are safe.",
       "cot": "Safe",
       "response": "Safe"
     }
@@ -182,7 +191,7 @@
       "directNote": "Direct prompting: Unsafe ~68–74%, Potential Unsafe ~5–10%, Safe ~20–22%.",
       "indirectNote": "Indirect prompting: Unsafe ~68–70%, Potential Unsafe ~12–14%, Safe ~18–20%.",
       "figure": "distribution_ori.png",
-      "caption": "Figure 2a. CoT category distribution under Original style (direct and indirect prompting)."
+      "caption": "Figure 2. CoT category distribution under Original style (direct and indirect prompting)."
     },
     {
       "title": "NYT Style Conditioning",
@@ -190,7 +199,7 @@
       "directNote": "Direct + NYT: Unsafe remains the majority; Safe CoTs stay near ~20%.",
       "indirectNote": "Indirect + NYT: Potential Unsafe increases relative to direct prompting.",
       "figure": "distribution_ny.png",
-      "caption": "Figure 2b. CoT category distribution under NYT style conditioning."
+      "caption": "Figure 13. CoT category distribution under NY style (direct and indirect prompting)."
     },
     {
       "title": "BBC Style Conditioning",
@@ -198,7 +207,7 @@
       "directNote": "Direct + BBC: Unsafe and Potential Unsafe exceed ~75% for every model.",
       "indirectNote": "Indirect + BBC: unsafe share stable; more mass shifts into Potential Unsafe.",
       "figure": "distribution_bbc.png",
-      "caption": "Figure 2c. CoT category distribution under BBC style conditioning."
+      "caption": "Figure 14. CoT category distribution under BBC style (direct and indirect prompting)."
     }
   ],
   "criticalLayers": [
@@ -224,25 +233,25 @@
       "name": "Stability",
       "summary": "Spectral norm of the routing Jacobian: local sensitivity to logit perturbations.",
       "figure": "Llama_B1.png",
-      "caption": "B1 (Stability) across attention heads."
+      "caption": "Figure 4(a). B1 (Stability) across attention heads in Llama3-8B under indirect induction."
     },
     {
       "id": "B2",
       "name": "Geometry",
       "summary": "Directional centroid of absolute leading right-singular-vector mass over the downsampled routing coordinates.",
       "figure": "Llama_B2.png",
-      "caption": "B2 (Geometry) across attention heads."
+      "caption": "Figure 4(b). B2 (Geometry) across attention heads in Llama3-8B under indirect induction."
     },
     {
       "id": "B3",
       "name": "Energy",
       "summary": "Entropy effective rank of the normalized squared singular values: effective spectral participation.",
       "figure": "Llama_B3.png",
-      "caption": "B3 (Energy) across attention heads."
+      "caption": "Figure 4(c). B3 (Energy) across attention heads in Llama3-8B under indirect induction."
     }
   ],
-  "generalizationSummary": "Beyond fake-news generation, we evaluate HarmBench jailbreak tasks on Flan-UL2 and DeepSeek-R1-70B. Safe vs. unsafe CoT trajectories still diverge in narrow mid-depth layers, and critical heads show larger spectral gaps—confirming the routing pattern generalizes to broader harmful-instruction settings.",
-  "correlationSummary": "B1–B3 correlate strongly with safety-relevant routing across all three models.",
+  "generalizationSummary": "We apply the same safety grouping and layer-to-head analysis workflow to HarmBench harmful-instruction tasks across five models, including Flan-UL2 and DeepSeek-R1-70B. Safety-related representation separation remains localized in narrow layer intervals, and critical heads show larger spectral gaps than non-critical heads. Table 4 further reports targeted mitigation on both News and HarmBench.",
+  "correlationSummary": "Figure 7 reports correlations between the routing-Jacobian metrics B1-B3 and safety rates under metric-targeted routing perturbations. These measurements connect operator-level routing features with discriminator-assessed safety.",
   "correlationData": [
     {
       "model": "Llama3-8B",
@@ -302,74 +311,56 @@
     "first": "121562",
     "last": "121589"
   },
-  "introText": "The study annotates generated reasoning traces as Safe, Potential Unsafe, or Unsafe and records final-answer behavior. Experiments examine direct and indirect fake-news generation prompts, multiple stylistic settings, and the effects of thinking mode. This process-level view supports analysis of the relationship between trace content, final-answer refusal, and internal model components.",
-  "layerText": "The table reports localized layer windows for each model and prompting condition. Each interval identifies the part of the model examined by the subsequent attention-head analysis.",
-  "findings": [
-    {
-      "title": "Reasoning-trace safety",
-      "text": "Annotated generation traces reveal unsafe content in cases with final-answer refusal."
-    },
-    {
-      "title": "Internal localization",
-      "text": "Layer analysis and attention-head measurements connect trace-level behavior with stability, geometry, and spectral energy."
-    },
-    {
-      "title": "Targeted intervention",
-      "text": "The paper evaluates perturbations and critical-head updates in fake-news generation and HarmBench settings."
-    }
-  ],
+  "introText": "Safety evaluation centered on the final answer can miss unsafe content already generated during reasoning. In fake-news generation, a model can construct misleading narratives and reusable fabrication strategies in its CoT before refusing the request. Jointly labeling the reasoning trace and final response makes this process-level risk observable and provides the labels used in the internal analysis.",
+  "layerText": "The reported intervals localize safe/unsafe representation separation for each model and prompting condition. Attention-head analysis examines routing operators within these intervals to identify components for perturbation validation and targeted safety fine-tuning.",
+  "findings": [],
   "faqs": [
     {
-      "q": "What does this paper contribute to chain-of-thought safety?",
-      "a": "It studies the safety of generated reasoning traces together with final-answer behavior, develops a layer-to-attention-head analysis workflow, and evaluates targeted safety interventions. The reported experiments cover fake-news generation and HarmBench."
+      "q": "What does this paper contribute to AI safety?",
+      "a": "CoT is Not the Chain of Truth (ICML 2026) connects process-level chain-of-thought safety evaluation to internal mechanism analysis and targeted mitigation. It jointly labels generated reasoning and final responses, localizes safety-related layers and attention heads with Jacobian spectral metrics, validates selected components through perturbations, and evaluates critical-head fine-tuning."
     },
     {
-      "q": "Can a model refuse in its final answer after producing unsafe reasoning?",
-      "a": "The reported experiments identify generated traces containing unsafe content followed by a safe final response, including refusal responses. The paper evaluates the reasoning trace and final response jointly through its safety taxonomy and generation analysis."
+      "q": "How does this work connect CoT safety and AI interpretability?",
+      "a": "The study uses mechanistic interpretability to connect unsafe reasoning traces with layer representations and attention-routing operators. Routing-Jacobian analysis characterizes specific heads, and controlled perturbations and targeted updates test their safety relevance and usefulness as mitigation targets."
     },
     {
-      "q": "How does the study connect to mechanistic interpretability?",
-      "a": "It localizes safety-related layers and attention heads, characterizes routing behavior with Jacobian spectral metrics, and tests the identified components through perturbations and targeted parameter updates."
+      "q": "Can unsafe CoT occur before a final-answer refusal?",
+      "a": "Yes. The reported fake-news generation experiments identify unsafe reasoning followed by a safe final response, including refusals. The Potential Unsafe category captures this combination, making content generated before the final response part of the safety evaluation."
     },
     {
-      "q": "What do the three Jacobian metrics measure?",
-      "a": "B1 measures local routing sensitivity through the Jacobian spectral norm. B2 summarizes the coordinate location of the dominant sensitivity direction through a directional centroid. B3 measures effective spectral participation through the entropy effective rank of normalized squared singular values."
+      "q": "What do the Jacobian metrics reveal about attention routing?",
+      "a": "B1 measures local routing sensitivity using the Jacobian spectral norm. B2 measures the coordinate location of the dominant sensitivity direction using a directional centroid. B3 measures effective spectral participation using the entropy effective rank of normalized squared singular values. These metrics characterize routing differences associated with safe and unsafe CoT."
     },
     {
-      "q": "Which tasks and safety interventions are evaluated?",
-      "a": "The paper evaluates fake-news generation and HarmBench jailbreak tasks. Table 4 reports safety rates before and after targeted updates to critical heads, and Table 9 reports MATH500 and GPQA performance after mitigation."
+      "q": "How effective is critical-head safety fine-tuning?",
+      "a": "Across five models, updating 0.64%-1.95% of parameters improves CoT safety by an average of 67.1 percentage points on News and 55.0 on HarmBench (Table 4). Average performance decreases are 1.5 percentage points on MATH500 and 1.7 on GPQA (Table 9)."
     },
     {
-      "q": "Where can researchers find the paper and analysis code?",
-      "a": "The official publication is in ICML 2026, PMLR volume 306, pages 121562–121589. The public repository provides generation, annotation, layer-analysis, and attention-head-analysis entry points. The research guide connects the questions, evidence, and resources."
+      "q": "How does the analysis extend beyond fake-news generation?",
+      "a": "The same safety grouping and layer-to-head workflow is evaluated on HarmBench harmful-instruction tasks across five models. Safety-related separation remains localized in narrow layer intervals, critical heads show larger spectral gaps, and Table 4 reports critical-head mitigation results for both News and HarmBench."
     }
   ],
-  "researchTheme": "Chain-of-thought safety and mechanistic interpretability",
-  "researchQuestion": "Can a model refuse in its final answer while producing unsafe reasoning, and which attention heads contribute to this behavior?",
+  "researchTheme": "AI safety and mechanistic interpretability",
+  "researchQuestion": "Which attention-routing components are associated with unsafe CoT before final refusal, and can targeted updates improve reasoning-model safety?",
   "researchContext": [
-    "Chain-of-thought safety asks how harmful content develops during a reasoning model's generation process. CoT is Not the Chain of Truth examines cases where the generated reasoning trace contains unsafe content and the final answer refuses the request. Trace annotations and final-response labels make this relationship observable.",
-    "The paper connects this process-level safety question to mechanistic interpretability through layer localization, attention-head analysis, and Jacobian spectral measurements. Perturbation experiments examine the behavioral role of the identified components, and targeted parameter updates are evaluated on fake-news generation and HarmBench."
+    "AI safety evaluation for reasoning models needs to account for harmful content generated before a final refusal. In fake-news generation, a reasoning trace can supply misleading narratives and reusable fabrication strategies even when the final answer refuses. CoT is Not the Chain of Truth jointly evaluates the generated trace and final response to make this process-level risk observable.",
+    "We connect this chain-of-thought safety problem to AI interpretability through a layer-to-attention-head analysis of routing operators. Jacobian spectral metrics characterize safety-related routing structures, controlled perturbations test the safety relevance of the identified components, and critical-head fine-tuning evaluates these components as targets for improving CoT safety on fake-news generation and HarmBench."
   ],
   "relatedWork": [
     {
       "name": "SafeChain: Safety of Language Models with Long Chain-of-Thought Reasoning Capabilities",
       "url": "https://aclanthology.org/2025.findings-acl.1197/",
-      "relation": "SafeChain studies reasoning-model safety evaluation, decoding strategies, and CoT-style safety training. Our study contributes Jacobian-based layer and attention-head analysis of reasoning-trace safety."
+      "relation": "SafeChain studies long-reasoning model safety through evaluation, decoding strategies, and CoT-style safety training. CoT is Not the Chain of Truth connects joint trace/response safety labels to Jacobian-based routing analysis and targeted attention-head fine-tuning."
     },
     {
       "name": "Where Do Reasoning Models Refuse?",
       "url": "https://arxiv.org/abs/2507.03167",
-      "relation": "This work studies refusal decisions within reasoning traces and internal representations. Our study connects trace annotations with layer/head measurements and targeted interventions."
+      "relation": "This work studies how refusal decisions develop within reasoning traces and how activation-level refusal directions influence behavior. CoT is Not the Chain of Truth examines unsafe content before a safe final response, localizes safety-related routing components, and evaluates critical-head interventions."
     },
     {
       "name": "Chain-of-Thought Hijacking",
       "url": "https://arxiv.org/abs/2510.26418",
-      "relation": "This work connects extended reasoning with refusal robustness and internal safety signals. Together, these studies support investigation of reasoning behavior, internal mechanisms, and safety interventions."
-    },
-    {
-      "name": "How Does Chain of Thought Think? Mechanistic Interpretability of Chain-of-Thought Reasoning with Sparse Autoencoding",
-      "url": "https://ojs.aaai.org/index.php/AAAI/article/view/40281",
-      "relation": "This work studies CoT faithfulness with sparse autoencoders and activation patching. Our study connects generated trace safety with attention-head routing and targeted safety interventions."
+      "relation": "This work studies refusal dilution under extended reasoning using jailbreak evaluation, activation probing, attention analysis, and causal interventions. CoT is Not the Chain of Truth characterizes trace-safety differences with routing-Jacobian metrics and evaluates parameter-efficient critical-head mitigation."
     }
   ],
   "resources": [
@@ -399,19 +390,19 @@
   "researchNote": {
     "slug": "reasoning-trace-safety",
     "url": "/research/reasoning-trace-safety/",
-    "title": "Chain-of-Thought Safety and Mechanistic Interpretability",
-    "description": "A research guide to CoT safety, final-answer refusal, attention-head analysis, and targeted interventions in reasoning language models.",
+    "title": "AI Safety and Mechanistic Interpretability of Chain-of-Thought Reasoning",
+    "description": "CoT safety evaluation, routing-Jacobian interpretability, and critical-head safety fine-tuning, with five-model results on News and HarmBench.",
     "author": "Chunlin Gong",
     "updated": "2026-10-28",
     "authorNote": "This research guide is written by a coauthor of CoT is Not the Chain of Truth (ICML 2026).",
-    "lead": "Chain-of-thought (CoT) safety concerns the safety of content generated during a reasoning model's deliberation. A model can produce unsafe reasoning and subsequently refuse in its final answer. This guide connects that evaluation problem to mechanistic interpretability: identifying safety-related layers and attention heads, testing their behavioral role, and evaluating targeted interventions. CoT is Not the Chain of Truth provides an empirical case study using fake-news generation and HarmBench.",
+    "lead": "Understanding and mitigating unsafe reasoning is a concrete problem at the intersection of AI safety and AI interpretability. CoT is Not the Chain of Truth (ICML 2026) connects process-level chain-of-thought safety evaluation, routing-Jacobian analysis, and targeted attention-head fine-tuning. This guide explains the contribution through its safety labels, component-level evidence, and reported results on fake-news generation and HarmBench.",
     "sections": [
       {
         "id": "evaluation",
-        "title": "How should we evaluate chain-of-thought safety?",
+        "title": "CoT safety: unsafe reasoning before final refusal",
         "paragraphs": [
-          "A useful evaluation records the prompt, the generated reasoning trace, and the final response as separate observations. Trace labels describe the content generated during reasoning. Final-response labels describe the answer presented after that reasoning. Joint evaluation reveals cases in which unsafe trace content precedes a safe final response, including a refusal.",
-          "CoT is Not the Chain of Truth applies this approach to fake-news generation. Its safety taxonomy distinguishes three reported categories, shown below. The interpretation of each statistic depends on the evaluated model, prompt setting, and category. These definitions provide a concrete protocol for researchers studying process-level safety or comparing refusal behavior with trace content."
+          "Reasoning-model safety evaluation needs to cover content produced throughout generation. In fake-news generation, a model may construct misleading narratives or fabrication strategies in its chain of thought and then refuse the request in its final answer. These intermediate outputs can provide reusable material to an attacker, making trace-level safety a concrete AI safety concern.",
+          "CoT is Not the Chain of Truth evaluates reasoning traces and final responses jointly. Unsafe means both are unsafe; Potential Unsafe means the reasoning is unsafe while the final response is safe, including final refusals; Safe means both are safe. This taxonomy identifies process-level risks that can occur before a final refusal and supplies labels for the subsequent internal analysis."
         ],
         "table": {
           "caption": "Safety categories used in the paper",
@@ -437,23 +428,64 @@
               "Safe"
             ]
           ]
-        }
+        },
+        "links": [
+          {
+            "label": "Table 1: joint CoT and final-response safety taxonomy",
+            "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=3"
+          },
+          {
+            "label": "Figure 1: unsafe CoT before final refusal",
+            "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=1"
+          }
+        ]
       },
       {
         "id": "mechanisms",
-        "title": "Which layers and attention heads are associated with unsafe CoT?",
+        "title": "Mechanistic interpretability of safety-critical attention routing",
         "paragraphs": [
-          "Mechanistic interpretability connects an observed behavior with the computations of a model. In this study, layer-level analysis localizes depth intervals where safe and unsafe generations differ. Attention-head analysis then characterizes routing behavior within those intervals, giving researchers specific components to examine.",
-          "For a softmax routing vector p, the analysis uses the Jacobian J = diag(p) - pp^T. B1 is its spectral norm and describes local routing sensitivity. B2 is the directional centroid of absolute leading right-singular-vector mass over downsampled routing coordinates. B3 is the entropy effective rank of the normalized squared singular values and describes how broadly spectral participation is distributed.",
-          "Perturbation experiments test how changes to the identified components affect behavior. This provides a workflow from safety labels to layer localization, head-level measurements, and behavioral tests. Researchers interested in attention-head mechanisms, refusal behavior, or targeted model control can use the workflow as a starting point for their own evaluation settings."
+          "Mechanistic interpretability connects model behavior to internal computation. Our analysis first localizes layer intervals where safe and unsafe reasoning representations differ, then examines individual attention heads within those intervals. The observed separation and spectral differences concentrate in localized layer windows and a subset of heads, giving the safety analysis specific components to examine.",
+          "For softmax routing probabilities p, the Jacobian J = diag(p) - pp^T describes how small logit changes redistribute attention probability. B1 is the Jacobian spectral norm and measures local routing sensitivity. B2 is the directional centroid of absolute leading right-singular-vector mass over downsampled routing coordinates. B3 is the entropy effective rank of normalized squared singular values and measures effective spectral participation. Together, these metrics characterize operator-level routing differences associated with CoT safety."
+        ],
+        "links": [
+          {
+            "label": "Sections 4.1-4.3: layer localization and routing-Jacobian metrics",
+            "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=4"
+          },
+          {
+            "label": "Figure 4: attention-head spectral analysis",
+            "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=7"
+          }
+        ]
+      },
+      {
+        "id": "perturbation-validation",
+        "title": "Validating safety relevance with attention-head interventions",
+        "paragraphs": [
+          "To validate the safety relevance of the spectral metrics and selected components, we perturb routing in directions that increase B1, increase B2, or decrease B3. We compare critical heads with an equal number of randomly selected heads. Evaluation starts from safe samples and measures the proportion still classified as safe by a discriminator trained on each model's final-layer representations.",
+          "Figure 6 shows that critical-head perturbations produce a larger overall decline in discriminator-assessed safety than random-head perturbations as intervention strength increases. Figure 7 reports the association between spectral metrics and safety rates under these perturbations. These complementary results support the safety relevance of the localized routing structures and motivate their use as targeted fine-tuning locations."
+        ],
+        "links": [
+          {
+            "label": "Figure 6: critical-head versus random-head perturbations",
+            "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=8"
+          },
+          {
+            "label": "Figure 7: spectral-metric correlations with safety rate",
+            "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=8"
+          },
+          {
+            "label": "Project: perturbation evidence",
+            "url": "/projects/cot-chain-of-truth/#perturbation-validation"
+          }
         ]
       },
       {
         "id": "intervention",
-        "title": "Can localized attention heads support safety interventions?",
+        "title": "Parameter-efficient safety fine-tuning of critical attention heads",
         "paragraphs": [
-          "The paper evaluates targeted parameter updates to critical heads on fake-news generation and HarmBench. Table 4 reports the fraction of parameters updated and CoT safety rates before and after mitigation for five models. The following table reproduces those reported results, with percentages in every numeric column.",
-          "The intervention results connect component localization to an actionable safety experiment. Table 9 additionally reports MATH500 and GPQA performance after mitigation. Reading the safety results together with these capability measurements supports an assessment of the reported trade-off for each evaluated model."
+          "Critical-head mitigation freezes non-critical parameters and fine-tunes the parameters associated with the identified heads. Across five models, it updates 0.64%-1.95% of parameters and improves CoT safety by an average of 67.1 percentage points on News and 55.0 percentage points on HarmBench. For Llama3-8B, the reported rates rise from 21.1% to 94.7% on News and from 20.8% to 87.4% on HarmBench.",
+          "Table 4 reports the model-specific safety results below. Table 9 reports an average performance decrease of 1.5 percentage points on MATH500 and 1.7 on GPQA after mitigation. Taken together, these measurements quantify the safety gains and reasoning-capability changes of targeted attention-head fine-tuning. The same layer-to-head workflow is also evaluated on HarmBench, extending the analysis to broader harmful-instruction settings."
         ],
         "table": {
           "caption": "Reported CoT safety mitigation results (paper Table 4)",
@@ -498,30 +530,38 @@
         },
         "links": [
           {
-            "label": "Table 4: mitigation results",
+            "label": "Table 4: five-model safety mitigation results",
             "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=9"
           },
           {
-            "label": "Table 9: reasoning performance",
+            "label": "Table 9: MATH500 and GPQA after mitigation",
             "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=23"
           }
         ]
       },
       {
         "id": "research-connections",
-        "title": "How do CoT safety, refusal, and mechanistic interpretability connect?",
+        "title": "Related work on reasoning-model safety and refusal mechanisms",
         "paragraphs": [
-          "Research on reasoning models asks several connected questions: what content a trace contains, how refusal decisions develop, which internal components influence behavior, and how a verbalized trace relates to the computation producing an answer. The studies below provide entry points for these questions.",
-          "CoT is Not the Chain of Truth contributes an empirical link between unsafe trace content, safety-related layers and attention heads, and targeted interventions. For related-work discussions, this contribution fits process-level safety evaluation, mechanistic analysis of reasoning-model safety, and attention-head interventions."
+          "Research on reasoning-model safety connects the content generated during reasoning, the development of refusal decisions, and the internal mechanisms influencing safe behavior. SafeChain provides safety evaluation and CoT-style safety training; Where Do Reasoning Models Refuse? examines refusal decisions and activation-level refusal directions; Chain-of-Thought Hijacking investigates refusal dilution under extended reasoning.",
+          "CoT is Not the Chain of Truth contributes a unified empirical workflow linking joint trace/response safety labels, routing-Jacobian analysis, controlled perturbations, and critical-head mitigation. This makes the paper relevant to related-work discussions on CoT safety, mechanistic interpretability for AI safety, attention-head interventions, and parameter-efficient safety fine-tuning."
         ],
         "table": {
-          "caption": "Reading paths through related research",
+          "caption": "Research questions and evidence in reasoning-model safety",
           "columns": [
             "Work",
             "Research question",
             "Evidence or approach"
           ],
           "rows": [
+            [
+              {
+                "label": "CoT is Not the Chain of Truth",
+                "url": "https://proceedings.mlr.press/v306/tong26e.html"
+              },
+              "How do unsafe CoT, final refusal, and internal routing components relate?",
+              "Joint safety labels, layer/head Jacobian analysis, critical/random-head perturbations, and targeted safety fine-tuning"
+            ],
             [
               {
                 "label": "SafeChain",
@@ -544,41 +584,31 @@
                 "url": "https://arxiv.org/abs/2510.26418"
               },
               "How does extended reasoning affect refusal robustness?",
-              "Jailbreak evaluation, activation probing, attention analysis, and interventions"
-            ],
-            [
-              {
-                "label": "How Does Chain of Thought Think?",
-                "url": "https://ojs.aaai.org/index.php/AAAI/article/view/40281"
-              },
-              "How does generated CoT relate to internal computation?",
-              "Sparse autoencoders and activation patching for CoT faithfulness"
-            ],
-            [
-              {
-                "label": "CoT is Not the Chain of Truth",
-                "url": "https://proceedings.mlr.press/v306/tong26e.html"
-              },
-              "How do unsafe traces relate to final refusal and internal components?",
-              "Joint safety labels, layer/head Jacobian analysis, perturbations, and targeted updates"
+              "Jailbreak evaluation, activation probing, attention analysis, and causal interventions"
             ]
           ]
         }
       },
       {
         "id": "scope",
-        "title": "How does trace safety relate to CoT faithfulness and monitorability?",
+        "title": "CoT monitorability and related interpretability questions",
         "paragraphs": [
-          "Trace safety concerns the safety of the generated reasoning text. CoT faithfulness concerns the relationship between a verbalized explanation and the computation producing an answer. Monitorability concerns the information that a monitor can recover from observations of model behavior. These questions motivate different annotations, interventions, and evaluation protocols.",
-          "The contribution described here is the empirical analysis of generated trace safety and associated internal model components. The fake-news and HarmBench settings specify the evaluated tasks; the layer/head analysis and targeted updates specify the mechanism and intervention evidence. This description helps readers select the study for a related-work discussion or an empirical comparison."
+          "CoT monitorability concerns how effectively reasoning traces can support monitoring of model behavior. Joint trace/response safety labels provide concrete evaluation targets for unsafe generated content, while layer/head analysis supplies component-level evidence. Future work can compare trace monitors, text editing, and attention-head interventions under a shared protocol, measuring risk coverage, intervention timing, safety gains, and reasoning capability.",
+          "Related interpretability research also studies how CoT relates to internal computation. How Does Chain of Thought Think? uses sparse autoencoders and activation patching on Pythia models solving GSM8K mathematics problems to study CoT faithfulness. This is an adjacent research question to the trace-safety labels, harmful-generation tasks, and routing interventions examined here."
+        ],
+        "links": [
+          {
+            "label": "AAAI 2026: CoT faithfulness with sparse autoencoding and activation patching",
+            "url": "https://ojs.aaai.org/index.php/AAAI/article/view/40281"
+          }
         ]
       },
       {
         "id": "resources",
-        "title": "How can researchers use the analysis workflow?",
+        "title": "Use the CoT safety evaluation and analysis workflow",
         "paragraphs": [
-          "Researchers can start from the repository's generation, annotation, layer-analysis, and attention-head-analysis entry points. The data-format and model-setup documentation describes the expected inputs. The project page connects the framework, experiment figures, resources, and official ICML 2026 citation.",
-          "For a related-work discussion, the central contribution can be summarized as an empirical analysis of reasoning-trace safety that connects final-answer refusal with internal layer/head measurements and targeted interventions. The formal paper supplies the experiment definitions and results, while the repository provides the available analysis entry points."
+          "The public repository provides entry points for reasoning-trace generation, annotation and review, layer localization, and attention-head analysis. The data-format and model-setup documentation describes the expected inputs. The project page connects the original experimental figures and reported results with the official ICML 2026 publication.",
+          "For related work: Tong et al. (ICML 2026) connect chain-of-thought safety to mechanistic interpretability through joint trace/response safety labels, layer-to-head routing-Jacobian analysis, perturbation validation, and parameter-efficient critical-head mitigation on fake-news generation and HarmBench."
         ],
         "links": [
           {
@@ -586,7 +616,7 @@
             "url": "https://proceedings.mlr.press/v306/tong26e.html"
           },
           {
-            "label": "Project and evidence",
+            "label": "Project and experimental evidence",
             "url": "https://chunlingong.me/projects/cot-chain-of-truth/"
           },
           {
@@ -619,25 +649,35 @@
       }
     ]
   },
-  "researchContextHeading": "Chain-of-thought safety and mechanistic interpretability",
+  "researchContextHeading": "AI safety and interpretability of chain-of-thought reasoning",
   "evidenceMap": [
     {
       "question": "Can unsafe CoT occur before a final-answer refusal?",
-      "contribution": "Joint analysis of generated reasoning traces and final-response safety labels.",
-      "evidence": "Safety categories and generation results",
-      "url": "#introduction"
+      "contribution": "Joint trace/response safety labels identify unsafe reasoning before safe final responses.",
+      "evidence": "Table 1 and generation results",
+      "url": "#dataset"
     },
     {
-      "question": "Which layers and attention heads are associated with unsafe CoT?",
-      "contribution": "Layer localization, Jacobian spectral measurements, and perturbation experiments.",
-      "evidence": "Layer and attention-head analysis",
-      "url": "#method"
+      "question": "Which internal components are associated with unsafe CoT?",
+      "contribution": "Layer-to-head localization and routing-Jacobian spectral metrics identify safety-related components.",
+      "evidence": "Attention-head analysis: Figure 4",
+      "url": "#attention-head-analysis"
     },
     {
-      "question": "Can localized components support safety interventions?",
-      "contribution": "Targeted parameter updates evaluated on fake-news generation and HarmBench.",
-      "evidence": "Mitigation results: Table 4",
-      "url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/tong26e/tong26e.pdf#page=9"
+      "question": "Do the selected heads show stronger safety relevance?",
+      "contribution": "Metric-targeted perturbations compare critical heads with an equal number of random heads.",
+      "evidence": "Critical/random-head comparison: Figure 6",
+      "url": "#perturbation-validation"
+    },
+    {
+      "question": "Can targeted updates improve CoT safety?",
+      "contribution": "Updating 0.64%-1.95% of parameters yields mean gains of 67.1 pp on News and 55.0 pp on HarmBench across five models.",
+      "evidence": "Table 4 and Table 9",
+      "url": "#mitigation"
     }
-  ]
+  ],
+  "seoDescription": "AI safety and mechanistic interpretability of reasoning LLMs: CoT safety evaluation, Jacobian attention-head analysis, and targeted safety fine-tuning.",
+  "perturbationText": "To validate the safety relevance of the localized heads, we perturb routing in directions that increase B1, increase B2, or decrease B3, and compare critical heads with an equal number of random heads. Starting from safe samples, we measure safety using a discriminator trained on final-layer representations. Critical-head perturbations produce a larger overall decline in safety rate than random-head perturbations, supporting the safety relevance of the selected routing components.",
+  "mitigationSummary": "Across five models, critical-head fine-tuning updates 0.64%-1.95% of parameters and improves CoT safety by 67.1 percentage points on News and 55.0 on HarmBench on average (Table 4). Average performance decreases are 1.5 percentage points on MATH500 and 1.7 on GPQA (Table 9).",
+  "relatedWorkHeading": "Related work on reasoning-model safety and refusal mechanisms"
 }
